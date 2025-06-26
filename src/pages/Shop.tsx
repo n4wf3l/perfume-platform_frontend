@@ -130,6 +130,11 @@ const Shop: React.FC = () => {
           setSelectedCategory={setSelectedCategory}
         />
 
+        {/* Titre de la boutique */}
+        <h1 className="text-4xl font-serif text-white mb-8 text-center">
+          Boutique
+        </h1>
+
         {/* Section des produits et pagination */}
         <Products
           products={currentProducts}
@@ -138,6 +143,13 @@ const Shop: React.FC = () => {
           productsPerPage={productsPerPage}
           totalProducts={filteredProducts.length}
         />
+
+        {/* Bouton d'achat maintenant (placeholder pour action future) */}
+        <div className="text-center mt-8">
+          <button className="bg-white text-black px-6 py-2 rounded font-medium hover:bg-white/90 transition">
+            Acheter maintenant
+          </button>
+        </div>
       </div>
     </motion.div>
   );

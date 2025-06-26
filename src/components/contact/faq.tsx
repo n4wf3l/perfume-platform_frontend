@@ -44,7 +44,7 @@ const FAQ: React.FC<FaqProps> = () => {
         viewport={{ once: true }}
       >
         <motion.h2
-          className="text-3xl font-serif text-[#d4af37] mb-6"
+          className="text-3xl font-serif text-white mb-6"
           variants={fadeInUp}
         >
           Questions Fréquentes
@@ -60,7 +60,7 @@ const FAQ: React.FC<FaqProps> = () => {
         >
           <motion.div className="inline-block relative">
             <motion.div
-              className="absolute -inset-1 bg-gradient-to-r from-[#d4af37] to-[#c5a028] rounded-lg blur opacity-30"
+              className="absolute -inset-1 bg-white rounded-lg blur opacity-30"
               animate={{
                 opacity: [0.2, 0.4, 0.2],
                 scale: [1, 1.02, 1],
@@ -72,8 +72,8 @@ const FAQ: React.FC<FaqProps> = () => {
               }}
             ></motion.div>
             <a
-              href="#"
-              className="relative inline-flex items-center px-8 py-3 bg-[#d4af37] hover:bg-[#c5a028] text-black font-medium rounded-md transition-colors duration-300"
+              href="/confidentiality#faq"
+              className="relative inline-flex items-center px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded-md transition-colors duration-300"
             >
               Voir la FAQ
               <svg

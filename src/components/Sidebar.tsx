@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import type { ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -6,6 +7,13 @@ import type { Variants } from "framer-motion";
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+}
+
+interface MenuItem {
+  title: string;
+  icon: ReactElement;
+  path: string;
+  disabled?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
@@ -43,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   // Menu items with icons
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     {
       title: "Tableau de bord",
       icon: (
@@ -105,27 +113,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       path: "/dashboard/orders",
     },
     {
-      title: "Clients",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-          ></path>
-        </svg>
-      ),
-      path: "/dashboard/customers",
-    },
-    {
-      title: "Analytics",
+      title: "Statistiques",
       icon: (
         <svg
           className="w-5 h-5"
@@ -142,27 +130,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           ></path>
         </svg>
       ),
-      path: "/dashboard/analytics",
-    },
-    {
-      title: "Marketing",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-          ></path>
-        </svg>
-      ),
-      path: "/dashboard/marketing",
+      path: "/dashboard/statistics",
+      disabled: true, // Désactivé
     },
     {
       title: "Paramètres",
@@ -189,8 +158,58 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         </svg>
       ),
       path: "/dashboard/settings",
+      disabled: true, // Désactivé
     },
   ];
+
+  // Fonction pour rendre le bon élément (lien ou div désactivée)
+  const renderMenuItem = (item: MenuItem, index: number) => {
+    const isActive = location.pathname === item.path;
+
+    // Classes communes pour tous les éléments de menu
+    const baseClasses = `flex items-center p-3 rounded-lg transition-colors`;
+
+    // Classes spécifiques selon l'état (actif, désactivé, normal)
+    const stateClasses = item.disabled
+      ? "text-gray-500 opacity-60 cursor-not-allowed bg-transparent"
+      : isActive
+      ? "bg-[#d4af37]/20 text-[#d4af37]"
+      : "text-gray-400 hover:bg-[#d4af37]/10 hover:text-gray-200 cursor-pointer";
+
+    // Combinaison des classes
+    const classes = `${baseClasses} ${stateClasses}`;
+
+    if (item.disabled) {
+      // Rendu d'une div pour les éléments désactivés
+      return (
+        <div
+          className={classes}
+          title="Cette fonctionnalité n'est pas disponible"
+        >
+          <span className="mr-3">{item.icon}</span>
+          <span>{item.title}</span>
+          {/* Badge "bientôt" */}
+          <span className="ml-auto text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full">
+            Bientôt
+          </span>
+        </div>
+      );
+    } else {
+      // Rendu d'un lien pour les éléments actifs
+      return (
+        <Link to={item.path} className={classes}>
+          <span className="mr-3">{item.icon}</span>
+          <span>{item.title}</span>
+          {isActive && (
+            <motion.span
+              className="ml-auto w-1.5 h-6 bg-[#d4af37] rounded-full"
+              layoutId="activeIndicator"
+            />
+          )}
+        </Link>
+      );
+    }
+  };
 
   return (
     <>
@@ -255,23 +274,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         <nav className="p-5 space-y-1">
           {menuItems.map((item, i) => (
             <motion.div key={i} variants={itemVariants}>
-              <Link
-                to={item.path}
-                className={`flex items-center p-3 rounded-lg transition-colors ${
-                  location.pathname === item.path
-                    ? "bg-[#d4af37]/20 text-[#d4af37]"
-                    : "text-gray-400 hover:bg-[#d4af37]/10 hover:text-gray-200"
-                }`}
-              >
-                <span className="mr-3">{item.icon}</span>
-                <span>{item.title}</span>
-                {location.pathname === item.path && (
-                  <motion.span
-                    className="ml-auto w-1.5 h-6 bg-[#d4af37] rounded-full"
-                    layoutId="activeIndicator"
-                  />
-                )}
-              </Link>
+              {renderMenuItem(item, i)}
             </motion.div>
           ))}
         </nav>

@@ -27,32 +27,30 @@ const Banner: React.FC<BannerProps> = ({ product, title, subtitle }) => {
 
   return (
     <div className="relative w-full h-full min-h-screen overflow-hidden">
-      {/* Background image */}
+      {/* Background image avec animation */}
       <div
-        className="absolute inset-0 bg-cover bg-center w-full h-full"
+        className="absolute inset-0 bg-cover bg-center w-full h-full animate-subtle-pulse"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.4)", // Réduit de 0.6 à 0.4 pour un fond plus sombre
+          filter: "brightness(0.4)", // Fond plus sombre
         }}
       />
 
       {/* Content */}
       <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-10">
-        <h1 className="font-serif text-5xl md:text-7xl text-[#d4af37] mb-4">
+        <h1 className="font-serif text-5xl md:text-7xl text-white mb-4">
           {title}
         </h1>
         <p className="text-xl md:text-2xl max-w-2xl mb-8">{subtitle}</p>
         <div className="space-y-6">
-          <h2 className="font-serif text-3xl text-[#d4af37]">{product.name}</h2>
+          <h2 className="font-serif text-3xl text-white">{product.name}</h2>
           <p className="text-lg max-w-lg">{product.description}</p>
-          <p className="text-2xl text-[#d4af37]">
-            {product.price.toFixed(2)} €
-          </p>
+          <p className="text-2xl text-white">{product.price.toFixed(2)} €</p>
           <Link
             to={`/product/${product.id}`}
-            className="inline-block px-8 py-3 bg-[#c5a028] hover:bg-[#b08c15] text-black font-medium rounded transition-colors duration-300"
+            className="inline-block px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
           >
             Découvrir
           </Link>

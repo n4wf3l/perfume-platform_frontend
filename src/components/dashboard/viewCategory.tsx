@@ -1,50 +1,60 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Toast from "../common/Toast"; // adapte le chemin si besoin
+import ConfirmModal from "../common/ConfirmModal"; // adapte le chemin
 
 const ViewCategory: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
 
-  // Données factices des catégories
+  useEffect(() => {
+    if (location.state?.showToast) {
+      setToastVisible(true);
+      setToastMessage(
+        location.state.showToast === "edit"
+          ? "Catégorie modifiée avec succès !"
+          : "Catégorie ajoutée avec succès !"
+      );
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  // Données factices des catégories - description retirée
   const categories = [
     {
       id: "1",
       name: "Eau de Parfum",
-      description:
-        "Une concentration plus élevée d'huiles essentielles, offrant une longue tenue.",
       productCount: 12,
       createdAt: "10 Mai 2025",
     },
     {
       id: "2",
       name: "Eau de Toilette",
-      description:
-        "Une formulation légère et rafraîchissante, parfaite pour une utilisation quotidienne.",
       productCount: 8,
       createdAt: "12 Mai 2025",
     },
     {
       id: "3",
       name: "Parfum",
-      description:
-        "La concentration la plus élevée, offrant une expérience olfactive intense et durable.",
       productCount: 5,
       createdAt: "15 Mai 2025",
     },
     {
       id: "4",
       name: "Cologne",
-      description:
-        "Une formule légère et fraîche avec des notes d'agrumes et aromatiques.",
       productCount: 3,
       createdAt: "20 Mai 2025",
     },
     {
       id: "5",
       name: "Collections Limitées",
-      description: "Éditions spéciales et collections saisonnières exclusives.",
       productCount: 4,
       createdAt: "5 Juin 2025",
     },
@@ -61,11 +71,9 @@ const ViewCategory: React.FC = () => {
     }
   };
 
-  // Filtrer les catégories en fonction de la recherche
-  const filteredCategories = categories.filter(
-    (category) =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filtrer les catégories en fonction de la recherche (suppression de la recherche dans description)
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Fonction pour supprimer les catégories sélectionnées
@@ -91,27 +99,29 @@ const ViewCategory: React.FC = () => {
             Gestion des Catégories
           </h2>
           <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
-            <button
-              onClick={() => navigate("/dashboard/categories/add")}
-              className="inline-flex items-center px-4 py-2 border border-[#d4af37]/50 text-sm font-medium rounded-md text-[#d4af37] bg-black hover:bg-gray-800"
-            >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            {/* Afficher le bouton "Ajouter une catégorie" uniquement quand aucune catégorie n'est sélectionnée */}
+            {selectedCategories.length === 0 ? (
+              <button
+                onClick={() => navigate("/dashboard/categories/add")}
+                className="inline-flex items-center px-4 py-2 border border-[#d4af37]/50 text-sm font-medium rounded-md text-[#d4af37] bg-black hover:bg-gray-800"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-              Ajouter une catégorie
-            </button>
-            {selectedCategories.length > 0 && (
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4v16m8-8H4"
+                  ></path>
+                </svg>
+                Ajouter une catégorie
+              </button>
+            ) : (
               <button
                 onClick={handleDeleteSelected}
                 className="inline-flex items-center px-4 py-2 border border-red-500/50 text-sm font-medium rounded-md text-red-400 bg-black hover:bg-gray-800"
@@ -202,12 +212,7 @@ const ViewCategory: React.FC = () => {
               >
                 Nom
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-              >
-                Description
-              </th>
+              {/* Colonne Description supprimée */}
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
@@ -250,11 +255,7 @@ const ViewCategory: React.FC = () => {
                     {category.name}
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-300 max-w-md">
-                    {category.description}
-                  </div>
-                </td>
+                {/* Cellule Description supprimée */}
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-300">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-800 text-gray-300">
@@ -293,16 +294,8 @@ const ViewCategory: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        if (
-                          window.confirm(
-                            `Êtes-vous sûr de vouloir supprimer la catégorie "${category.name}" ?`
-                          )
-                        ) {
-                          // Action de suppression
-                          alert(
-                            `La catégorie ${category.name} a été supprimée.`
-                          );
-                        }
+                        setCategoryToDelete(category.id);
+                        setModalOpen(true);
                       }}
                       className="text-red-400 hover:text-red-300 transition-colors"
                       title="Supprimer cette catégorie"
@@ -421,6 +414,26 @@ const ViewCategory: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      <Toast
+        message={toastMessage || "Action effectuée avec succès !"}
+        isVisible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Supprimer la catégorie"
+        message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible."
+        onCancel={() => setModalOpen(false)}
+        onConfirm={() => {
+          setModalOpen(false);
+          // Ici, effectue la suppression réelle (API)
+          setToastMessage("Catégorie supprimée avec succès !");
+          setToastVisible(true);
+          // Optionnel : retire la catégorie du state local
+        }}
+      />
     </div>
   );
 };

@@ -8,20 +8,15 @@ const EditProducts: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // État du formulaire
+  // État du formulaire modifié - retiré les champs non nécessaires et ajouté size
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    shortDescription: "",
     price: "",
     category: "",
     stock: "0",
+    size: "", // Ajout de la taille en ML
     featured: false,
-    new: false,
-    composition: "",
-    intensity: "3",
-    longevity: "0",
-    sillage: "",
   });
 
   // État pour les images
@@ -45,28 +40,21 @@ const EditProducts: React.FC = () => {
         // Dans un cas réel, ce serait un appel d'API
         await new Promise((resolve) => setTimeout(resolve, 800));
 
-        // Données factices pour la démonstration
+        // Données factices pour la démonstration - avec les vraies images
         const mockData = {
           id: id,
           name: "Aurore Mystique",
-          shortDescription:
-            "Une fragrance envoûtante qui évoque les premières lueurs du jour.",
           description:
             "Aurore Mystique capture l'essence magique de l'aube, cet instant éphémère où la nuit cède sa place au jour. Des notes de tête fraîches d'agrumes s'entremêlent avec un cœur floral de jasmin et de pivoine. Le fond chaleureux de bois de cèdre et de vanille crée une empreinte olfactive durable et sophistiquée.",
           price: "120",
           category: "1", // Eau de Parfum
           stock: "24",
+          size: "50", // Taille en ML
           featured: true,
-          new: false,
-          composition:
-            "Alcool, Aqua, Parfum, Limonene, Linalool, Geraniol, Citronellol, Coumarin",
-          intensity: "4",
-          longevity: "8",
-          sillage: "modéré",
           images: [
-            "/products/aurore-mystique-1.jpg",
-            "/products/aurore-mystique-2.jpg",
-            "/products/aurore-mystique-3.jpg",
+            "/perfum1.jpg", // Chemins vers les vraies images
+            "/perfum2.jpg",
+            "/perfum3.jpg",
           ],
         };
 
@@ -74,16 +62,11 @@ const EditProducts: React.FC = () => {
         setFormData({
           name: mockData.name,
           description: mockData.description,
-          shortDescription: mockData.shortDescription,
           price: mockData.price,
           category: mockData.category,
           stock: mockData.stock,
+          size: mockData.size,
           featured: mockData.featured,
-          new: mockData.new,
-          composition: mockData.composition,
-          intensity: mockData.intensity,
-          longevity: mockData.longevity,
-          sillage: mockData.sillage,
         });
 
         // Mettre à jour les images existantes
@@ -175,8 +158,7 @@ const EditProducts: React.FC = () => {
       console.log("Nouvelles images:", images);
       console.log("Images à supprimer:", imagesToDelete);
 
-      alert("Produit modifié avec succès!");
-      navigate("/dashboard/products");
+      navigate("/dashboard/products", { state: { showToast: "edit" } });
     } catch (error) {
       console.error("Erreur lors de la modification du produit:", error);
       alert("Une erreur est survenue lors de la modification du produit.");
@@ -276,29 +258,10 @@ const EditProducts: React.FC = () => {
 
               <div>
                 <label
-                  htmlFor="shortDescription"
-                  className="block text-sm font-medium text-gray-300"
-                >
-                  Description Courte <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="shortDescription"
-                  name="shortDescription"
-                  rows={2}
-                  required
-                  value={formData.shortDescription}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
-                  placeholder="Une brève description qui apparaîtra dans les listes de produits"
-                ></textarea>
-              </div>
-
-              <div>
-                <label
                   htmlFor="description"
                   className="block text-sm font-medium text-gray-300"
                 >
-                  Description Complète <span className="text-red-500">*</span>
+                  Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="description"
@@ -312,7 +275,7 @@ const EditProducts: React.FC = () => {
                 ></textarea>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div>
                   <label
                     htmlFor="price"
@@ -358,6 +321,27 @@ const EditProducts: React.FC = () => {
                     placeholder="Quantité en stock"
                   />
                 </div>
+
+                {/* Nouveau champ pour la taille en ML */}
+                <div>
+                  <label
+                    htmlFor="size"
+                    className="block text-sm font-medium text-gray-300"
+                  >
+                    Taille (mL) <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    id="size"
+                    name="size"
+                    min="1"
+                    required
+                    value={formData.size}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
+                    placeholder="50"
+                  />
+                </div>
               </div>
 
               <div>
@@ -384,54 +368,25 @@ const EditProducts: React.FC = () => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label
-                    htmlFor="intensity"
-                    className="block text-sm font-medium text-gray-300"
-                  >
-                    Intensité (1-5)
-                  </label>
-                  <input
-                    type="range"
-                    id="intensity"
-                    name="intensity"
-                    min="1"
-                    max="5"
-                    step="1"
-                    value={formData.intensity}
-                    onChange={handleChange}
-                    className="mt-1 block w-full accent-[#d4af37]"
-                  />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>Légère</span>
-                    <span>Modérée</span>
-                    <span>Intense</span>
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="longevity"
-                    className="block text-sm font-medium text-gray-300"
-                  >
-                    Tenue (heures)
-                  </label>
-                  <input
-                    type="number"
-                    id="longevity"
-                    name="longevity"
-                    min="0"
-                    max="24"
-                    value={formData.longevity}
-                    onChange={handleChange}
-                    className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
-                  />
-                </div>
+              <div className="flex items-center h-5">
+                <input
+                  id="featured"
+                  name="featured"
+                  type="checkbox"
+                  checked={formData.featured}
+                  onChange={handleCheckboxChange}
+                  className="h-4 w-4 rounded text-[#d4af37] border-gray-700 bg-gray-900 focus:ring-[#d4af37]/30"
+                />
+                <label
+                  htmlFor="featured"
+                  className="ml-2 text-sm text-gray-300"
+                >
+                  Produit à la une
+                </label>
               </div>
             </div>
 
-            {/* Colonne de droite - Images et informations supplémentaires */}
+            {/* Colonne de droite - Images */}
             <div className="space-y-6">
               <div>
                 <span className="block text-sm font-medium text-gray-300 mb-2">
@@ -450,8 +405,8 @@ const EditProducts: React.FC = () => {
                           alt={`Product ${index}`}
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src =
-                              "/placeholder.jpg";
+                            // Utilisez une image existante comme fallback
+                            (e.target as HTMLImageElement).src = "/perfums.jpg"; // ou "/perfum1.jpg"
                           }}
                         />
                         <button
@@ -569,79 +524,6 @@ const EditProducts: React.FC = () => {
                     ))}
                   </div>
                 )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="composition"
-                  className="block text-sm font-medium text-gray-300"
-                >
-                  Composition
-                </label>
-                <textarea
-                  id="composition"
-                  name="composition"
-                  rows={3}
-                  value={formData.composition}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
-                  placeholder="Composition du parfum"
-                ></textarea>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="sillage"
-                  className="block text-sm font-medium text-gray-300"
-                >
-                  Sillage
-                </label>
-                <select
-                  id="sillage"
-                  name="sillage"
-                  value={formData.sillage}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
-                >
-                  <option value="">Sélectionnez un sillage</option>
-                  <option value="intime">Intime</option>
-                  <option value="modéré">Modéré</option>
-                  <option value="remarquable">Remarquable</option>
-                  <option value="intense">Intense</option>
-                </select>
-              </div>
-
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center h-5">
-                  <input
-                    id="featured"
-                    name="featured"
-                    type="checkbox"
-                    checked={formData.featured}
-                    onChange={handleCheckboxChange}
-                    className="h-4 w-4 rounded text-[#d4af37] border-gray-700 bg-gray-900 focus:ring-[#d4af37]/30"
-                  />
-                  <label
-                    htmlFor="featured"
-                    className="ml-2 text-sm text-gray-300"
-                  >
-                    Produit à la une
-                  </label>
-                </div>
-
-                <div className="flex items-center h-5">
-                  <input
-                    id="new"
-                    name="new"
-                    type="checkbox"
-                    checked={formData.new}
-                    onChange={handleCheckboxChange}
-                    className="h-4 w-4 rounded text-[#d4af37] border-gray-700 bg-gray-900 focus:ring-[#d4af37]/30"
-                  />
-                  <label htmlFor="new" className="ml-2 text-sm text-gray-300">
-                    Nouveau produit
-                  </label>
-                </div>
               </div>
             </div>
           </div>

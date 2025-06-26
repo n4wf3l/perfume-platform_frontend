@@ -46,7 +46,7 @@ const Header: React.FC = () => {
     >
       {/* Nom de la marque en police cursive élégante */}
       <motion.h1
-        className="font-serif italic text-5xl md:text-7xl mb-8 text-[#d4af37] pt-40"
+        className="font-serif italic text-5xl md:text-7xl mb-8 text-white pt-40"
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.2 }}
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
       <motion.div className="relative max-w-4xl mx-auto my-12">
         <motion.div className="absolute inset-0 flex items-center">
           <motion.div
-            className="w-full border-t border-[#d4af37]/30"
+            className="w-full border-t border-white/30"
             variants={lineVariants}
           ></motion.div>
         </motion.div>
@@ -78,7 +78,7 @@ const Header: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.6 }}
         >
-          <span className="bg-black px-8 text-[#d4af37] text-sm tracking-widest uppercase">
+          <span className="bg-black px-8 text-white text-sm tracking-widest uppercase">
             BIOGRAPHIE
           </span>
         </motion.div>

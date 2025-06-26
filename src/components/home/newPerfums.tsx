@@ -10,7 +10,7 @@ const newPerfumesList = [
     description:
       "Une fragrance envoûtante avec des notes de rose, de safran et d'ambre.",
     price: 169.99,
-    images: ["/perfum1.jpg"], // Même image que Luna Dorata
+    images: ["/perfum1.jpg"],
   },
   {
     id: 6,
@@ -18,7 +18,7 @@ const newPerfumesList = [
     description:
       "Une brise marine fraîche avec des touches d'agrumes et de sel marin.",
     price: 129.99,
-    images: ["/perfum2.jpg"], // Même image que Notte Stellata
+    images: ["/perfum2.jpg"],
   },
   {
     id: 7,
@@ -26,7 +26,7 @@ const newPerfumesList = [
     description:
       "Délicat et floral avec des notes de jasmin, de pivoine et de musc blanc.",
     price: 145.99,
-    images: ["/perfum3.jpg"], // Même image que Velluto Nero
+    images: ["/perfum3.jpg"],
   },
 ];
 
@@ -63,7 +63,7 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
         }}
       >
         <motion.h2
-          className="font-serif text-4xl text-[#d4af37] text-center mb-3"
+          className="font-serif text-4xl text-white text-center mb-3"
           variants={fadeIn}
           transition={{ duration: 0.6 }}
         >
@@ -71,7 +71,7 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
         </motion.h2>
 
         <motion.div
-          className="w-24 h-0.5 bg-[#d4af37] mx-auto mb-8"
+          className="w-24 h-0.5 bg-white mx-auto mb-8"
           variants={{
             hidden: { width: 0 },
             visible: { width: "6rem" },

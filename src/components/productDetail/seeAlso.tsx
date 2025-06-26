@@ -21,10 +21,10 @@ const SeeAlso: React.FC<SeeAlsoProps> = ({ relatedProducts = [] }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.7 }}
     >
-      <h2 className="text-2xl font-serif text-[#d4af37] mb-6 text-center">
+      <h2 className="text-2xl font-serif text-white mb-6 text-center">
         Vous pourriez aussi aimer
       </h2>
-      <div className="w-24 h-0.5 bg-[#d4af37] mx-auto mb-10"></div>
+      <div className="w-24 h-0.5 bg-white mx-auto mb-10"></div>
 
       {relatedProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -46,9 +46,7 @@ const SeeAlso: React.FC<SeeAlsoProps> = ({ relatedProducts = [] }) => {
                 <h3 className="text-lg font-medium text-white mb-1">
                   {product.name}
                 </h3>
-                <p className="text-[#d4af37] mb-2">
-                  {product.price.toFixed(2)} €
-                </p>
+                <p className="text-white mb-2">{product.price.toFixed(2)} €</p>
               </div>
             </motion.div>
           ))}

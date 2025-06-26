@@ -59,7 +59,7 @@ const History: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div>
             <motion.h2
-              className="text-3xl md:text-4xl font-serif text-[#d4af37] mb-6"
+              className="text-3xl md:text-4xl font-serif text-white mb-6"
               variants={textVariants}
               custom={0}
             >
@@ -109,7 +109,7 @@ const History: React.FC = () => {
               variants={textVariants}
               custom={4}
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#d4af37] to-[#c5a028] rounded-lg blur opacity-25"></div>
+              <div className="absolute -inset-1 bg-white rounded-lg blur opacity-25"></div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -117,7 +117,7 @@ const History: React.FC = () => {
               >
                 <Link
                   to="/shop"
-                  className="relative bg-gray-900 hover:bg-gray-800 border border-[#d4af37]/50 text-[#d4af37] px-8 py-3 rounded-lg transition-all duration-300 block"
+                  className="relative bg-gray-900 hover:bg-gray-800 border border-white/50 text-white px-8 py-3 rounded-lg transition-all duration-300 block"
                 >
                   Découvrir la Collection
                 </Link>
@@ -136,7 +136,7 @@ const History: React.FC = () => {
               />
             </motion.div>
             <motion.div
-              className="absolute -bottom-6 -right-6 w-48 h-48 bg-gray-900 rounded-lg overflow-hidden border border-[#d4af37]/30"
+              className="absolute -bottom-6 -right-6 w-48 h-48 bg-gray-900 rounded-lg overflow-hidden border border-white/30"
               variants={secondImageVariants}
             >
               <img

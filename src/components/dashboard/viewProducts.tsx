@@ -1,19 +1,26 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import Toast from "../common/Toast";
+import ConfirmModal from "../common/ConfirmModal"; // adapte le chemin
 
 const ViewProducts: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [featuredIds, setFeaturedIds] = useState<string[]>(["1", "3", "5"]); // IDs des produits mis en avant
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
-  // Données factices de produits
+  // Données de produits avec des chemins d'images réels
   const products = [
     {
       id: "1",
       name: "Aurore Mystique",
-      image: "/product1.jpg",
+      image: "/perfum1.jpg", // Image réelle du dossier public
       category: "Eau de Parfum",
       price: "120€",
       stock: 24,
@@ -22,7 +29,7 @@ const ViewProducts: React.FC = () => {
     {
       id: "2",
       name: "Élixir Nocturne",
-      image: "/product2.jpg",
+      image: "/perfum2.jpg", // Image réelle du dossier public
       category: "Parfum",
       price: "180€",
       stock: 15,
@@ -31,7 +38,7 @@ const ViewProducts: React.FC = () => {
     {
       id: "3",
       name: "Brise de Venise",
-      image: "/product3.jpg",
+      image: "/perfum3.jpg", // Image réelle du dossier public
       category: "Eau de Toilette",
       price: "85€",
       stock: 32,
@@ -40,7 +47,7 @@ const ViewProducts: React.FC = () => {
     {
       id: "4",
       name: "Séduction Orientale",
-      image: "/product4.jpg",
+      image: "/perfums.jpg", // Image réelle du dossier public
       category: "Parfum",
       price: "145€",
       stock: 10,
@@ -49,7 +56,7 @@ const ViewProducts: React.FC = () => {
     {
       id: "5",
       name: "Secrets d'Orient",
-      image: "/product5.jpg",
+      image: "/perfum2.jpg", // Réutilisation d'une image existante
       category: "Parfum",
       price: "150€",
       stock: 18,
@@ -58,13 +65,25 @@ const ViewProducts: React.FC = () => {
     {
       id: "6",
       name: "Rêve d'Été",
-      image: "/product6.jpg",
+      image: "/perfum1.jpg", // Réutilisation d'une image existante
       category: "Eau de Parfum",
       price: "110€",
       stock: 26,
       featured: false,
     },
   ];
+
+  useEffect(() => {
+    if (location.state?.showToast) {
+      setToastVisible(true);
+      setToastMessage(
+        location.state.showToast === "edit"
+          ? "Produit modifié avec succès !"
+          : "Produit ajouté avec succès !"
+      );
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   // Fonction pour gérer la sélection des produits
   const handleSelectProduct = (id: string) => {
@@ -89,9 +108,10 @@ const ViewProducts: React.FC = () => {
     }
     // Si 3 sont déjà sélectionnés, afficher une alerte
     else {
-      alert(
+      setToastMessage(
         "Vous ne pouvez sélectionner que 3 produits à la une. Veuillez d'abord en désélectionner un."
       );
+      setToastVisible(true);
     }
   };
 
@@ -104,14 +124,9 @@ const ViewProducts: React.FC = () => {
 
   // Fonction pour supprimer les produits sélectionnés
   const handleDeleteSelected = () => {
-    if (
-      window.confirm(
-        `Êtes-vous sûr de vouloir supprimer ${selectedProducts.length} produit(s) ?`
-      )
-    ) {
-      // Logique de suppression (à implémenter avec l'API)
-      alert(`${selectedProducts.length} produit(s) supprimé(s) avec succès`);
-      setSelectedProducts([]);
+    if (selectedProducts.length > 0) {
+      setProductToDelete("multiple");
+      setModalOpen(true);
     }
   };
 
@@ -129,27 +144,29 @@ const ViewProducts: React.FC = () => {
             Gestion des Produits
           </h2>
           <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3">
-            <button
-              onClick={() => navigate("/dashboard/products/add")}
-              className="inline-flex items-center px-4 py-2 border border-[#d4af37]/50 text-sm font-medium rounded-md text-[#d4af37] bg-black hover:bg-gray-800"
-            >
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            {/* Bouton "Ajouter un produit" qui disparaît quand des produits sont sélectionnés */}
+            {selectedProducts.length === 0 ? (
+              <button
+                onClick={() => navigate("/dashboard/products/add")}
+                className="inline-flex items-center px-4 py-2 border border-[#d4af37]/50 text-sm font-medium rounded-md text-[#d4af37] bg-black hover:bg-gray-800"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                ></path>
-              </svg>
-              Ajouter un produit
-            </button>
-            {selectedProducts.length > 0 && (
+                <svg
+                  className="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4v16m8-8H4"
+                  ></path>
+                </svg>
+                Ajouter un produit
+              </button>
+            ) : (
               <button
                 onClick={handleDeleteSelected}
                 className="inline-flex items-center px-4 py-2 border border-red-500/50 text-sm font-medium rounded-md text-red-400 bg-black hover:bg-gray-800"
@@ -283,10 +300,13 @@ const ViewProducts: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-gray-900 divide-y divide-gray-800">
-            {filteredProducts.map((product) => (
-              <tr
+            {filteredProducts.map((product, idx) => (
+              <motion.tr
                 key={product.id}
                 className="hover:bg-gray-800/50 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: idx * 0.05 }}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <input
@@ -298,14 +318,13 @@ const ViewProducts: React.FC = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="h-10 w-10 rounded-md bg-gray-800 border border-gray-700 overflow-hidden">
+                    <div className="h-10 w-10 rounded-md bg-gray-800 border border-gray-700 overflow-hidden flex items-center justify-center">
                       <img
                         src={product.image}
                         alt={product.name}
                         className="h-full w-full object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            "/placeholder.jpg";
+                          (e.target as HTMLImageElement).src = "/perfums.jpg";
                         }}
                       />
                     </div>
@@ -382,14 +401,8 @@ const ViewProducts: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        if (
-                          window.confirm(
-                            `Êtes-vous sûr de vouloir supprimer "${product.name}" ?`
-                          )
-                        ) {
-                          // Action de suppression
-                          alert(`${product.name} a été supprimé.`);
-                        }
+                        setProductToDelete(product.id);
+                        setModalOpen(true);
                       }}
                       className="text-red-400 hover:text-red-300 transition-colors"
                     >
@@ -410,7 +423,7 @@ const ViewProducts: React.FC = () => {
                     </button>
                   </div>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
@@ -480,6 +493,45 @@ const ViewProducts: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Supprimer le(s) produit(s)"
+        message={
+          productToDelete === "multiple"
+            ? `Êtes-vous sûr de vouloir supprimer ${selectedProducts.length} produit(s) ? Cette action est irréversible.`
+            : `Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.`
+        }
+        onCancel={() => {
+          setModalOpen(false);
+          setProductToDelete(null);
+        }}
+        onConfirm={() => {
+          setModalOpen(false);
+          if (productToDelete === "multiple") {
+            // Suppression multiple
+            setToastMessage(
+              `${selectedProducts.length} produit(s) supprimé(s) avec succès`
+            );
+            setSelectedProducts([]);
+          } else {
+            // Suppression individuelle
+            setToastMessage("Produit supprimé avec succès");
+          }
+          setToastVisible(true);
+          setProductToDelete(null);
+        }}
+      />
+
+      {/* Toast Notification */}
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      )}
     </div>
   );
 };

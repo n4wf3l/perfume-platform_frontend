@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import KanbanOrders from "./kanbanOrders";
+import Toast from "../common/Toast";
+import ConfirmModal from "../common/ConfirmModal"; // adapte le chemin
 
 const ViewOrders: React.FC = () => {
   // États pour gérer les filtres et la pagination
@@ -7,6 +11,10 @@ const ViewOrders: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
 
   // Données factices de commandes
   const orders = [
@@ -143,8 +151,13 @@ const ViewOrders: React.FC = () => {
   // Changer le statut d'une commande
   const changeOrderStatus = (orderId: string, newStatus: string) => {
     // Dans un cas réel, ce serait un appel d'API
-    console.log(`Changing order ${orderId} status to ${newStatus}`);
-    alert(`Statut de la commande ${orderId} mis à jour vers "${newStatus}"`);
+    // Mets à jour le statut dans le state ici si tu veux un effet immédiat
+    setToastMessage(
+      `Statut de la commande ${orderId} mis à jour vers "${getStatusLabel(
+        newStatus
+      )}"`
+    );
+    setToastVisible(true);
   };
 
   // Fonction pour obtenir la classe de style en fonction du statut
@@ -193,7 +206,12 @@ const ViewOrders: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-900 border border-[#d4af37]/10 rounded-xl shadow-lg shadow-[#d4af37]/5">
+    <motion.div
+      className="bg-gray-900 border border-[#d4af37]/10 rounded-xl shadow-lg shadow-[#d4af37]/5"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="p-6 border-b border-gray-800">
         <h2 className="text-xl font-serif text-[#d4af37]">
           Gestion des Commandes
@@ -326,9 +344,14 @@ const ViewOrders: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-gray-900 divide-y divide-gray-800">
-            {filteredOrders.map((order) => (
+            {filteredOrders.map((order, idx) => (
               <React.Fragment key={order.id}>
-                <tr className="hover:bg-gray-800/50 transition-colors">
+                <motion.tr
+                  className="hover:bg-gray-800/50 transition-colors"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div
                       className="text-sm font-medium text-[#d4af37] cursor-pointer flex items-center"
@@ -375,7 +398,7 @@ const ViewOrders: React.FC = () => {
                       {getStatusLabel(order.status)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
                     <select
                       className="text-xs rounded-md bg-gray-900 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
                       value={order.status}
@@ -389,8 +412,30 @@ const ViewOrders: React.FC = () => {
                       <option value="completed">Complétée</option>
                       <option value="cancelled">Annulée</option>
                     </select>
+                    <button
+                      className="ml-2 text-red-400 hover:text-red-300 transition-colors"
+                      title="Supprimer la commande"
+                      onClick={() => {
+                        setOrderToDelete(order.id);
+                        setModalOpen(true);
+                      }}
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        ></path>
+                      </svg>
+                    </button>
                   </td>
-                </tr>
+                </motion.tr>
 
                 {/* Détails de la commande */}
                 {expandedOrderId === order.id && (
@@ -543,7 +588,39 @@ const ViewOrders: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Kanban Orders directement sous le tableau */}
+      <div className="mt-10">
+        <KanbanOrders />
+      </div>
+
+      {/* Toast et modal de confirmation */}
+      <ConfirmModal
+        isOpen={modalOpen}
+        title="Supprimer la commande"
+        message="Êtes-vous sûr de vouloir supprimer cette commande ? Cette action est irréversible."
+        onCancel={() => {
+          setModalOpen(false);
+          setOrderToDelete(null);
+        }}
+        onConfirm={() => {
+          setModalOpen(false);
+          setToastMessage("Commande supprimée avec succès !");
+          setToastVisible(true);
+          // Ici, retire la commande du state si tu veux un effet immédiat
+          // Ex : setOrders(orders.filter(o => o.id !== orderToDelete));
+          setOrderToDelete(null);
+        }}
+      />
+
+      {toastVisible && (
+        <Toast
+          message={toastMessage}
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      )}
+    </motion.div>
   );
 };
 

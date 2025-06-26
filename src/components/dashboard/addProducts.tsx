@@ -1,25 +1,31 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import Toast from "../common/Toast";
+
+const categoryOptions = [
+  "Eau de Parfum",
+  "Parfum",
+  "Eau de Toilette",
+  "Eau de Cologne",
+];
 
 const AddProducts: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [images, setImages] = useState<string[]>([]);
+  const [toastVisible, setToastVisible] = useState(false);
 
-  // Données du formulaire
+  // Données du formulaire modifiées - notes remplacées par size (ml)
   const [formData, setFormData] = useState({
     name: "",
     category: "",
     price: "",
     stock: "",
     description: "",
-    notes: {
-      top: "",
-      middle: "",
-      base: "",
-    },
+    size: "", // Nouveau champ pour la taille en ML
     featured: false,
   });
 
@@ -39,22 +45,10 @@ const AddProducts: React.FC = () => {
     >
   ) => {
     const { name, value } = e.target;
-
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
-      setFormData((prev) => ({
-        ...prev,
-        [parent]: {
-          ...(prev[parent as keyof typeof prev] as object),
-          [child]: value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Gérer le changement pour les checkbox
@@ -91,14 +85,37 @@ const AddProducts: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simuler un délai de traitement
     setTimeout(() => {
-      console.log("Produit ajouté:", formData);
-      console.log("Images:", images);
       setIsSubmitting(false);
-      navigate("/dashboard/products");
+      navigate("/dashboard/products", { state: { showToast: true } });
     }, 1000);
   };
+
+  // Pour le menu déroulant animé
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
+
+  // Fermer le menu si on clique en dehors
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(event.target as Node)
+      ) {
+        setCategoryOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (location.state?.showToast) {
+      setToastVisible(true);
+      // Optionnel : nettoyer le state pour éviter de réafficher le toast si on revient sur la page
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   return (
     <motion.div
@@ -139,7 +156,7 @@ const AddProducts: React.FC = () => {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Informations générales */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex flex-col h-full">
             <h3 className="text-lg font-medium text-[#d4af37] mb-4">
               Informations générales
             </h3>
@@ -163,28 +180,95 @@ const AddProducts: React.FC = () => {
               />
             </div>
 
-            {/* Catégorie */}
-            <div>
+            {/* Catégorie - Menu déroulant animé */}
+            <div ref={categoryRef} className="relative">
               <label
                 htmlFor="category"
                 className="block text-sm font-medium text-gray-300 mb-1"
               >
                 Catégorie *
               </label>
-              <select
-                id="category"
-                name="category"
+              <button
+                type="button"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37] transition"
+                onClick={() => setCategoryOpen((open) => !open)}
+              >
+                {formData.category || "Sélectionner une catégorie"}
+                <svg
+                  className={`w-4 h-4 ml-2 transition-transform ${
+                    categoryOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <motion.ul
+                initial={false}
+                animate={categoryOpen ? "open" : "closed"}
+                variants={{
+                  open: {
+                    opacity: 1,
+                    y: 0,
+                    pointerEvents: "auto",
+                    transition: { duration: 0.35, ease: "easeInOut" },
+                  },
+                  closed: {
+                    opacity: 0,
+                    y: -10,
+                    pointerEvents: "none",
+                    transition: { duration: 0.35, ease: "easeInOut" },
+                  },
+                }}
+                className="absolute z-10 mt-2 w-full bg-gray-900 border border-[#d4af37]/30 rounded-md shadow-lg overflow-hidden"
+              >
+                {categoryOptions.map((option) => (
+                  <li
+                    key={option}
+                    className={`px-4 py-2 cursor-pointer hover:bg-[#d4af37]/10 text-gray-200 ${
+                      formData.category === option
+                        ? "bg-[#d4af37]/20 text-[#d4af37]"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        category: option,
+                      }));
+                      setCategoryOpen(false);
+                    }}
+                  >
+                    {option}
+                  </li>
+                ))}
+              </motion.ul>
+            </div>
+
+            {/* Taille en ML - Nouveau champ */}
+            <div>
+              <label
+                htmlFor="size"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Taille (mL) *
+              </label>
+              <input
+                type="number"
+                id="size"
+                name="size"
                 required
-                value={formData.category}
+                min="1"
+                value={formData.size}
                 onChange={handleChange}
                 className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
-              >
-                <option value="">Sélectionner une catégorie</option>
-                <option value="Eau de Parfum">Eau de Parfum</option>
-                <option value="Parfum">Parfum</option>
-                <option value="Eau de Toilette">Eau de Toilette</option>
-                <option value="Eau de Cologne">Eau de Cologne</option>
-              </select>
+              />
             </div>
 
             {/* Prix */}
@@ -244,14 +328,17 @@ const AddProducts: React.FC = () => {
             </div>
           </div>
 
-          {/* Description et notes */}
-          <div className="space-y-4">
+          {/* Description - colonne droite animée et hauteur synchronisée */}
+          <motion.div
+            className="space-y-4 flex flex-col h-full"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
             <h3 className="text-lg font-medium text-[#d4af37] mb-4">
-              Description et notes
+              Description
             </h3>
-
-            {/* Description */}
-            <div>
+            <div className="flex-1 flex flex-col">
               <label
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-300 mb-1"
@@ -261,71 +348,16 @@ const AddProducts: React.FC = () => {
               <textarea
                 id="description"
                 name="description"
-                rows={4}
+                rows={16}
                 required
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                placeholder="Décrivez le parfum, ses caractéristiques et son profil olfactif..."
+                className="w-full h-full min-h-[220px] py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37] resize-none"
+                style={{ minHeight: "100%" }}
               ></textarea>
             </div>
-
-            {/* Notes de tête */}
-            <div>
-              <label
-                htmlFor="notes.top"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                Notes de tête
-              </label>
-              <input
-                type="text"
-                id="notes.top"
-                name="notes.top"
-                value={formData.notes.top}
-                onChange={handleChange}
-                placeholder="Ex: Bergamote, Citron, Lavande"
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
-              />
-            </div>
-
-            {/* Notes de cœur */}
-            <div>
-              <label
-                htmlFor="notes.middle"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                Notes de cœur
-              </label>
-              <input
-                type="text"
-                id="notes.middle"
-                name="notes.middle"
-                value={formData.notes.middle}
-                onChange={handleChange}
-                placeholder="Ex: Jasmin, Rose, Tubéreuse"
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
-              />
-            </div>
-
-            {/* Notes de fond */}
-            <div>
-              <label
-                htmlFor="notes.base"
-                className="block text-sm font-medium text-gray-300 mb-1"
-              >
-                Notes de fond
-              </label>
-              <input
-                type="text"
-                id="notes.base"
-                name="notes.base"
-                value={formData.notes.base}
-                onChange={handleChange}
-                placeholder="Ex: Musc, Bois de Santal, Vanille"
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
-              />
-            </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Images */}
@@ -333,76 +365,85 @@ const AddProducts: React.FC = () => {
           <h3 className="text-lg font-medium text-[#d4af37] mb-4">
             Images du produit
           </h3>
-
-          <div className="border-2 border-dashed border-gray-700 p-6 rounded-md bg-gray-800/50 flex flex-col items-center justify-center">
-            <svg
-              className="w-12 h-12 text-gray-500 mb-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              ></path>
-            </svg>
-            <p className="text-gray-400 text-sm mb-4">
-              Glissez-déposez vos images ou cliquez pour parcourir
-            </p>
-            <input
-              type="file"
-              id="images"
-              name="images"
-              multiple
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
-            <label
-              htmlFor="images"
-              className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md transition-colors duration-300 cursor-pointer"
-            >
-              Ajouter des images
-            </label>
-          </div>
-
-          {/* Prévisualisation des images */}
-          {images.length > 0 && (
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {images.map((image, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={image}
-                    alt={`Preview ${index}`}
-                    className="h-32 w-full object-cover rounded-md"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="absolute top-1 right-1 bg-black/70 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[0, 1, 2].map((idx) => (
+              <div
+                key={idx}
+                className="relative flex flex-col items-center justify-center border-2 border-dashed border-gray-700 rounded-md bg-gray-800/50 h-40 group"
+              >
+                {images[idx] ? (
+                  <>
+                    <img
+                      src={images[idx]}
+                      alt={`Preview ${idx}`}
+                      className="h-full w-full object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(idx)}
+                      className="absolute top-1 right-1 bg-black/70 text-white p-1 rounded-full opacity-80 hover:opacity-100 transition-opacity"
+                      title="Supprimer cette image"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        ></path>
+                      </svg>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <label
+                      htmlFor={`image-upload-${idx}`}
+                      className="flex flex-col items-center justify-center cursor-pointer h-full w-full"
+                    >
+                      <svg
+                        className="w-10 h-10 text-gray-500 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        ></path>
+                      </svg>
+                      <span className="text-gray-400 text-xs text-center">
+                        Ajouter une image
+                      </span>
+                      <input
+                        type="file"
+                        id={`image-upload-${idx}`}
+                        name="images"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const newImages = [...images];
+                            newImages[idx] = URL.createObjectURL(file);
+                            setImages(newImages.slice(0, 3));
+                          }
+                        }}
+                      />
+                    </label>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Boutons */}
@@ -451,6 +492,15 @@ const AddProducts: React.FC = () => {
           </button>
         </div>
       </form>
+
+      {/* Toast de confirmation */}
+      {toastVisible && (
+        <Toast
+          message="Produit ajouté avec succès !"
+          isVisible={toastVisible}
+          onClose={() => setToastVisible(false)}
+        />
+      )}
     </motion.div>
   );
 };

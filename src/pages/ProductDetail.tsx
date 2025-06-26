@@ -5,6 +5,7 @@ import Images from "../components/productDetail/images";
 import Details from "../components/productDetail/details";
 import SeeAlso from "../components/productDetail/seeAlso";
 import Toast from "../components/common/Toast";
+import Description from "../components/productDetail/description";
 
 // Données des produits (simulant une API)
 const productsData = [
@@ -117,45 +118,6 @@ const ProductDetail: React.FC = () => {
     setShowToast(true);
   };
 
-  if (loading) {
-    return (
-      <motion.div
-        className="min-h-screen bg-black flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        <div className="text-[#d4af37] text-2xl">Chargement...</div>
-      </motion.div>
-    );
-  }
-
-  if (!product) {
-    return (
-      <motion.div
-        className="min-h-screen bg-black py-12 px-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-serif text-[#d4af37] mb-4">
-            Produit non trouvé
-          </h2>
-          <p className="text-gray-300 mb-8">
-            Nous n'avons pas pu trouver le parfum que vous recherchez.
-          </p>
-          <button
-            onClick={() => navigate("/shop")}
-            className="px-6 py-3 bg-[#c5a028] hover:bg-[#b08c15] text-black font-medium rounded-md transition-colors duration-300"
-          >
-            Retour à la boutique
-          </button>
-        </div>
-      </motion.div>
-    );
-  }
-
   return (
     <motion.div
       className="min-h-screen bg-black py-12 px-4 sm:px-6 lg:px-8"
@@ -178,7 +140,7 @@ const ProductDetail: React.FC = () => {
         {/* Bouton retour vers /shop */}
         <Link
           to="/shop"
-          className="inline-flex items-center text-[#d4af37] hover:text-[#c5a028] mb-8 transition-colors duration-200"
+          className="inline-flex items-center text-white hover:text-white mb-8 transition-colors duration-200"
         >
           <svg
             className="w-5 h-5 mr-2"
@@ -197,22 +159,66 @@ const ProductDetail: React.FC = () => {
           Retour à la boutique
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* Composant Images */}
-          <Images
-            images={product.images}
-            currentImageIndex={currentImageIndex}
-            setCurrentImageIndex={setCurrentImageIndex}
-            productName={product.name}
-          />
+        {loading && (
+          <motion.div
+            className="min-h-screen bg-black flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="text-white text-2xl">Chargement...</div>
+          </motion.div>
+        )}
 
-          {/* Composant Details */}
-          <Details
-            product={product}
-            onAddToCart={handleAddToCart}
-            onPayPalClick={handlePayPalClick}
+        {!product && (
+          <motion.div
+            className="min-h-screen bg-black py-12 px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="max-w-7xl mx-auto text-center">
+              <h2 className="text-3xl font-serif text-white mb-4">
+                Produit non trouvé
+              </h2>
+              <p className="text-white mb-8">
+                Nous n'avons pas pu trouver le parfum que vous recherchez.
+              </p>
+              <button
+                onClick={() => navigate("/shop")}
+                className="px-6 py-3 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300"
+              >
+                Retour à la boutique
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {product && (
+          <div className="flex flex-col lg:flex-row gap-10 items-center justify-center min-h-[600px]">
+            {/* Composant Images */}
+            <Images
+              images={product.images}
+              currentImageIndex={currentImageIndex}
+              setCurrentImageIndex={setCurrentImageIndex}
+              productName={product.name}
+            />
+
+            {/* Composant Details */}
+            <Details
+              product={product}
+              onAddToCart={handleAddToCart}
+              onPayPalClick={handlePayPalClick}
+            />
+          </div>
+        )}
+
+        {product && (
+          <Description
+            description={product.description}
+            ingredientsDescription={product.ingredients}
           />
-        </div>
+        )}
 
         {/* Composant SeeAlso */}
         <SeeAlso relatedProducts={relatedProductsDemo} />

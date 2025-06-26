@@ -36,12 +36,12 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
       viewport={{ once: true, amount: 0.1 }}
     >
       <motion.div
-        className="bg-black rounded-xl border border-[#d4af37]/20 p-8 h-full shadow-lg shadow-[#d4af37]/5"
-        whileHover={{ boxShadow: "0 0 20px 0 rgba(212, 175, 55, 0.1)" }}
+        className="bg-black rounded-xl border border-white/20 p-8 h-full shadow-lg shadow-white/5"
+        whileHover={{ boxShadow: "0 0 20px 0 rgba(255,255,255,0.1)" }}
         transition={{ duration: 0.3 }}
       >
         <motion.h2
-          className="text-2xl font-serif text-[#d4af37] mb-6"
+          className="text-2xl font-serif text-white mb-6"
           variants={fadeInUp}
         >
           Informations de Contact
@@ -52,10 +52,10 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
           <motion.div className="flex" variants={fadeInUp}>
             <div className="mr-4">
               <motion.div
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-[#d4af37]/10 text-[#d4af37]"
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white"
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "rgba(212, 175, 55, 0.15)",
+                  backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
                 <svg
@@ -97,10 +97,10 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
           <motion.div className="flex" variants={fadeInUp}>
             <div className="mr-4">
               <motion.div
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-[#d4af37]/10 text-[#d4af37]"
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white"
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "rgba(212, 175, 55, 0.15)",
+                  backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
                 <svg
@@ -134,10 +134,10 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
           <motion.div className="flex" variants={fadeInUp}>
             <div className="mr-4">
               <motion.div
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-[#d4af37]/10 text-[#d4af37]"
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white"
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "rgba(212, 175, 55, 0.15)",
+                  backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
                 <svg
@@ -169,16 +169,16 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
           <motion.div className="flex" variants={fadeInUp}>
             <div className="mr-4">
               <motion.div
-                className="flex items-center justify-center w-12 h-12 rounded-full bg-[#d4af37]/10 text-[#d4af37]"
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 text-white"
                 whileHover={{
                   scale: 1.1,
-                  backgroundColor: "rgba(212, 175, 55, 0.15)",
+                  backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
-                  fill="none"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
@@ -198,8 +198,8 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
               <div className="flex space-x-4">
                 <motion.a
                   href="#"
-                  className="text-gray-400 hover:text-[#d4af37] transition-colors"
-                  whileHover={{ scale: 1.2, color: "#d4af37" }}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.2, color: "#fff" }}
                 >
                   <svg
                     className="h-6 w-6"
@@ -211,8 +211,8 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                 </motion.a>
                 <motion.a
                   href="#"
-                  className="text-gray-400 hover:text-[#d4af37] transition-colors"
-                  whileHover={{ scale: 1.2, color: "#d4af37" }}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.2, color: "#fff" }}
                 >
                   <svg
                     className="h-6 w-6"
@@ -224,8 +224,8 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                 </motion.a>
                 <motion.a
                   href="#"
-                  className="text-gray-400 hover:text-[#d4af37] transition-colors"
-                  whileHover={{ scale: 1.2, color: "#d4af37" }}
+                  className="text-gray-400 hover:text-white transition-colors"
+                  whileHover={{ scale: 1.2, color: "#fff" }}
                 >
                   <svg
                     className="h-6 w-6"

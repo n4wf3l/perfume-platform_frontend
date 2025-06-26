@@ -50,7 +50,7 @@ const Values: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl font-serif text-[#d4af37] mb-12 text-center"
+          className="text-3xl md:text-4xl font-serif text-white mb-12 text-center"
           variants={titleVariants}
         >
           Nos Valeurs
@@ -62,10 +62,10 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={0}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-[#d4af37]/20 hover:border-[#d4af37]/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
           >
             <motion.div
-              className="w-16 h-16 flex items-center justify-center rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 mb-6 group-hover:bg-[#d4af37]/20 transition-all"
+              className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
               variants={iconVariants}
               whileHover={{
                 scale: 1.1,
@@ -75,7 +75,7 @@ const Values: React.FC = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-[#d4af37]"
+                className="h-8 w-8 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -88,7 +88,7 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-[#d4af37] mb-3">Luxe</h3>
+            <h3 className="text-xl font-serif text-white mb-3">Luxe</h3>
             <p className="text-gray-400">
               Nous nous engageons à offrir des expériences olfactives
               d'exception, grâce à des ingrédients rares et précieux
@@ -101,10 +101,10 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={1}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-[#d4af37]/20 hover:border-[#d4af37]/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
           >
             <motion.div
-              className="w-16 h-16 flex items-center justify-center rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 mb-6 group-hover:bg-[#d4af37]/20 transition-all"
+              className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
               variants={iconVariants}
               whileHover={{
                 scale: 1.1,
@@ -114,7 +114,7 @@ const Values: React.FC = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-[#d4af37]"
+                className="h-8 w-8 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -127,9 +127,7 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-[#d4af37] mb-3">
-              Artisanat
-            </h3>
+            <h3 className="text-xl font-serif text-white mb-3">Artisanat</h3>
             <p className="text-gray-400">
               Chaque parfum est élaboré à la main selon des méthodes
               traditionnelles, en respectant un savoir-faire transmis depuis des
@@ -142,10 +140,10 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={2}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-[#d4af37]/20 hover:border-[#d4af37]/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
           >
             <motion.div
-              className="w-16 h-16 flex items-center justify-center rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 mb-6 group-hover:bg-[#d4af37]/20 transition-all"
+              className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
               variants={iconVariants}
               whileHover={{
                 scale: 1.1,
@@ -155,7 +153,7 @@ const Values: React.FC = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-[#d4af37]"
+                className="h-8 w-8 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -168,9 +166,7 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-[#d4af37] mb-3">
-              Durabilité
-            </h3>
+            <h3 className="text-xl font-serif text-white mb-3">Durabilité</h3>
             <p className="text-gray-400">
               Notre engagement pour l'environnement se traduit par des pratiques
               responsables, du sourcing éthique des ingrédients à la conception

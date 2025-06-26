@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Routes, Route } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
-              <span className="text-[#d4af37] font-serif text-2xl">
+              <span className="text-white font-serif text-2xl">
                 Sogno D'Oro
               </span>
             </Link>
@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
               Parfums de luxe qui racontent votre histoire.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-[#d4af37]">
+              <a href="#" className="text-gray-400 hover:text-white">
                 <span className="sr-only">Facebook</span>
                 <svg
                   className="h-6 w-6"
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
                   />
                 </svg>
               </a>
-              <a href="#" className="text-gray-400 hover:text-[#d4af37]">
+              <a href="#" className="text-gray-400 hover:text-white">
                 <span className="sr-only">Instagram</span>
                 <svg
                   className="h-6 w-6"
@@ -54,12 +54,12 @@ const Footer: React.FC = () => {
 
           {/* Liens Rapides */}
           <div>
-            <h3 className="text-[#d4af37] font-medium mb-4">Liens Rapides</h3>
+            <h3 className="text-white font-medium mb-4">Liens Rapides</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/shop"
-                  className="text-gray-400 hover:text-[#d4af37] text-sm"
+                  className="text-gray-400 hover:text-white text-sm"
                 >
                   Boutique
                 </Link>
@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-400 hover:text-[#d4af37] text-sm"
+                  className="text-gray-400 hover:text-white text-sm"
                 >
                   À propos
                 </Link>
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-400 hover:text-[#d4af37] text-sm"
+                  className="text-gray-400 hover:text-white text-sm"
                 >
                   Contact
                 </Link>
@@ -85,11 +85,11 @@ const Footer: React.FC = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-[#d4af37] font-medium mb-4">Contactez-nous</h3>
+            <h3 className="text-white font-medium mb-4">Contactez-nous</h3>
             <ul className="space-y-2">
               <li className="text-gray-400 text-sm flex items-start">
                 <svg
-                  className="h-5 w-5 text-[#d4af37] mr-2 mt-0.5"
+                  className="h-5 w-5 text-white mr-2 mt-0.5"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="text-gray-400 text-sm flex items-center">
                 <svg
-                  className="h-5 w-5 text-[#d4af37] mr-2"
+                  className="h-5 w-5 text-white mr-2"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
               </li>
               <li className="text-gray-400 text-sm flex items-center">
                 <svg
-                  className="h-5 w-5 text-[#d4af37] mr-2"
+                  className="h-5 w-5 text-white mr-2"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-[#d4af37] font-medium mb-4">Newsletter</h3>
+            <h3 className="text-white font-medium mb-4">Newsletter</h3>
             <p className="text-gray-400 text-sm mb-4">
               Abonnez-vous pour des offres exclusives et des mises à jour.
             </p>
@@ -138,12 +138,12 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Votre email"
-                className="bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                className="bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
                 required
               />
               <button
                 type="submit"
-                className="bg-[#c5a028] hover:bg-[#b08c15] text-black font-medium py-2 px-4 rounded-md transition-colors duration-300"
+                className="bg-white hover:bg-white/90 text-black font-medium py-2 px-4 rounded-md transition-colors duration-300"
               >
                 S'abonner
               </button>
@@ -157,15 +157,23 @@ const Footer: React.FC = () => {
             &copy; {currentYear} Sogno D'Oro. Tous droits réservés.
           </p>
           <div className="flex space-x-6">
-            <a href="#" className="text-gray-500 hover:text-[#d4af37] text-xs">
+            <Link
+              to="/confidentiality"
+              className="text-gray-500 hover:text-white text-xs"
+            >
               Politique de confidentialité
-            </a>
-            <a href="#" className="text-gray-500 hover:text-[#d4af37] text-xs">
+            </Link>
+
+            <Link
+              to="/confidentiality"
+              className="text-gray-500 hover:text-white text-xs"
+            >
               Conditions d'utilisation
-            </a>
+            </Link>
+
             <Link
               to="/admin"
-              className="text-gray-500 hover:text-[#d4af37] text-xs"
+              className="text-gray-500 hover:text-white text-xs"
             >
               Administration
             </Link>

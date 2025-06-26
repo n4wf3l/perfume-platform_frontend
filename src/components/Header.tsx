@@ -32,13 +32,13 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-black border-b border-[#d4af37]/40">
+    <header className="bg-black border-b border-white/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-[#d4af37] font-serif text-2xl md:text-3xl">
+              <span className="text-white font-serif text-2xl md:text-3xl">
                 Sogno D'Oro
               </span>
             </Link>
@@ -50,8 +50,8 @@ const Header: React.FC = () => {
               to="/"
               className={`${
                 isActive("/")
-                  ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                  : "text-gray-300 hover:text-[#d4af37]"
+                  ? "text-white border-b-2 border-white"
+                  : "text-gray-300 hover:text-white"
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
@@ -61,8 +61,8 @@ const Header: React.FC = () => {
               to="/shop"
               className={`${
                 isActive("/shop")
-                  ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                  : "text-gray-300 hover:text-[#d4af37]"
+                  ? "text-white border-b-2 border-white"
+                  : "text-gray-300 hover:text-white"
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
@@ -72,8 +72,8 @@ const Header: React.FC = () => {
               to="/about"
               className={`${
                 isActive("/about")
-                  ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                  : "text-gray-300 hover:text-[#d4af37]"
+                  ? "text-white border-b-2 border-white"
+                  : "text-gray-300 hover:text-white"
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
@@ -83,8 +83,8 @@ const Header: React.FC = () => {
               to="/contact"
               className={`${
                 isActive("/contact")
-                  ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                  : "text-gray-300 hover:text-[#d4af37]"
+                  ? "text-white border-b-2 border-white"
+                  : "text-gray-300 hover:text-white"
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
@@ -98,7 +98,7 @@ const Header: React.FC = () => {
             <div className="hidden md:block relative">
               <button
                 onClick={toggleLangMenu}
-                className="flex items-center space-x-1 px-3 py-1 text-sm font-medium text-gray-300 hover:text-[#d4af37]"
+                className="flex items-center space-x-1 px-3 py-1 text-sm font-medium text-gray-300 hover:text-white"
               >
                 <span>
                   {languageNames[currentLanguage as keyof typeof languageNames]}
@@ -123,13 +123,13 @@ const Header: React.FC = () => {
 
               {/* Language Dropdown Menu */}
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-2 py-2 w-40 bg-gray-900 rounded-md shadow-lg z-50 border border-gray-700">
+                <div className="absolute right-0 mt-2 py-2 w-40 bg-black rounded-md shadow-lg z-50 border border-gray-700">
                   <button
                     onClick={() => changeLanguage("en")}
                     className={`w-full text-left px-4 py-2 text-sm ${
                       currentLanguage === "en"
-                        ? "bg-[#c5a028]/20 text-[#d4af37]"
-                        : "text-gray-300 hover:bg-gray-800"
+                        ? "bg-white/20 text-white"
+                        : "text-gray-300 hover:bg-white/20"
                     }`}
                   >
                     Anglais
@@ -138,8 +138,8 @@ const Header: React.FC = () => {
                     onClick={() => changeLanguage("fr")}
                     className={`w-full text-left px-4 py-2 text-sm ${
                       currentLanguage === "fr"
-                        ? "bg-[#c5a028]/20 text-[#d4af37]"
-                        : "text-gray-300 hover:bg-gray-800"
+                        ? "bg-white/20 text-white"
+                        : "text-gray-300 hover:bg-white/20"
                     }`}
                   >
                     Français
@@ -148,8 +148,8 @@ const Header: React.FC = () => {
                     onClick={() => changeLanguage("nl")}
                     className={`w-full text-left px-4 py-2 text-sm ${
                       currentLanguage === "nl"
-                        ? "bg-[#c5a028]/20 text-[#d4af37]"
-                        : "text-gray-300 hover:bg-gray-800"
+                        ? "bg-white/20 text-white"
+                        : "text-gray-300 hover:bg-white/20"
                     }`}
                   >
                     Néerlandais
@@ -159,7 +159,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* Cart */}
-            <Link to="/cart" className="text-gray-300 hover:text-[#d4af37]">
+            <Link to="/cart" className="text-gray-300 hover:text-white">
               <div className="relative">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -175,7 +175,7 @@ const Header: React.FC = () => {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-                <span className="absolute -top-2 -right-2 bg-[#c5a028] text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-white text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   0
                 </span>
               </div>

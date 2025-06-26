@@ -21,7 +21,7 @@ const CTA: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: [0.42, 0, 0.58, 1] }, // use a valid easing array
+      transition: { duration: 0.5, ease: [0.42, 0, 0.58, 1] },
     },
   };
 
@@ -39,7 +39,7 @@ const CTA: React.FC = () => {
     },
     hover: {
       scale: 1.05,
-      boxShadow: "0 0 15px rgba(212, 175, 55, 0.3)",
+      boxShadow: "0 0 15px rgba(255,255,255,0.3)",
       transition: {
         type: "spring",
         stiffness: 400,
@@ -70,7 +70,7 @@ const CTA: React.FC = () => {
     >
       <motion.div className="max-w-4xl mx-auto text-center">
         <motion.h2
-          className="text-3xl md:text-4xl font-serif text-[#d4af37] mb-6"
+          className="text-3xl md:text-4xl font-serif text-white mb-6"
           variants={childVariants}
         >
           Rejoignez Notre Aventure Olfactive
@@ -89,12 +89,12 @@ const CTA: React.FC = () => {
           whileTap="tap"
         >
           <motion.div
-            className="absolute -inset-1 bg-gradient-to-r from-[#d4af37] to-[#c5a028] rounded-lg blur opacity-30"
+            className="absolute -inset-1 bg-white rounded-lg blur opacity-30"
             variants={glowVariants}
           ></motion.div>
           <Link
             to="/contact"
-            className="relative bg-black hover:bg-gray-900 border border-[#d4af37]/50 text-[#d4af37] px-10 py-4 rounded-lg transition-colors duration-300 text-lg inline-block"
+            className="relative bg-black hover:bg-gray-900 border border-white/50 text-white px-10 py-4 rounded-lg transition-colors duration-300 text-lg inline-block"
           >
             Contactez-nous
           </Link>
@@ -118,7 +118,7 @@ const CTA: React.FC = () => {
             width="40"
             height="40"
             viewBox="0 0 24 24"
-            className="mx-auto text-[#d4af37]"
+            className="mx-auto text-white"
           >
             <path
               fill="currentColor"

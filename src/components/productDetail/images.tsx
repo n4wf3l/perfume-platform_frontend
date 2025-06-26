@@ -51,7 +51,7 @@ const Images: React.FC<ImagesProps> = ({
               onClick={() => setCurrentImageIndex(index)}
               className={`w-16 h-16 flex-shrink-0 rounded-md overflow-hidden border-2 ${
                 currentImageIndex === index
-                  ? "border-[#d4af37]"
+                  ? "border-white"
                   : "border-transparent"
               }`}
               whileHover={{ scale: 1.05 }}

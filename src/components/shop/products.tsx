@@ -95,7 +95,7 @@ const Products: React.FC<ProductsProps> = ({
                 onClick={() => setCurrentPage(page)}
                 className={`px-4 py-2 border-t border-b border-r border-gray-700 ${
                   currentPage === page
-                    ? "bg-[#c5a028] text-black"
+                    ? "bg-white text-black"
                     : "bg-gray-900 text-gray-400 hover:bg-gray-800"
                 }`}
               >

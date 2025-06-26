@@ -26,7 +26,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   return (
     <div className="mb-16">
       <motion.h1
-        className="text-4xl font-serif text-[#d4af37] text-center mb-12"
+        className="text-4xl font-serif text-white text-center mb-12"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
@@ -45,7 +45,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
           <input
             type="text"
             placeholder="Rechercher un parfum..."
-            className="w-full bg-black border border-gray-700 rounded-full py-3 px-6 text-gray-200 focus:outline-none focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+            className="w-full bg-black border border-gray-700 rounded-full py-3 px-6 text-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -66,7 +66,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         </div>
       </motion.div>
 
-      {/* Onglets de catégories selon l'image de référence */}
+      {/* Onglets de catégories */}
       <motion.div
         className="w-full overflow-x-auto scrollbar-hide"
         initial={{ opacity: 0 }}
@@ -81,14 +81,14 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                 onClick={() => setSelectedCategory(category.id)}
                 className={`relative px-2 py-3 text-sm font-medium tracking-wider transition-colors duration-300 ${
                   selectedCategory === category.id
-                    ? "text-[#d4af37]"
+                    ? "text-white"
                     : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 {category.name}
                 {selectedCategory === category.id && (
                   <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#d4af37]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
                     layoutId="underline"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

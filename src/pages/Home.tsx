@@ -105,7 +105,7 @@ const Home: React.FC = () => {
           }}
         >
           <motion.h2
-            className="font-serif text-4xl text-[#d4af37] text-center mb-3"
+            className="font-serif text-4xl text-white text-center mb-3"
             variants={fadeIn}
             transition={{ duration: 0.6 }}
           >
@@ -113,7 +113,7 @@ const Home: React.FC = () => {
           </motion.h2>
 
           <motion.div
-            className="w-24 h-0.5 bg-[#d4af37] mx-auto mb-8"
+            className="w-24 h-0.5 bg-white mx-auto mb-8"
             variants={{
               hidden: { width: 0 },
               visible: { width: "6rem" },

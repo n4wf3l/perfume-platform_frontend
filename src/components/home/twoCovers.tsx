@@ -53,7 +53,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-serif text-[#d4af37] mb-4"
+            className="text-4xl md:text-5xl font-serif text-white mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={
               firstCoverInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
@@ -71,7 +71,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             {subtitle1}
           </motion.p>
           <motion.button
-            className="px-8 py-3 bg-[#c5a028] hover:bg-[#b08c15] text-black font-medium rounded transition-colors duration-300"
+            className="px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={
               firstCoverInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
@@ -106,7 +106,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-serif text-[#d4af37] mb-4"
+            className="text-4xl md:text-5xl font-serif text-white mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={
               secondCoverInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
@@ -124,7 +124,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             {subtitle2}
           </motion.p>
           <motion.button
-            className="px-8 py-3 bg-[#c5a028] hover:bg-[#b08c15] text-black font-medium rounded transition-colors duration-300"
+            className="px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={
               secondCoverInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }

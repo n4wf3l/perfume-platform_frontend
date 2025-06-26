@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Auth: React.FC = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -24,8 +25,8 @@ const Auth: React.FC = () => {
       // Simuler un délai de traitement
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Rediriger vers le dashboard après connexion
-      window.location.href = "/admin/dashboard";
+      // Rediriger vers le dashboard après connexion - CORRECTION ICI
+      window.location.href = "/dashboard"; // Modifier cette ligne
     } catch (err) {
       setError("Échec de connexion. Veuillez vérifier vos identifiants.");
       console.error(err);
@@ -64,7 +65,7 @@ const Auth: React.FC = () => {
         <span className="text-[#d4af37] font-serif text-3xl">Sogno D'Oro</span>
       </Link>
 
-      <div className="w-full max-w-md bg-gray-900 rounded-lg shadow-xl border border-[#d4af37]/20 overflow-hidden">
+      <div className="w-full max-w-md bg-black rounded-lg shadow-xl border border-[#d4af37]/20 overflow-hidden">
         {/* Onglets */}
         <div className="flex border-b border-gray-800">
           <button
@@ -183,7 +184,7 @@ const Auth: React.FC = () => {
               )}
 
               <div>
-                <button
+                <motion.button
                   type="submit"
                   disabled={isLoading}
                   className={`w-full py-3 px-4 rounded-md font-medium text-black ${
@@ -191,6 +192,8 @@ const Auth: React.FC = () => {
                       ? "bg-[#c5a028]/60"
                       : "bg-[#c5a028] hover:bg-[#b08c15]"
                   } transition-colors duration-300 flex justify-center items-center`}
+                  whileHover={!isLoading ? { scale: 1.02 } : {}}
+                  whileTap={!isLoading ? { scale: 0.98 } : {}}
                 >
                   {isLoading ? (
                     <>
@@ -219,7 +222,7 @@ const Auth: React.FC = () => {
                   ) : (
                     "Se connecter"
                   )}
-                </button>
+                </motion.button>
               </div>
             </form>
           )}
@@ -256,7 +259,7 @@ const Auth: React.FC = () => {
               )}
 
               <div>
-                <button
+                <motion.button
                   type="submit"
                   disabled={isLoading}
                   className={`w-full py-3 px-4 rounded-md font-medium text-black ${
@@ -264,6 +267,8 @@ const Auth: React.FC = () => {
                       ? "bg-[#c5a028]/60"
                       : "bg-[#c5a028] hover:bg-[#b08c15]"
                   } transition-colors duration-300 flex justify-center items-center`}
+                  whileHover={!isLoading ? { scale: 1.02 } : {}}
+                  whileTap={!isLoading ? { scale: 0.98 } : {}}
                 >
                   {isLoading ? (
                     <>
@@ -292,7 +297,7 @@ const Auth: React.FC = () => {
                   ) : (
                     "Réinitialiser le mot de passe"
                   )}
-                </button>
+                </motion.button>
               </div>
             </form>
           )}
@@ -340,7 +345,7 @@ const Auth: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-900 border-t border-gray-800">
+        <div className="px-6 py-4 bg-black border-t border-gray-800">
           <div className="text-center">
             <Link
               to="/"

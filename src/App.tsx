@@ -11,13 +11,15 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
 import Dashboard from "./pages/Dashboard"; // Ajout de l'import Dashboard
-
+import Auth from "./pages/Auth"; // Import de la page Auth
+import ConfidentialityPage from "./pages/Confidentiality";
 // Component imports
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 // Style imports
 import "./index.css";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
@@ -46,6 +48,13 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/thank-you" element={<ThankYou />} />
               <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/admin" element={<Auth />} />{" "}
+              {/* Ajoutez cette ligne */}
+              <Route
+                path="/confidentiality"
+                element={<ConfidentialityPage />}
+              />{" "}
+              {/* Ajout de la route pour la page de confidentialité */}
             </Routes>
           </main>
           {/* Le Footer n'apparaît pas sur les pages du dashboard */}
@@ -55,6 +64,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <ScrollToTop />
     </Suspense>
   );
 }

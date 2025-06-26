@@ -11,6 +11,15 @@ const Hero: React.FC = () => {
       html {
         scroll-behavior: smooth;
       }
+
+      @keyframes subtlePulse {
+        0%, 100% { transform: scale(1.0); }
+        50% { transform: scale(1.05); }
+      }
+      
+      .animate-subtle-pulse {
+        animation: subtlePulse 8s ease-in-out infinite;
+      }
     `;
     document.head.appendChild(styleElement);
 
@@ -50,19 +59,24 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <motion.section
-      className="relative h-screen overflow-hidden bg-cover bg-center bg-fixed bg-no-repeat"
-      style={{ backgroundImage: "url('/aboutcover.jpg')" }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1.5 }}
-    >
+    <div className="relative h-screen overflow-hidden">
+      {/* Background avec animation de pulse subtile */}
+      <div
+        className="absolute inset-0 animate-subtle-pulse bg-cover bg-center bg-fixed bg-no-repeat"
+        style={{ backgroundImage: "url('/aboutcover.jpg')" }}
+      ></div>
+
       {/* Overlay sombre pour améliorer la lisibilité du texte */}
       <div className="absolute inset-0 bg-black/70 z-10"></div>
 
-      <div className="relative z-20 flex flex-col justify-center items-center h-full text-center px-4">
+      <motion.div
+        className="relative z-20 flex flex-col justify-center items-center h-full text-center px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5 }}
+      >
         <motion.h1
-          className="text-5xl md:text-7xl font-serif text-[#d4af37] mb-6 tracking-tight"
+          className="text-5xl md:text-7xl font-serif text-white mb-6 tracking-tight"
           variants={titleVariant}
           initial="hidden"
           animate="visible"
@@ -91,7 +105,7 @@ const Hero: React.FC = () => {
         >
           <motion.svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-[#d4af37]"
+            className="h-8 w-8 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -113,8 +127,8 @@ const Hero: React.FC = () => {
             />
           </motion.svg>
         </motion.a>
-      </div>
-    </motion.section>
+      </motion.div>
+    </div>
   );
 };
 

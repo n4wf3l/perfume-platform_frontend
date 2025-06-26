@@ -60,7 +60,7 @@ const Parcours: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-3xl md:text-4xl font-serif text-[#d4af37] mb-12 text-center"
+          className="text-3xl md:text-4xl font-serif text-white mb-12 text-center"
           variants={titleVariants}
         >
           Notre Parcours
@@ -69,7 +69,7 @@ const Parcours: React.FC = () => {
         <div className="relative">
           {/* Ligne de chronologie animée */}
           <motion.div
-            className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-[#d4af37]/30"
+            className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-white/30"
             variants={lineVariants}
           ></motion.div>
 
@@ -82,7 +82,7 @@ const Parcours: React.FC = () => {
                 variants={eventVariants}
                 custom={0}
               >
-                <h3 className="text-2xl font-serif text-[#d4af37]">Héritage</h3>
+                <h3 className="text-2xl font-serif text-white">Héritage</h3>
                 <h4 className="text-xl text-gray-200 mb-3">
                   Racines artistiques
                 </h4>
@@ -95,7 +95,7 @@ const Parcours: React.FC = () => {
                 </p>
               </motion.div>
               <motion.div
-                className="w-6 h-6 rounded-full bg-[#d4af37] z-10 my-4 md:my-0"
+                className="w-6 h-6 rounded-full bg-white z-10 my-4 md:my-0"
                 variants={dotVariants}
                 custom={0}
               ></motion.div>
@@ -106,7 +106,7 @@ const Parcours: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center">
               <div className="flex-1 md:text-right md:pr-12 md:hidden"></div>
               <motion.div
-                className="w-6 h-6 rounded-full bg-[#d4af37] z-10 my-4 md:my-0"
+                className="w-6 h-6 rounded-full bg-white z-10 my-4 md:my-0"
                 variants={dotVariants}
                 custom={1}
               ></motion.div>
@@ -115,9 +115,7 @@ const Parcours: React.FC = () => {
                 variants={eventVariants}
                 custom={1}
               >
-                <h3 className="text-2xl font-serif text-[#d4af37]">
-                  Formation
-                </h3>
+                <h3 className="text-2xl font-serif text-white">Formation</h3>
                 <h4 className="text-xl text-gray-200 mb-3">
                   L'apprentissage de l'excellence
                 </h4>
@@ -137,9 +135,7 @@ const Parcours: React.FC = () => {
                 variants={eventVariants}
                 custom={2}
               >
-                <h3 className="text-2xl font-serif text-[#d4af37]">
-                  Janvier 2025
-                </h3>
+                <h3 className="text-2xl font-serif text-white">Janvier 2025</h3>
                 <h4 className="text-xl text-gray-200 mb-3">
                   Naissance de Sogno D'Oro
                 </h4>
@@ -152,7 +148,7 @@ const Parcours: React.FC = () => {
                 </p>
               </motion.div>
               <motion.div
-                className="w-6 h-6 rounded-full bg-[#d4af37] z-10 my-4 md:my-0"
+                className="w-6 h-6 rounded-full bg-white z-10 my-4 md:my-0"
                 variants={dotVariants}
                 custom={2}
               ></motion.div>
@@ -163,7 +159,7 @@ const Parcours: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center">
               <div className="flex-1 md:text-right md:pr-12 md:hidden"></div>
               <motion.div
-                className="w-6 h-6 rounded-full bg-[#d4af37] z-10 my-4 md:my-0"
+                className="w-6 h-6 rounded-full bg-white z-10 my-4 md:my-0"
                 variants={dotVariants}
                 custom={3}
               ></motion.div>
@@ -172,7 +168,7 @@ const Parcours: React.FC = () => {
                 variants={eventVariants}
                 custom={3}
               >
-                <h3 className="text-2xl font-serif text-[#d4af37]">Mai 2025</h3>
+                <h3 className="text-2xl font-serif text-white">Mai 2025</h3>
                 <h4 className="text-xl text-gray-200 mb-3">
                   Première Collection
                 </h4>
@@ -192,7 +188,7 @@ const Parcours: React.FC = () => {
                 variants={eventVariants}
                 custom={4}
               >
-                <h3 className="text-2xl font-serif text-[#d4af37]">
+                <h3 className="text-2xl font-serif text-white">
                   Aujourd'hui et Demain
                 </h3>
                 <h4 className="text-xl text-gray-200 mb-3">
@@ -208,7 +204,7 @@ const Parcours: React.FC = () => {
                 </p>
               </motion.div>
               <motion.div
-                className="w-6 h-6 rounded-full bg-[#d4af37] z-10 my-4 md:my-0"
+                className="w-6 h-6 rounded-full bg-white z-10 my-4 md:my-0"
                 variants={dotVariants}
                 custom={4}
               ></motion.div>
