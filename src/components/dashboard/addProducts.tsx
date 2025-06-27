@@ -11,6 +11,8 @@ const categoryOptions = [
   "Eau de Cologne",
 ];
 
+const genderOptions = ["Homme", "Femme", "Unisexe"];
+
 const AddProducts: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,8 +27,10 @@ const AddProducts: React.FC = () => {
     price: "",
     stock: "",
     description: "",
+    ingredientsDescription: "", // <-- Ajouté pour la description ingrédients
     size: "", // Nouveau champ pour la taille en ML
     featured: false,
+    gender: "", // <-- AJOUT
   });
 
   // Animation variants
@@ -109,6 +113,23 @@ const AddProducts: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Pour le menu déroulant animé du genre
+  const [genderOpen, setGenderOpen] = useState(false);
+  const genderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        genderRef.current &&
+        !genderRef.current.contains(event.target as Node)
+      ) {
+        setGenderOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   useEffect(() => {
     if (location.state?.showToast) {
       setToastVisible(true);
@@ -125,9 +146,7 @@ const AddProducts: React.FC = () => {
       className="space-y-6"
     >
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-serif text-[#d4af37]">
-          Ajouter un Parfum
-        </h2>
+        <h2 className="text-2xl font-serif text-white">Ajouter un Parfum</h2>
         <button
           onClick={() => navigate("/dashboard/products")}
           className="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-md transition-colors duration-300 flex items-center"
@@ -152,12 +171,12 @@ const AddProducts: React.FC = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="bg-gray-900 rounded-xl border border-[#d4af37]/10 p-6 shadow-lg"
+        className="bg-gray-900 rounded-xl border border-white/10 p-6 shadow-lg"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Informations générales */}
           <div className="space-y-4 flex flex-col h-full">
-            <h3 className="text-lg font-medium text-[#d4af37] mb-4">
+            <h3 className="text-lg font-medium text-white mb-4">
               Informations générales
             </h3>
 
@@ -176,7 +195,7 @@ const AddProducts: React.FC = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
               />
             </div>
 
@@ -190,7 +209,7 @@ const AddProducts: React.FC = () => {
               </label>
               <button
                 type="button"
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37] transition"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition"
                 onClick={() => setCategoryOpen((open) => !open)}
               >
                 {formData.category || "Sélectionner une catégorie"}
@@ -227,14 +246,14 @@ const AddProducts: React.FC = () => {
                     transition: { duration: 0.35, ease: "easeInOut" },
                   },
                 }}
-                className="absolute z-10 mt-2 w-full bg-gray-900 border border-[#d4af37]/30 rounded-md shadow-lg overflow-hidden"
+                className="absolute z-10 mt-2 w-full bg-gray-900 border border-white/30 rounded-md shadow-lg overflow-hidden"
               >
                 {categoryOptions.map((option) => (
                   <li
                     key={option}
-                    className={`px-4 py-2 cursor-pointer hover:bg-[#d4af37]/10 text-gray-200 ${
+                    className={`px-4 py-2 cursor-pointer hover:bg-white/10 text-gray-200 ${
                       formData.category === option
-                        ? "bg-[#d4af37]/20 text-[#d4af37]"
+                        ? "bg-white/20 text-white"
                         : ""
                     }`}
                     onClick={() => {
@@ -267,7 +286,7 @@ const AddProducts: React.FC = () => {
                 min="1"
                 value={formData.size}
                 onChange={handleChange}
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
               />
             </div>
 
@@ -286,7 +305,7 @@ const AddProducts: React.FC = () => {
                 required
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
               />
             </div>
 
@@ -305,8 +324,79 @@ const AddProducts: React.FC = () => {
                 required
                 value={formData.stock}
                 onChange={handleChange}
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
               />
+            </div>
+
+            {/* Genre - Menu déroulant animé */}
+            <div ref={genderRef} className="relative">
+              <label
+                htmlFor="gender"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Genre *
+              </label>
+              <button
+                type="button"
+                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition"
+                onClick={() => setGenderOpen((open) => !open)}
+              >
+                {formData.gender || "Sélectionner un genre"}
+                <svg
+                  className={`w-4 h-4 ml-2 transition-transform ${
+                    genderOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+              <motion.ul
+                initial={false}
+                animate={genderOpen ? "open" : "closed"}
+                variants={{
+                  open: {
+                    opacity: 1,
+                    y: 0,
+                    pointerEvents: "auto",
+                    transition: { duration: 0.35, ease: "easeInOut" },
+                  },
+                  closed: {
+                    opacity: 0,
+                    y: -10,
+                    pointerEvents: "none",
+                    transition: { duration: 0.35, ease: "easeInOut" },
+                  },
+                }}
+                className="absolute z-10 mt-2 w-full bg-gray-900 border border-white/30 rounded-md shadow-lg overflow-hidden"
+              >
+                {genderOptions.map((option) => (
+                  <li
+                    key={option}
+                    className={`px-4 py-2 cursor-pointer hover:bg-white/10 text-gray-200 ${
+                      formData.gender === option.toLowerCase()
+                        ? "bg-white/20 text-white"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        gender: option.toLowerCase(),
+                      }));
+                      setGenderOpen(false);
+                    }}
+                  >
+                    {option}
+                  </li>
+                ))}
+              </motion.ul>
             </div>
 
             {/* À la une */}
@@ -335,25 +425,43 @@ const AddProducts: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
           >
-            <h3 className="text-lg font-medium text-[#d4af37] mb-4">
-              Description
-            </h3>
+            <h3 className="text-lg font-medium text-white mb-4">Description</h3>
             <div className="flex-1 flex flex-col">
               <label
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-300 mb-1"
               >
-                Description *
+                Histoire du produit *
               </label>
               <textarea
                 id="description"
                 name="description"
-                rows={16}
+                rows={8}
                 required
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Décrivez le parfum, ses caractéristiques et son profil olfactif..."
-                className="w-full h-full min-h-[220px] py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37] resize-none"
+                placeholder="Décrivez l'histoire du parfum, son inspiration, etc."
+                className="w-full h-full min-h-[100px] py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white resize-none"
+                style={{ minHeight: "100%" }}
+              ></textarea>
+            </div>
+            <div className="flex-1 flex flex-col pt-4">
+              {/* Ajout de pt-4 ici pour espacer */}
+              <label
+                htmlFor="ingredientsDescription"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Description ingrédients *
+              </label>
+              <textarea
+                id="ingredientsDescription"
+                name="ingredientsDescription"
+                rows={8}
+                required
+                value={formData.ingredientsDescription}
+                onChange={handleChange}
+                placeholder="Décrivez les ingrédients, notes olfactives, etc."
+                className="w-full h-full min-h-[100px] py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white resize-none"
                 style={{ minHeight: "100%" }}
               ></textarea>
             </div>

@@ -110,7 +110,7 @@ const FAQ: React.FC = () => {
   return (
     <div id="faq" className="max-w-2xl mx-auto px-4">
       <motion.h2
-        className="text-3xl font-serif text-[#d4af37] mb-8 text-center"
+        className="text-3xl font-serif text-white mb-8 text-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -122,14 +122,14 @@ const FAQ: React.FC = () => {
         {faqData.map((faq, idx) => (
           <motion.div
             key={faq.question}
-            className="bg-[#181818] border border-[#d4af37]/10 rounded-lg"
+            className="bg-[#181818] border border-white/10 rounded-lg"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: idx * 0.1 }}
           >
             <button
-              className="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-medium text-[#d4af37] focus:outline-none"
+              className="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-medium text-white focus:outline-none"
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
               aria-expanded={openIndex === idx}
             >
@@ -139,7 +139,7 @@ const FAQ: React.FC = () => {
                 transition={{ duration: 0.2 }}
               >
                 <svg
-                  className="w-5 h-5 ml-2 text-[#d4af37]"
+                  className="w-5 h-5 ml-2 text-white"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth={2}

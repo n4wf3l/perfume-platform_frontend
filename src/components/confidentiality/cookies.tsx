@@ -1,14 +1,14 @@
 import React from "react";
 
 const Cookies: React.FC = () => (
-  <section className="bg-[#181818] border border-[#d4af37]/10 rounded-xl shadow-lg shadow-[#d4af37]/5 p-8 mb-12">
-    <h2 className="text-2xl font-semibold text-[#d4af37] mb-4">
+  <section className="bg-[#181818] border border-white/10 rounded-xl shadow-lg shadow-white/5 p-8 mb-12">
+    <h2 className="text-2xl font-semibold text-white mb-4">
       Gestion des Cookies
     </h2>
     <p className="mb-4 text-gray-400">
       Ce site n'utilise{" "}
-      <span className="text-[#d4af37] font-semibold">aucun cookie</span> de
-      suivi, de publicité ou d'analyse.
+      <span className="text-white font-semibold">aucun cookie</span> de suivi,
+      de publicité ou d'analyse.
     </p>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
       <li>

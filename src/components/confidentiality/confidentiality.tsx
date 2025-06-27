@@ -1,8 +1,8 @@
 import React from "react";
 
 const Confidentiality: React.FC = () => (
-  <section className="bg-[#181818] border border-[#d4af37]/10 rounded-xl shadow-lg shadow-[#d4af37]/5 p-8 mb-12">
-    <h2 className="text-2xl font-semibold text-[#d4af37] mb-4">
+  <section className="bg-[#181818] border border-white/10 rounded-xl shadow-lg shadow-white/5 p-8 mb-12">
+    <h2 className="text-2xl font-semibold text-white mb-4">
       Politique de Confidentialité
     </h2>
     <p className="mb-4 text-gray-300">
@@ -11,52 +11,46 @@ const Confidentiality: React.FC = () => (
       quelles informations nous collectons, comment nous les utilisons, et quels
       sont vos droits.
     </p>
-    <h3 className="text-xl font-semibold text-[#d4af37] mt-8 mb-2">
+    <h3 className="text-xl font-semibold text-white mt-8 mb-2">
       Quelles données collectons-nous&nbsp;?
     </h3>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
       <li>
-        <span className="text-[#d4af37] font-semibold">
-          Langue de préférence
-        </span>
-        : enregistrée localement dans votre navigateur (localStorage) pour
+        <span className="text-white font-semibold">Langue de préférence</span>:
+        enregistrée localement dans votre navigateur (localStorage) pour
         améliorer votre expérience utilisateur.
       </li>
       <li>
-        <span className="text-[#d4af37] font-semibold">
-          Produits sélectionnés
-        </span>
-        : nous mémorisons les produits que vous choisissez afin de faciliter
-        votre navigation et votre commande.
+        <span className="text-white font-semibold">Produits sélectionnés</span>:
+        nous mémorisons les produits que vous choisissez afin de faciliter votre
+        navigation et votre commande.
       </li>
       <li>
-        <span className="text-[#d4af37] font-semibold">
+        <span className="text-white font-semibold">
           Coordonnées personnelles
         </span>
         : nom, prénom, adresse, email, numéro de téléphone, nécessaires pour la
         gestion de vos commandes et la livraison.
       </li>
       <li>
-        <span className="text-[#d4af37] font-semibold">
-          Coordonnées bancaires
-        </span>
-        : collectées uniquement lors du paiement, via une connexion sécurisée.
+        <span className="text-white font-semibold">Coordonnées bancaires</span>:
+        collectées uniquement lors du paiement, via une connexion sécurisée.
         Nous ne stockons jamais vos données bancaires sur nos serveurs.
       </li>
       <li>
-        <span className="text-[#d4af37] font-semibold">Numéro WhatsApp</span> :
-        si vous nous contactez via WhatsApp, votre numéro est conservé dans
+        <span className="text-white font-semibold">Numéro WhatsApp</span> : si
+        vous nous contactez via WhatsApp, votre numéro est conservé dans
         l’historique de nos discussions.
       </li>
       <li>
-        <span className="text-[#d4af37] font-semibold">
+        <span className="text-white font-semibold">
           Historique de commandes
         </span>
         : vos commandes sont enregistrées dans notre base de données ultra
         sécurisée, hébergée sur un VPS Hostinger (Node.js).
       </li>
     </ul>
-    <h3 className="text-xl font-semibold text-[#d4af37] mt-8 mb-2">
+    <h3 className="text-xl font-semibold text-white mt-8 mb-2">
       Comment utilisons-nous vos données&nbsp;?
     </h3>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
@@ -72,7 +66,7 @@ const Confidentiality: React.FC = () => (
       <li>Pour répondre à vos demandes via WhatsApp ou email.</li>
       <li>Pour respecter nos obligations légales et fiscales.</li>
     </ul>
-    <h3 className="text-xl font-semibold text-[#d4af37] mt-8 mb-2">
+    <h3 className="text-xl font-semibold text-white mt-8 mb-2">
       Sécurité et conservation des données
     </h3>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
@@ -94,18 +88,13 @@ const Confidentiality: React.FC = () => (
         suppression de votre part.
       </li>
     </ul>
-    <h3 className="text-xl font-semibold text-[#d4af37] mt-8 mb-2">
-      Vos droits
-    </h3>
+    <h3 className="text-xl font-semibold text-white mt-8 mb-2">Vos droits</h3>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
       <li>
         Conformément au RGPD, vous pouvez demander à tout moment l’accès, la
         rectification ou la suppression de vos données personnelles en nous
         contactant à{" "}
-        <a
-          href="mailto:contact@sognodoro.com"
-          className="text-[#d4af37] underline"
-        >
+        <a href="mailto:contact@sognodoro.com" className="text-white underline">
           contact@sognodoro.com
         </a>
         .
@@ -119,7 +108,7 @@ const Confidentiality: React.FC = () => (
         jours.
       </li>
     </ul>
-    <h3 className="text-xl font-semibold text-[#d4af37] mt-8 mb-2">
+    <h3 className="text-xl font-semibold text-white mt-8 mb-2">
       Transparence et conformité
     </h3>
     <ul className="list-disc ml-6 mb-4 text-gray-400">
@@ -143,10 +132,7 @@ const Confidentiality: React.FC = () => (
     <p className="mt-6 text-gray-400 text-sm italic">
       Pour toute question relative à la confidentialité ou à la gestion de vos
       données, contactez-nous à{" "}
-      <a
-        href="mailto:contact@sognodoro.com"
-        className="text-[#d4af37] underline"
-      >
+      <a href="mailto:contact@sognodoro.com" className="text-white underline">
         contact@sognodoro.com
       </a>
       .

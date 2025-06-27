@@ -9,7 +9,7 @@ const backgroundVariants: Variants = {
     opacity: 1,
     transition: {
       duration: 1.2,
-      ease: [0.43, 0.13, 0.23, 0.96], // easiInOut personnalisé
+      ease: [0.43, 0.13, 0.23, 0.96],
     },
   },
 };
@@ -21,7 +21,7 @@ const textVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0, 0, 0.58, 1], // easeOut
+      ease: [0, 0, 0.58, 1],
     },
   },
 };
@@ -34,16 +34,16 @@ const buttonVariants: Variants = {
     transition: {
       delay: 0.5,
       duration: 0.4,
-      ease: [0, 0, 0.58, 1], // easeOut
+      ease: [0, 0, 0.58, 1],
     },
   },
   hover: {
     scale: 1.05,
     boxShadow:
-      "0 10px 15px -3px rgba(212, 175, 55, 0.2), 0 4px 6px -2px rgba(212, 175, 55, 0.1)",
+      "0 10px 15px -3px rgba(255,255,255,0.2), 0 4px 6px -2px rgba(255,255,255,0.1)",
     transition: {
       duration: 0.3,
-      ease: [0, 0, 0.58, 1], // easeOut
+      ease: [0, 0, 0.58, 1],
     },
   },
   tap: {
@@ -76,7 +76,7 @@ const BottomCover: React.FC = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
         <motion.h2
           variants={textVariants}
-          className="text-3xl md:text-4xl font-serif text-[#d4af37] mb-6 text-center"
+          className="text-3xl md:text-4xl font-serif text-white mb-6 text-center"
         >
           Une expérience olfactive d'exception
         </motion.h2>
@@ -96,7 +96,7 @@ const BottomCover: React.FC = () => {
         >
           <Link
             to="/shop"
-            className="px-8 py-4 bg-[#d4af37] hover:bg-[#c5a028] text-black font-medium rounded-md transition-colors duration-300 text-lg"
+            className="px-8 py-4 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300 text-lg"
           >
             Découvrir notre collection
           </Link>

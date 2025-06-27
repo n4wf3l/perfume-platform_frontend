@@ -98,7 +98,7 @@ const stepVariants: Variants = {
     },
   },
   active: {
-    backgroundColor: "#d4af37",
+    backgroundColor: "#fff", // BLANC FORT
     color: "#000",
     scale: 1,
     transition: {
@@ -115,16 +115,15 @@ const lineVariants: Variants = {
     },
   },
   active: {
-    backgroundColor: "#d4af37",
+    backgroundColor: "#fff", // BLANC FORT
     transition: {
       duration: 0.6,
     },
   },
-  // Ajouter un état pour l'animation de progression
   filling: {
-    backgroundColor: "#d4af37",
+    backgroundColor: "#fff", // BLANC FORT
     scaleX: [0, 1],
-    originX: 0, // Pour que l'animation commence de la gauche
+    originX: 0,
     transition: {
       duration: 1.2,
       ease: [0.4, 0, 0.2, 1], // ease-out
@@ -227,7 +226,7 @@ const Checkout: React.FC = () => {
       variants={fadeIn}
     >
       <motion.h1
-        className="text-3xl font-serif text-[#d4af37] mb-6"
+        className="text-3xl font-serif text-white mb-6" // BLANC FORT
         variants={titleVariants}
       >
         Paiement
@@ -282,14 +281,14 @@ const Checkout: React.FC = () => {
             {/* Step 1: Shipping Information */}
             {currentStep === 1 && (
               <motion.div
-                className="bg-black p-6 rounded-lg border border-[#d4af37]/10"
+                className="bg-black p-6 rounded-lg border border-white/10" // BLANC FORT
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
                 <motion.h2
-                  className="text-xl font-medium text-[#d4af37] mb-4"
+                  className="text-xl font-medium text-white mb-4" // BLANC FORT
                   variants={titleVariants}
                 >
                   Informations de livraison
@@ -496,14 +495,14 @@ const Checkout: React.FC = () => {
             {/* Step 2: Payment Information */}
             {currentStep === 2 && (
               <motion.div
-                className="bg-black p-6 rounded-lg border border-[#d4af37]/10"
+                className="bg-black p-6 rounded-lg border border-white/10" // BLANC FORT
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
                 <motion.h2
-                  className="text-xl font-medium text-[#d4af37] mb-4"
+                  className="text-xl font-medium text-white mb-4" // BLANC FORT
                   variants={titleVariants}
                 >
                   Paiement
@@ -754,7 +753,7 @@ const Checkout: React.FC = () => {
               <motion.button
                 type="submit"
                 disabled={isProcessing || isAnimating}
-                className={`px-8 py-3 bg-[#d4af37] hover:bg-[#c5a028] text-black font-medium rounded-md transition-colors ml-auto flex items-center ${
+                className={`px-8 py-3 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors ml-auto flex items-center ${
                   isProcessing || isAnimating
                     ? "opacity-70 cursor-not-allowed"
                     : ""
@@ -837,7 +836,7 @@ const Checkout: React.FC = () => {
           animate="visible"
         >
           <motion.div
-            className="bg-black p-6 rounded-lg border border-[#d4af37]/10 sticky top-8"
+            className="bg-black p-6 rounded-lg border border-white/10 sticky top-8" // BLANC FORT
             whileHover={{
               boxShadow:
                 "0 10px 25px -5px rgba(212,175,55,0.1), 0 8px 10px -6px rgba(212,175,55,0.05)",
@@ -845,7 +844,7 @@ const Checkout: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             <motion.h2
-              className="text-xl font-medium text-[#d4af37] mb-4"
+              className="text-xl font-medium text-white mb-4" // BLANC FORT
               variants={titleVariants}
             >
               Récapitulatif
@@ -876,7 +875,7 @@ const Checkout: React.FC = () => {
                       {item.size} × {item.quantity}
                     </p>
                   </div>
-                  <div className="text-[#d4af37]">
+                  <div className="text-white">
                     {(item.price * item.quantity).toFixed(2)}€
                   </div>
                 </motion.div>
@@ -884,7 +883,7 @@ const Checkout: React.FC = () => {
             </motion.div>
 
             <motion.div
-              className="border-t border-[#d4af37]/10 pt-4 space-y-2"
+              className="border-t border-white/10 pt-4 space-y-2"
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
@@ -904,7 +903,7 @@ const Checkout: React.FC = () => {
                 <span>{shipping.toFixed(2)}€</span>
               </motion.div>
               <motion.div
-                className="flex justify-between font-medium text-gray-200 border-t border-[#d4af37]/10 pt-2 mt-2"
+                className="flex justify-between font-medium text-white border-t border-white/10 pt-2 mt-2"
                 variants={itemVariants}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{
@@ -918,7 +917,7 @@ const Checkout: React.FC = () => {
               >
                 <span>Total</span>
                 <motion.span
-                  className="text-[#d4af37]"
+                  className="text-white"
                   initial={{ scale: 1 }}
                   animate={{
                     scale: [1, 1.05, 1],

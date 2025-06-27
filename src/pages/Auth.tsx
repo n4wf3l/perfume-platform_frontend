@@ -62,17 +62,17 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen bg-black flex flex-col justify-center items-center px-4 py-12">
       <Link to="/" className="mb-8">
-        <span className="text-[#d4af37] font-serif text-3xl">Sogno D'Oro</span>
+        <span className="text-white font-serif text-3xl">Sogno D'Oro</span>
       </Link>
 
-      <div className="w-full max-w-md bg-black rounded-lg shadow-xl border border-[#d4af37]/20 overflow-hidden">
+      <div className="w-full max-w-md bg-black rounded-lg shadow-xl border border-white/20 overflow-hidden">
         {/* Onglets */}
         <div className="flex border-b border-gray-800">
           <button
             className={`w-1/2 py-4 font-medium transition-colors ${
               activeTab === "login"
-                ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                : "text-gray-400 hover:text-[#d4af37]"
+                ? "text-white border-b-2 border-white"
+                : "text-gray-400 hover:text-white"
             }`}
             onClick={() => setActiveTab("login")}
           >
@@ -81,8 +81,8 @@ const Auth: React.FC = () => {
           <button
             className={`w-1/2 py-4 font-medium transition-colors ${
               activeTab === "reset"
-                ? "text-[#d4af37] border-b-2 border-[#d4af37]"
-                : "text-gray-400 hover:text-[#d4af37]"
+                ? "text-white border-b-2 border-white"
+                : "text-gray-400 hover:text-white"
             }`}
             onClick={() => setActiveTab("reset")}
           >
@@ -107,7 +107,7 @@ const Auth: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                  className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
                   placeholder="votre@email.com"
                 />
               </div>
@@ -126,7 +126,7 @@ const Auth: React.FC = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-2 pr-10 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                    className="w-full px-4 py-2 pr-10 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
                     placeholder="••••••••"
                   />
                   <button
@@ -188,9 +188,7 @@ const Auth: React.FC = () => {
                   type="submit"
                   disabled={isLoading}
                   className={`w-full py-3 px-4 rounded-md font-medium text-black ${
-                    isLoading
-                      ? "bg-[#c5a028]/60"
-                      : "bg-[#c5a028] hover:bg-[#b08c15]"
+                    isLoading ? "bg-white/60" : "bg-white hover:bg-gray-200"
                   } transition-colors duration-300 flex justify-center items-center`}
                   whileHover={!isLoading ? { scale: 1.02 } : {}}
                   whileTap={!isLoading ? { scale: 0.98 } : {}}
@@ -247,7 +245,7 @@ const Auth: React.FC = () => {
                   required
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
-                  className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37] focus:border-[#d4af37]"
+                  className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
                   placeholder="votre@email.com"
                 />
               </div>
@@ -263,9 +261,7 @@ const Auth: React.FC = () => {
                   type="submit"
                   disabled={isLoading}
                   className={`w-full py-3 px-4 rounded-md font-medium text-black ${
-                    isLoading
-                      ? "bg-[#c5a028]/60"
-                      : "bg-[#c5a028] hover:bg-[#b08c15]"
+                    isLoading ? "bg-white/60" : "bg-white hover:bg-gray-200"
                   } transition-colors duration-300 flex justify-center items-center`}
                   whileHover={!isLoading ? { scale: 1.02 } : {}}
                   whileTap={!isLoading ? { scale: 0.98 } : {}}
@@ -335,7 +331,7 @@ const Auth: React.FC = () => {
                     setResetSent(false);
                     setResetEmail("");
                   }}
-                  className="text-[#d4af37] hover:text-[#b08c15] text-sm font-medium"
+                  className="text-white hover:text-gray-300 text-sm font-medium"
                 >
                   Retour à la connexion
                 </button>
@@ -349,7 +345,7 @@ const Auth: React.FC = () => {
           <div className="text-center">
             <Link
               to="/"
-              className="text-gray-400 hover:text-[#d4af37] text-sm flex justify-center items-center"
+              className="text-gray-400 hover:text-white text-sm flex justify-center items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

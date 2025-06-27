@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 // Style imports
 import "./index.css";
 import ScrollToTop from "./components/ScrollToTop";
+import AutoScrollToTop from "./components/AutoScrollToTop";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
     >
       <Router>
         <div className="flex flex-col min-h-screen w-full">
+          <AutoScrollToTop />
           {/* Le Header n'apparaît pas sur les pages du dashboard */}
           <Routes>
             <Route path="/dashboard/*" element={null} />

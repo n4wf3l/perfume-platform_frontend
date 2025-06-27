@@ -25,6 +25,7 @@ const ViewProducts: React.FC = () => {
       price: "120€",
       stock: 24,
       featured: true,
+      gender: "unisexe", // <-- AJOUT
     },
     {
       id: "2",

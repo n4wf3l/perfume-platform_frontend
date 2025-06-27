@@ -15,6 +15,8 @@ interface HeaderShopProps {
   setSearchTerm: (term: string) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  selectedGender: string;
+  setSelectedGender: (gender: string) => void;
 }
 
 const HeaderShop: React.FC<HeaderShopProps> = ({
@@ -22,6 +24,8 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   setSearchTerm,
   selectedCategory,
   setSelectedCategory,
+  selectedGender,
+  setSelectedGender,
 }) => {
   return (
     <div className="mb-16">
@@ -100,6 +104,25 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
           </div>
         </div>
       </motion.div>
+
+      {/* Filtres genre */}
+      <div className="flex justify-center gap-4 mt-6">
+        {["all", "homme", "femme", "unisexe"].map((gender) => (
+          <button
+            key={gender}
+            onClick={() => setSelectedGender(gender)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+              selectedGender === gender
+                ? "bg-white text-black"
+                : "bg-gray-900 text-white hover:bg-white hover:text-black"
+            }`}
+          >
+            {gender === "all"
+              ? "Tous"
+              : gender.charAt(0).toUpperCase() + gender.slice(1)}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

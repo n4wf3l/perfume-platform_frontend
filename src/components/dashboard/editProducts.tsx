@@ -8,15 +8,17 @@ const EditProducts: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // État du formulaire modifié - retiré les champs non nécessaires et ajouté size
+  // Ajoute ingredientsDescription au state du formulaire
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    ingredientsDescription: "", // <-- AJOUT
     price: "",
     category: "",
     stock: "0",
-    size: "", // Ajout de la taille en ML
+    size: "",
     featured: false,
+    gender: "",
   });
 
   // État pour les images
@@ -40,33 +42,34 @@ const EditProducts: React.FC = () => {
         // Dans un cas réel, ce serait un appel d'API
         await new Promise((resolve) => setTimeout(resolve, 800));
 
-        // Données factices pour la démonstration - avec les vraies images
+        // Données factices pour la démonstration - ajoute ingredientsDescription
         const mockData = {
           id: id,
           name: "Aurore Mystique",
           description:
             "Aurore Mystique capture l'essence magique de l'aube, cet instant éphémère où la nuit cède sa place au jour. Des notes de tête fraîches d'agrumes s'entremêlent avec un cœur floral de jasmin et de pivoine. Le fond chaleureux de bois de cèdre et de vanille crée une empreinte olfactive durable et sophistiquée.",
+          ingredientsDescription:
+            "Notes : Agrumes, jasmin, pivoine, bois de cèdre, vanille.",
           price: "120",
-          category: "1", // Eau de Parfum
+          category: "1",
           stock: "24",
-          size: "50", // Taille en ML
+          size: "50",
           featured: true,
-          images: [
-            "/perfum1.jpg", // Chemins vers les vraies images
-            "/perfum2.jpg",
-            "/perfum3.jpg",
-          ],
+          gender: "unisexe",
+          images: ["/perfum1.jpg", "/perfum2.jpg", "/perfum3.jpg"],
         };
 
         // Mettre à jour l'état du formulaire avec les données du produit
         setFormData({
           name: mockData.name,
           description: mockData.description,
+          ingredientsDescription: mockData.ingredientsDescription || "", // <-- AJOUT
           price: mockData.price,
           category: mockData.category,
           stock: mockData.stock,
           size: mockData.size,
           featured: mockData.featured,
+          gender: mockData.gender || "",
         });
 
         // Mettre à jour les images existantes
@@ -202,13 +205,11 @@ const EditProducts: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-gray-900 border border-[#d4af37]/10 rounded-xl shadow-lg shadow-[#d4af37]/5"
+      className="bg-gray-900 border border-white/10 rounded-xl shadow-lg shadow-white/5"
     >
       <div className="p-6 border-b border-gray-800">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-serif text-[#d4af37]">
-            Modifier le Produit
-          </h2>
+          <h2 className="text-xl font-serif text-white">Modifier le Produit</h2>
           <button
             onClick={() => navigate("/dashboard/products")}
             className="inline-flex items-center px-3 py-1 border border-gray-700 text-sm font-medium rounded-md text-gray-300 bg-black hover:bg-gray-800"
@@ -261,7 +262,7 @@ const EditProducts: React.FC = () => {
                   htmlFor="description"
                   className="block text-sm font-medium text-gray-300"
                 >
-                  Description <span className="text-red-500">*</span>
+                  Histoire du produit <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="description"
@@ -270,8 +271,28 @@ const EditProducts: React.FC = () => {
                   required
                   value={formData.description}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
-                  placeholder="Description détaillée du parfum..."
+                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-white focus:ring focus:ring-white/20 focus:outline-none text-gray-300"
+                  placeholder="Décrivez l'histoire du parfum, son inspiration, etc."
+                ></textarea>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="ingredientsDescription"
+                  className="block text-sm font-medium text-gray-300 pt-4"
+                >
+                  Description ingrédients{" "}
+                  <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="ingredientsDescription"
+                  name="ingredientsDescription"
+                  rows={5}
+                  required
+                  value={formData.ingredientsDescription}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-white focus:ring focus:ring-white/20 focus:outline-none text-gray-300"
+                  placeholder="Décrivez les ingrédients, notes olfactives, etc."
                 ></textarea>
               </div>
 
@@ -383,6 +404,28 @@ const EditProducts: React.FC = () => {
                 >
                   Produit à la une
                 </label>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-gray-300"
+                >
+                  Genre <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="gender"
+                  name="gender"
+                  required
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-white focus:ring focus:ring-white/20 focus:outline-none text-gray-300"
+                >
+                  <option value="">Sélectionner un genre</option>
+                  <option value="homme">Homme</option>
+                  <option value="femme">Femme</option>
+                  <option value="unisexe">Unisexe</option>
+                </select>
               </div>
             </div>
 

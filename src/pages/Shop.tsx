@@ -13,6 +13,7 @@ const allProducts = [
     price: 149.99,
     images: ["/perfums.jpg"],
     category: "oriental",
+    gender: "unisexe",
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const allProducts = [
     price: 129.99,
     images: ["/perfum1.jpg"],
     category: "floral",
+    gender: "femme",
   },
   {
     id: 3,
@@ -29,6 +31,7 @@ const allProducts = [
     price: 139.99,
     images: ["/perfum2.jpg"],
     category: "oriental",
+    gender: "homme",
   },
   {
     id: 4,
@@ -37,6 +40,7 @@ const allProducts = [
     price: 159.99,
     images: ["/perfum3.jpg"],
     category: "woody",
+    gender: "unisexe",
   },
   {
     id: 5,
@@ -46,6 +50,7 @@ const allProducts = [
     price: 119.99,
     images: ["/perfum1.jpg"],
     category: "fresh",
+    gender: "femme",
   },
   {
     id: 6,
@@ -55,6 +60,7 @@ const allProducts = [
     price: 134.99,
     images: ["/perfum2.jpg"],
     category: "floral",
+    gender: "femme",
   },
   {
     id: 7,
@@ -64,6 +70,7 @@ const allProducts = [
     price: 144.99,
     images: ["/perfum3.jpg"],
     category: "woody",
+    gender: "homme",
   },
   {
     id: 8,
@@ -73,6 +80,7 @@ const allProducts = [
     price: 124.99,
     images: ["/perfums.jpg"],
     category: "fresh",
+    gender: "unisexe",
   },
 ];
 
@@ -81,6 +89,7 @@ const Shop: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState(allProducts);
+  const [selectedGender, setSelectedGender] = useState("all");
   const productsPerPage = 6;
 
   useEffect(() => {
@@ -102,9 +111,14 @@ const Shop: React.FC = () => {
       );
     }
 
+    // Filtre par genre
+    if (selectedGender !== "all") {
+      result = result.filter((product) => product.gender === selectedGender);
+    }
+
     setFilteredProducts(result);
     setCurrentPage(1); // Retour à la première page quand les filtres changent
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, selectedGender]);
 
   // Obtenir les produits pour la pagination
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -128,6 +142,8 @@ const Shop: React.FC = () => {
           setSearchTerm={setSearchTerm}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          selectedGender={selectedGender}
+          setSelectedGender={setSelectedGender}
         />
 
         {/* Titre de la boutique */}
@@ -143,13 +159,6 @@ const Shop: React.FC = () => {
           productsPerPage={productsPerPage}
           totalProducts={filteredProducts.length}
         />
-
-        {/* Bouton d'achat maintenant (placeholder pour action future) */}
-        <div className="text-center mt-8">
-          <button className="bg-white text-black px-6 py-2 rounded font-medium hover:bg-white/90 transition">
-            Acheter maintenant
-          </button>
-        </div>
       </div>
     </motion.div>
   );
