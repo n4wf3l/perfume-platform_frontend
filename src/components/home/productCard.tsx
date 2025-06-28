@@ -25,9 +25,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Link to={`/product/${product.id}`} className="block">
         <div className="overflow-hidden">
           <img
-            src={productImage}
+            src={product.images[0]}
             alt={product.name}
-            className="w-full object-contain group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-72 object-cover rounded-t-lg" // h-72 = 18rem, adapte si besoin
           />
         </div>
 
