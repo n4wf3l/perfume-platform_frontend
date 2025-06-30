@@ -57,7 +57,7 @@ const History: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="md:text-left text-center flex flex-col items-center md:items-start">
             <motion.h2
               className="text-3xl md:text-4xl font-serif text-white mb-6"
               variants={textVariants}
@@ -65,9 +65,9 @@ const History: React.FC = () => {
             >
               Notre Histoire
             </motion.h2>
-            <div className="space-y-4">
+            <div className="space-y-4 w-full">
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={1}
               >
@@ -79,7 +79,7 @@ const History: React.FC = () => {
                 profondes.
               </motion.p>
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={2}
               >
@@ -91,7 +91,7 @@ const History: React.FC = () => {
                 l'art olfactif.
               </motion.p>
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={3}
               >
@@ -105,7 +105,7 @@ const History: React.FC = () => {
               </motion.p>
             </div>
             <motion.div
-              className="mt-8 inline-block relative"
+              className="mt-8 inline-block relative w-full md:w-auto"
               variants={textVariants}
               custom={4}
             >
@@ -117,7 +117,7 @@ const History: React.FC = () => {
               >
                 <Link
                   to="/shop"
-                  className="relative bg-gray-900 hover:bg-gray-800 border border-white/50 text-white px-8 py-3 rounded-lg transition-all duration-300 block"
+                  className="relative bg-gray-900 hover:bg-gray-800 border border-white/50 text-white px-8 py-3 rounded-lg transition-all duration-300 block mx-auto md:mx-0"
                 >
                   Découvrir la Collection
                 </Link>

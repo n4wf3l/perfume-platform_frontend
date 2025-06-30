@@ -5,32 +5,32 @@ const faqData = [
   {
     question: "Comment choisir le parfum qui me correspond ?",
     answer:
-      "Un parfum, c’est personnel. Il évoque des souvenirs, des émotions, une identité. Je propose des inspirations variées : boisés, floraux, orientaux, gourmands... Décris-moi ce que tu aimes (ou ce que tu portes déjà), et je t’aiderai avec plaisir à trouver celui qui te correspond le mieux.",
+      "Un parfum, c’est personnel. Il évoque des souvenirs, des émotions, une identité. Nous proposons des inspirations variées : boisés, floraux, orientaux, gourmands... Décrivez-nous ce que vous aimez (ou ce que vous portez déjà), et nous vous aiderons avec plaisir à trouver celui qui vous correspond le mieux.",
   },
   {
     question: "Vos parfums sont-ils authentiques et de qualité ?",
     answer:
-      "Oui. Mes parfums sont inspirés de fragrances de niche reconnues, sélectionnées pour leur élégance et leur caractère. Je travaille avec des laboratoires sérieux et des essences de qualité, pour te proposer des parfums durables, fidèles et accessibles, sans compromis sur l’émotion.",
+      "Oui. Nos parfums sont inspirés de fragrances de niche reconnues, sélectionnées pour leur élégance et leur caractère. Nous travaillons avec des laboratoires sérieux et des essences de qualité, afin de vous proposer des parfums durables, fidèles et accessibles, sans compromis sur l’émotion.",
   },
   {
     question: "Puis-je commander un échantillon avant d’acheter ?",
     answer:
-      "Oui, c’est possible. Je sais qu’un parfum se découvre sur la peau, pas à travers un écran. Tu peux commander un échantillon pour tester tranquillement chez toi et trouver celui qui te parle vraiment.",
+      "Oui, c’est possible. Nous savons qu’un parfum se découvre sur la peau, pas à travers un écran. Vous pouvez commander un échantillon pour tester tranquillement chez vous et trouver celui qui vous parle vraiment.",
   },
   {
     question: "Quels sont les délais de livraison ?",
     answer:
-      "En moyenne, entre 2 et 5 jours ouvrables. Je prépare chaque commande avec soin et je fais tout pour que ton parfum arrive rapidement et en parfait état.",
+      "En moyenne, entre 2 et 5 jours ouvrables. Nous préparons chaque commande avec soin et faisons tout pour que votre parfum arrive rapidement et en parfait état.",
   },
   {
     question: "Comment suivre ma commande ?",
     answer:
-      "Dès l’envoi, tu reçois un mail avec un lien de suivi. Tu pourras voir en temps réel où se trouve ton colis.",
+      "Dès l’envoi, vous recevez un mail avec un lien de suivi. Vous pourrez voir en temps réel où se trouve votre colis.",
   },
   {
     question: "Puis-je retourner un parfum si je change d’avis ?",
     answer:
-      "Oui, tant que le flacon est neuf, non ouvert et dans son emballage d’origine. Tu as 14 jours pour changer d’avis, car je veux que ton achat soit un plaisir, jamais une pression.",
+      "Oui, tant que le flacon est neuf, non ouvert et dans son emballage d’origine. Vous disposez de 14 jours pour changer d’avis, car nous souhaitons que votre achat soit un plaisir, jamais une pression.",
   },
   {
     question: "Comment sont emballés les parfums ?",
@@ -40,57 +40,57 @@ const faqData = [
   {
     question: "Proposez-vous des cartes cadeaux ?",
     answer:
-      "Oui ! Si tu veux faire plaisir sans te tromper, la carte cadeau est parfaite. Je peux aussi y glisser un petit mot personnalisé si tu le souhaites.",
+      "Oui ! Si vous souhaitez faire plaisir sans vous tromper, la carte cadeau est parfaite. Nous pouvons également y glisser un petit mot personnalisé si vous le souhaitez.",
   },
   {
     question: "Puis-je offrir un parfum et faire livrer à une autre adresse ?",
     answer:
-      "Bien sûr. Il suffit d’indiquer l’adresse du destinataire lors de ta commande. Et si c’est un cadeau, tu peux aussi me demander d’ajouter un message personnalisé.",
+      "Bien sûr. Il suffit d’indiquer l’adresse du destinataire lors de votre commande. Et si c’est un cadeau, vous pouvez aussi nous demander d’ajouter un message personnalisé.",
   },
   {
     question: "Quels moyens de paiement acceptez-vous ?",
     answer:
-      "Carte bancaire, PayPal, et d’autres options selon ton pays. Le paiement est 100 % sécurisé.",
+      "Carte bancaire, PayPal, et d’autres options selon votre pays. Le paiement est 100 % sécurisé.",
   },
   {
     question: "Puis-je modifier ou annuler ma commande après validation ?",
     answer:
-      "Si ta commande n’est pas encore envoyée, oui. Contacte-moi vite et je ferai mon maximum pour t’aider.",
+      "Si votre commande n’est pas encore envoyée, oui. Contactez-nous rapidement et nous ferons notre maximum pour vous aider.",
   },
   {
     question: "Livrez-vous à l’international ?",
     answer:
-      "Oui, je livre dans plusieurs pays. Les délais et frais varient selon la destination, mais je te donnerai toutes les infos dès ta commande.",
+      "Oui, nous livrons dans plusieurs pays. Les délais et frais varient selon la destination, mais nous vous donnerons toutes les informations dès votre commande.",
   },
   {
     question: "Comment entretenir et conserver mon parfum ?",
     answer:
-      "Garde ton parfum à l’abri de la chaleur, de l’humidité et de la lumière directe. Un endroit sec, à température ambiante, c’est parfait pour qu’il garde toute son intensité.",
+      "Gardez votre parfum à l’abri de la chaleur, de l’humidité et de la lumière directe. Un endroit sec, à température ambiante, est idéal pour qu’il garde toute son intensité.",
   },
   {
     question: "Les parfums sont-ils testés sur les animaux ?",
     answer:
-      "Non. Aucun de mes parfums n’est testé sur les animaux. C’est une valeur à laquelle je tiens.",
+      "Non. Aucun de nos parfums n’est testé sur les animaux. C’est une valeur à laquelle nous tenons.",
   },
   {
     question: "Proposez-vous des parfums vegan ou naturels ?",
     answer:
-      "Non, ce ne sont pas des parfums naturels, mais des inspirations de parfums de niche. Ils sont créés avec des compositions de synthèse sûres et réglementées, sans ingrédients d’origine animale.",
+      "Non, il ne s'agit pas de parfums naturels, mais d’inspirations de parfums de niche. Ils sont créés avec des compositions de synthèse sûres et réglementées, sans ingrédients d’origine animale.",
   },
   {
     question: "Comment recevoir des conseils personnalisés ?",
     answer:
-      "Tu peux me contacter directement (par mail ou réseaux sociaux), je prends le temps de répondre à chacun. Parler parfum, c’est toujours un plaisir pour moi.",
+      "Vous pouvez nous contacter directement (par mail ou réseaux sociaux), nous prenons le temps de répondre à chacun. Parler parfum est toujours un plaisir pour nous.",
   },
   {
     question: "Que faire si mon colis est endommagé ou perdu ?",
     answer:
-      "Contacte-moi rapidement, avec une photo si possible. Je trouverai une solution rapide : ton parfum, tu dois le recevoir comme il se doit.",
+      "Contactez-nous rapidement, avec une photo si possible. Nous trouverons une solution rapide : votre parfum doit vous parvenir comme il se doit.",
   },
   {
     question: "Comment être informé(e) des nouveautés et offres ?",
     answer:
-      "Tu peux t’abonner à ma newsletter ou me suivre sur les réseaux sociaux. Je partage mes nouveautés, des conseils et aussi un peu de mon univers parfumé.",
+      "Vous pouvez vous abonner à notre newsletter ou nous suivre sur les réseaux sociaux. Nous partageons nos nouveautés, des conseils et aussi un peu de notre univers parfumé.",
   },
 ];
 

@@ -62,7 +62,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={0}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
@@ -101,7 +101,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={1}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
@@ -140,7 +140,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={2}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"

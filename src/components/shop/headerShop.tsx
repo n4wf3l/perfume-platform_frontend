@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 // Catégories en français pour l'en-tête avec style onglet
@@ -27,6 +27,8 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   selectedGender,
   setSelectedGender,
 }) => {
+  const [catDropdownOpen, setCatDropdownOpen] = useState(false);
+
   return (
     <div className="mb-16">
       <motion.h1
@@ -71,13 +73,15 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
       </motion.div>
 
       {/* Onglets de catégories */}
+      {/* Desktop : onglets, Mobile : menu déroulant en overlay plein écran */}
       <motion.div
         className="w-full overflow-x-auto scrollbar-hide"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <div className="flex justify-center min-w-max w-full pb-2">
+        {/* Desktop */}
+        <div className="hidden md:flex justify-center min-w-max w-full pb-2">
           <div className="flex space-x-8 border-b border-gray-700 w-full max-w-4xl">
             {categories.map((category) => (
               <button
@@ -101,6 +105,75 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                 )}
               </button>
             ))}
+          </div>
+        </div>
+        {/* Mobile */}
+        <div className="md:hidden flex justify-center w-full pb-2">
+          <div className="relative w-full max-w-xs">
+            <button
+              onClick={() => setCatDropdownOpen((v) => !v)}
+              className="w-full flex justify-between items-center px-4 py-3 bg-black border border-gray-700 rounded-lg text-white font-medium text-base focus:outline-none"
+            >
+              {categories.find((c) => c.id === selectedCategory)?.name ||
+                "Catégorie"}
+              <svg
+                className={`w-5 h-5 ml-2 transition-transform ${
+                  catDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {/* Overlay déroulant plein écran */}
+            <motion.div
+              initial={false}
+              animate={catDropdownOpen ? "open" : "closed"}
+              variants={{
+                open: { opacity: 1, pointerEvents: "auto" },
+                closed: { opacity: 0, pointerEvents: "none" },
+              }}
+              transition={{ duration: 0.2 }}
+              className={`fixed inset-0 z-40 bg-black/90 flex flex-col items-center justify-center ${
+                catDropdownOpen ? "" : "pointer-events-none"
+              }`}
+              style={{ display: catDropdownOpen ? "flex" : "none" }}
+            >
+              {/* Fermer */}
+              <button
+                onClick={() => setCatDropdownOpen(false)}
+                className="absolute top-6 right-6 text-white text-3xl"
+                aria-label="Fermer"
+              >
+                ×
+              </button>
+              <ul className="w-full max-w-xs space-y-4 px-6">
+                {categories.map((category) => (
+                  <li key={category.id}>
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        setCatDropdownOpen(false);
+                      }}
+                      className={`w-full text-center py-4 text-lg  rounded-lg transition ${
+                        selectedCategory === category.id
+                          ? "bg-white text-black"
+                          : "bg-black text-white hover:bg-white/10"
+                      }`}
+                    >
+                      {category.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
         </div>
       </motion.div>
