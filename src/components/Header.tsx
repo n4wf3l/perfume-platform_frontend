@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 // Ajout du composant Toast simple
 const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
@@ -36,6 +37,7 @@ const Header: React.FC = () => {
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const location = useLocation();
+  const { t, i18n } = useTranslation(); // Hook i18n
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen((v) => !v);
@@ -43,6 +45,7 @@ const Header: React.FC = () => {
   const changeLanguage = (lng: "fr" | "en" | "nl") => {
     setCurrentLanguage(lng);
     setIsLangMenuOpen(false);
+    i18n.changeLanguage(lng);
   };
 
   const isActive = (path: string) => location.pathname === path;
@@ -88,7 +91,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Accueil
+              {t("nav.home")}
             </Link>
             <Link
               to="/shop"
@@ -99,7 +102,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Boutique
+              {t("nav.shop")}
             </Link>
             <Link
               to="/about"
@@ -110,7 +113,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              À propos
+              {t("nav.about")}
             </Link>
             <Link
               to="/contact"
@@ -121,7 +124,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Contact
+              {t("nav.contact")}
             </Link>
           </nav>
 
@@ -267,7 +270,7 @@ const Header: React.FC = () => {
                     : "hover:bg-white/5"
                 }`}
               >
-                Accueil
+                {t("nav.home")}
               </Link>
               <Link
                 to="/shop"
@@ -278,7 +281,7 @@ const Header: React.FC = () => {
                     : "hover:bg-white/5"
                 }`}
               >
-                Boutique
+                {t("nav.shop")}
               </Link>
               <Link
                 to="/about"
@@ -289,7 +292,7 @@ const Header: React.FC = () => {
                     : "hover:bg-white/5"
                 }`}
               >
-                À propos
+                {t("nav.about")}
               </Link>
               <Link
                 to="/contact"
@@ -300,7 +303,7 @@ const Header: React.FC = () => {
                     : "hover:bg-white/5"
                 }`}
               >
-                Contact
+                {t("nav.contact")}
               </Link>
 
               {/* Langues */}
