@@ -30,7 +30,9 @@ const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
   </div>
 );
 
-const Header: React.FC = () => {
+const Header: React.FC<{ showMobileHeader?: boolean }> = ({
+  showMobileHeader = true,
+}) => {
   const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -69,7 +71,7 @@ const Header: React.FC = () => {
   };
 
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const isHome = location.pathname === "/";
 
   // Noms longs pour le menu déroulant
   const languageLabels = {
@@ -88,6 +90,46 @@ const Header: React.FC = () => {
   // Lien WhatsApp (remplace le numéro par le tien)
   const whatsappUrl = "https://wa.me/33612345678";
 
+  // Ajoute ce bloc juste avant le return :
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  if (isHome && isMobile && !showMobileHeader && !isMenuOpen) {
+    return null;
+  }
+  if (isHome && isMobile && !isMenuOpen) {
+    return (
+      <header className="bg-black border-b border-white/40 fixed top-0 left-0 w-full z-40">
+        <div className="flex justify-between items-center h-16 px-4">
+          {/* Espaceur pour aligner à droite */}
+          <span className="w-6" />
+          <button
+            onClick={toggleMenu}
+            className="bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
+            aria-label="Ouvrir le menu"
+          >
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+    );
+  }
+
+  function isActive(path: string) {
+    return location.pathname === path;
+  }
+
   return (
     <header className="bg-black border-b border-white/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,9 +137,12 @@ const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-white font-serif text-2xl md:text-3xl">
-                Sogno D'Oro
-              </span>
+              {/* Affiche le logo sur desktop partout, et sur mobile sauf sur la Home */}
+              {(!isHome || !isMobile) && (
+                <span className="text-white font-serif text-2xl md:text-3xl">
+                  Sogno D'Oro
+                </span>
+              )}
             </Link>
           </div>
 
@@ -204,10 +249,10 @@ const Header: React.FC = () => {
               </AnimatePresence>
             </div>
 
-            {/* Cart */}
+            {/* Cart - Masqué en mobile */}
             <button
               onClick={() => setShowToast(true)}
-              className="text-gray-300 hover:text-white"
+              className="text-gray-300 hover:text-white hidden md:block"
               aria-label="Ouvrir le panier"
             >
               <div className="relative">
@@ -231,10 +276,10 @@ const Header: React.FC = () => {
               </div>
             </button>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button - visible uniquement sur mobile */}
             <button
               onClick={toggleMenu}
-              className="md:hidden bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-white focus:outline-none"
+              className="md:hidden bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
               aria-label="Ouvrir le menu"
             >
               <svg
@@ -261,71 +306,75 @@ const Header: React.FC = () => {
         {isMenuOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+            style={{
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              background: "rgba(0,0,0,0.85)",
+            }}
           >
             {/* Close button */}
-            <button
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.25 }}
               onClick={toggleMenu}
               className="absolute top-6 right-6 text-white hover:text-gray-300 transition"
               aria-label="Fermer le menu"
             >
               <X size={32} />
-            </button>
+            </motion.button>
 
             <motion.nav
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col items-center space-y-8 text-white text-xl font-light w-full px-8"
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex flex-col items-center space-y-8 w-full px-8"
             >
-              <Link
-                to="/"
-                onClick={toggleMenu}
-                className={`w-full text-center py-3 rounded-lg transition ${
-                  isActive("/")
-                    ? "bg-white/10 text-white font-semibold"
-                    : "hover:bg-white/5"
-                }`}
-              >
-                {t("nav.home")}
-              </Link>
-              <Link
-                to="/shop"
-                onClick={toggleMenu}
-                className={`w-full text-center py-3 rounded-lg transition ${
-                  isActive("/shop")
-                    ? "bg-white/10 text-white font-semibold"
-                    : "hover:bg-white/5"
-                }`}
-              >
-                {t("nav.shop")}
-              </Link>
-              <Link
-                to="/about"
-                onClick={toggleMenu}
-                className={`w-full text-center py-3 rounded-lg transition ${
-                  isActive("/about")
-                    ? "bg-white/10 text-white font-semibold"
-                    : "hover:bg-white/5"
-                }`}
-              >
-                {t("nav.about")}
-              </Link>
-              <Link
-                to="/contact"
-                onClick={toggleMenu}
-                className={`w-full text-center py-3 rounded-lg transition ${
-                  isActive("/contact")
-                    ? "bg-white/10 text-white font-semibold"
-                    : "hover:bg-white/5"
-                }`}
-              >
-                {t("nav.contact")}
-              </Link>
+              {[
+                { to: "/", label: t("nav.home"), path: "/" },
+                { to: "/shop", label: t("nav.shop"), path: "/shop" },
+                { to: "/about", label: t("nav.about"), path: "/about" },
+                { to: "/contact", label: t("nav.contact"), path: "/contact" },
+              ].map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <motion.div
+                    key={item.to}
+                    className="w-full flex flex-col items-center"
+                    initial={false}
+                    animate={active ? "active" : "inactive"}
+                  >
+                    <Link
+                      to={item.to}
+                      onClick={toggleMenu}
+                      className={`w-full text-center py-3 transition font-sans font-semibold uppercase tracking-wide text-lg ${
+                        active ? "text-white" : "text-gray-300 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                    {/* Ligne dynamique sous le lien actif */}
+                    <motion.div
+                      layoutId="mobile-menu-underline"
+                      className="h-0.5 bg-white rounded-full mt-1"
+                      initial={false}
+                      animate={{
+                        width: active ? "60%" : "0%",
+                        opacity: active ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.35 }}
+                      style={{ margin: "0 auto" }}
+                    />
+                  </motion.div>
+                );
+              })}
 
               {/* Langues */}
               <div className="flex flex-row justify-center items-center gap-6 pt-6 w-full">
@@ -336,11 +385,21 @@ const Header: React.FC = () => {
                       changeLanguage(lng);
                       toggleMenu();
                     }}
-                    className="relative text-lg font-bold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition"
+                    className="relative text-lg font-extrabold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition"
+                    style={{
+                      fontFamily: "var(--font-serif, serif)",
+                      letterSpacing: "0.15em",
+                    }}
                   >
-                    {lng}
+                    {lng.toUpperCase()}
                     {currentLanguage === lng && (
-                      <span className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-white rounded-full" />
+                      <motion.span
+                        layoutId="lang-underline"
+                        className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-white rounded-full"
+                        initial={false}
+                        animate={{ opacity: 1, width: "100%" }}
+                        transition={{ duration: 0.35 }}
+                      />
                     )}
                   </button>
                 ))}

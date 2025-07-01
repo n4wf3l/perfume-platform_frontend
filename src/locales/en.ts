@@ -25,6 +25,9 @@ const en = {
     womenCollectionSubtitle:
       "Elegant and captivating perfumes that reveal femininity in all its facets.",
     womenCollectionButton: "Explore",
+    offerIt: "Offer it",
+    forHer: "For Her",
+    forHim: "For Him",
   },
   shop: {
     headerTitle: "Our Collection",

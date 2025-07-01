@@ -218,6 +218,54 @@ const ProductDetail: React.FC = () => {
 
             {/* Composant SeeAlso */}
             <SeeAlso relatedProducts={relatedProductsDemo} />
+
+            <div className="mt-16">
+              <h3 className="text-2xl font-serif text-white mb-6">
+                Vous aimerez aussi
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {relatedProductsDemo.map((product, idx) => {
+                  const isMobile =
+                    typeof window !== "undefined" && window.innerWidth < 768;
+                  const variants = isMobile
+                    ? {
+                        hidden: { opacity: 0, x: idx % 2 === 0 ? -80 : 80 },
+                        visible: { opacity: 1, x: 0 },
+                      }
+                    : {
+                        hidden: { opacity: 0, y: 40 },
+                        visible: { opacity: 1, y: 0 },
+                      };
+
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true, amount: 0.3 }}
+                      variants={variants}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                      className="bg-gray-900 rounded-xl p-6 flex flex-col items-center"
+                    >
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-32 h-32 object-cover rounded-lg mb-4"
+                      />
+                      <h4 className="text-lg font-semibold text-white mb-2">
+                        {product.name}
+                      </h4>
+                      <p className="text-gray-300 mb-2">
+                        {product.description}
+                      </p>
+                      <span className="text-white font-bold">
+                        {product.price} €
+                      </span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
           </>
         )}
       </div>

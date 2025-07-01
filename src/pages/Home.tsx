@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Banner from "../components/home/banner";
-import ProductCard from "../components/home/productCard";
-import NewPerfums from "../components/home/newPerfums";
-import TwoCovers from "../components/home/twoCovers";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { useTranslation } from "react-i18next"; // Ajout import
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import Banner from "../components/home/banner";
+import ProductCard from "../components/home/productCard";
+import TwoCovers from "../components/home/twoCovers";
+import NewPerfums from "../components/home/newPerfums";
+import Header from "../components/Header";
 
 // Mock featured product data
 const featuredProduct = {
@@ -48,10 +50,11 @@ const fadeIn = {
 };
 
 const Home: React.FC = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const productsRef = useRef(null);
   const collectionRef = useRef(null);
-  const { t } = useTranslation(); // Ajout hook
 
   const productsInView = useInView(productsRef, {
     once: true,
@@ -62,12 +65,16 @@ const Home: React.FC = () => {
     margin: "-100px",
   });
 
+  // Gère le responsive
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 500);
-    return () => clearTimeout(timer);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Handlers boutons
+  const goToWomen = () => navigate("/shop?gender=femme");
+  const goToMen = () => navigate("/shop?gender=homme");
 
   return (
     <motion.div
@@ -76,19 +83,121 @@ const Home: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Hero Section */}
-      <motion.section
-        className="w-full h-screen relative mb-16"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <Banner
-          product={featuredProduct}
-          title={t("home.bannerTitle")}
-          subtitle={t("home.bannerSubtitle")}
-        />
-      </motion.section>
+      {/* Hero Mobile (cover + boutons) */}
+      {isMobile ? (
+        <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
+          {/* Banner cover en fond */}
+          <div className="absolute inset-0 z-0">
+            <Banner product={featuredProduct} title="" subtitle="" />
+          </div>
+          {/* Overlay noir pour foncer la cover */}
+          <div className="absolute inset-0 bg-black/60 z-10" />
+          {/* Hero mobile */}
+          <div className="relative z-20 flex flex-col items-center justify-center min-h-screen pt-24 pb-12">
+            <motion.h1
+              className="font-serif text-5xl mb-8 text-center"
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Sogno D'Oro
+            </motion.h1>
+            {/* Slogan italien sous le titre */}
+            <motion.p
+              className="mb-6 text-2xl text-white"
+              style={{
+                fontFamily: "'Dancing Script', cursive",
+                fontWeight: 700,
+                letterSpacing: "0.02em",
+                textShadow: "0 1px 8px rgba(0,0,0,0.25)",
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+            >
+              Il profumo dei tuoi sogni
+            </motion.p>
+            <motion.div
+              className="flex items-center justify-center mb-10 w-full"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {/* Ligne gauche */}
+              <motion.div
+                className="h-0.5 bg-white rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "30%" }}
+                transition={{ duration: 1, delay: 0.3, ease: "easeInOut" }}
+                style={{ marginRight: 16 }}
+              />
+              {/* Texte */}
+              <span className="text-lg font-semibold tracking-widest uppercase whitespace-nowrap">
+                {t("home.offerIt") || "Offrez-le"}
+              </span>
+              {/* Ligne droite */}
+              <motion.div
+                className="h-0.5 bg-white rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: "30%" }}
+                transition={{ duration: 1, delay: 0.3, ease: "easeInOut" }}
+                style={{ marginLeft: 16 }}
+              />
+            </motion.div>
+            <motion.div
+              className="flex flex-col gap-6 w-full px-8"
+              initial={{ opacity: 0, y: 80 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <motion.button
+                className="w-full py-4 rounded-full bg-white text-black font-semibold text-lg shadow-lg uppercase"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={goToWomen}
+              >
+                {t("home.forHer")?.toUpperCase() || "POUR ELLE"}
+              </motion.button>
+              <motion.button
+                className="w-full py-4 rounded-full bg-white text-black font-semibold text-lg shadow-lg uppercase"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={goToMen}
+              >
+                {t("home.forHim")?.toUpperCase() || "POUR LUI"}
+              </motion.button>
+            </motion.div>
+          </div>
+        </div>
+      ) : (
+        <motion.section
+          className="w-full relative mb-8 md:mb-12"
+          style={{
+            minHeight: "480px",
+            height: "auto",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <Banner
+            product={featuredProduct}
+            title={t("home.bannerTitle")}
+            subtitle={t("home.bannerSubtitle")}
+          />
+        </motion.section>
+      )}
+
+      {/* Header mobile toujours affiché */}
+      {isMobile && (
+        <div className="fixed top-0 left-0 w-full z-50">
+          <Header />
+        </div>
+      )}
 
       {/* Featured Products Section */}
       <section className="py-10 mb-16 w-full" ref={productsRef}>

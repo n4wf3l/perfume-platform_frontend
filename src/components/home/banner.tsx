@@ -28,6 +28,9 @@ const Banner: React.FC<BannerProps> = ({ product, title, subtitle }) => {
       ? product.images[0]
       : defaultBgImage;
 
+  // Détection mobile simple
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <div className="relative w-full h-full min-h-screen overflow-hidden">
       {/* Background image avec animation */}
@@ -37,30 +40,57 @@ const Banner: React.FC<BannerProps> = ({ product, title, subtitle }) => {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.4)", // Fond plus sombre
+          filter: "brightness(0.4)",
+          transition: isMobile
+            ? "opacity 1.2s cubic-bezier(0.4,0,0.2,1)"
+            : undefined,
+          opacity: isMobile ? 0.0 : 1,
+          animation: isMobile
+            ? "bannerFadeIn 1.2s cubic-bezier(0.4,0,0.2,1) forwards"
+            : undefined,
         }}
       />
-
-      {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-10">
-        <h1 className="font-serif text-5xl md:text-7xl text-white mb-4">
-          {t("home.bannerTitle")}
-        </h1>
-        <p className="text-xl md:text-2xl max-w-2xl mb-8">
-          {t("home.bannerSubtitle")}
-        </p>
-        <div className="space-y-6">
-          <h2 className="font-serif text-3xl text-white">{product.name}</h2>
-          <p className="text-lg max-w-lg">{product.description}</p>
-          <p className="text-2xl text-white">{product.price.toFixed(2)} €</p>
-          <Link
-            to={`/product/${product.id}`}
-            className="inline-block px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
-          >
-            {t("home.exploreButton")}
-          </Link>
+      {/* Dégradé overlay pour mobile */}
+      {isMobile && (
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%)",
+          }}
+        />
+      )}
+      {/* Affiche le contenu SEULEMENT si pas mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-10">
+          <h1 className="font-serif text-5xl md:text-7xl text-white mb-4">
+            {t("home.bannerTitle")}
+          </h1>
+          <p className="text-xl md:text-2xl max-w-2xl mb-8">
+            {t("home.bannerSubtitle")}
+          </p>
+          <div className="space-y-6">
+            <h2 className="font-serif text-3xl text-white">{product.name}</h2>
+            <p className="text-lg max-w-lg">{product.description}</p>
+            <p className="text-2xl text-white">{product.price.toFixed(2)} €</p>
+            <Link
+              to={`/product/${product.id}`}
+              className="inline-block px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
+            >
+              {t("home.exploreButton")}
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
+      {/* Animation keyframes pour fade-in mobile */}
+      <style>
+        {`
+          @keyframes bannerFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+        `}
+      </style>
     </div>
   );
 };

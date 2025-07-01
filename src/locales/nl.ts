@@ -26,6 +26,9 @@ const nl = {
     womenCollectionSubtitle:
       "Elegante en betoverende parfums die vrouwelijkheid in al haar facetten onthullen.",
     womenCollectionButton: "Ontdekken",
+    offerIt: "Geef het cadeau",
+    forHer: "Voor Haar",
+    forHim: "Voor Hem",
   },
   shop: {
     headerTitle: "Onze Collectie",
