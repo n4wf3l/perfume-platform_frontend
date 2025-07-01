@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import ProductCard from "./productCard";
 
 // Données pour les nouveaux parfums - avec les mêmes images que les produits phares
@@ -44,6 +45,7 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
   title = "Nouveaux parfums",
   subtitle = "Découvrez nos créations les plus récentes, alliant innovation et tradition.",
 }) => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
 

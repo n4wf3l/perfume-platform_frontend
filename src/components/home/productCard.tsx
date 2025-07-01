@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface Product {
   id: number;
@@ -14,6 +15,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { t } = useTranslation();
+
   // Assurer qu'une image est toujours disponible
   const productImage =
     product.images && product.images.length > 0
@@ -41,7 +44,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {product.price.toFixed(2)} €
             </span>
             <button className="px-4 py-2 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300">
-              Voir
+              {t("home.seeButton", "Voir")}
             </button>
           </div>
         </div>

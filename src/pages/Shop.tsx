@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import HeaderShop from "../components/shop/headerShop";
 import Products from "../components/shop/products";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 
 // Produits avec descriptions en français et images mises à jour
 const allProducts = [
@@ -85,12 +87,29 @@ const allProducts = [
 ];
 
 const Shop: React.FC = () => {
+  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const genderParam = searchParams.get("gender"); // "homme" ou "femme" ou null
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredProducts, setFilteredProducts] = useState(allProducts);
   const [selectedGender, setSelectedGender] = useState("all");
   const productsPerPage = 6;
+
+  // Met à jour le filtre si le paramètre d'URL change
+  useEffect(() => {
+    if (
+      genderParam === "homme" ||
+      genderParam === "femme" ||
+      genderParam === "unisexe"
+    ) {
+      setSelectedGender(genderParam);
+    } else {
+      setSelectedGender("all");
+    }
+  }, [genderParam]);
 
   useEffect(() => {
     let result = allProducts;
@@ -148,7 +167,7 @@ const Shop: React.FC = () => {
 
         {/* Titre de la boutique */}
         <h1 className="text-4xl font-serif text-white mb-8 text-center">
-          Boutique
+          {t("shop.title")}
         </h1>
 
         {/* Section des produits et pagination */}

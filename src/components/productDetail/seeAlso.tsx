@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface Product {
   id: number;
@@ -14,6 +15,8 @@ interface SeeAlsoProps {
 }
 
 const SeeAlso: React.FC<SeeAlsoProps> = ({ relatedProducts = [] }) => {
+  const { t } = useTranslation(); // Ajout hook
+
   return (
     <motion.div
       className="mt-20"
@@ -22,7 +25,7 @@ const SeeAlso: React.FC<SeeAlsoProps> = ({ relatedProducts = [] }) => {
       transition={{ duration: 0.8, delay: 0.7 }}
     >
       <h2 className="text-2xl font-serif text-white mb-6 text-center">
-        Vous pourriez aussi aimer
+        {t("product.seeAlso")}
       </h2>
       <div className="w-24 h-0.5 bg-white mx-auto mb-10"></div>
 
@@ -52,9 +55,7 @@ const SeeAlso: React.FC<SeeAlsoProps> = ({ relatedProducts = [] }) => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-400">
-          Aucun produit similaire disponible pour le moment.
-        </p>
+        <p className="text-center text-gray-400">{t("product.noRelated")}</p>
       )}
     </motion.div>
   );

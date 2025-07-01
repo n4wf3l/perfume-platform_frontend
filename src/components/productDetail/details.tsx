@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface ProductDetails {
   name: string;
@@ -22,20 +23,28 @@ const Details: React.FC<DetailsProps> = ({
   onAddToCart,
   onPayPalClick,
 }) => {
+  const { t } = useTranslation(); // Ajout hook
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
-  // Format de la catégorie pour l'affichage
+  // Format de la catégorie pour l'affichage (traduction dynamique)
   const formatCategory = (category: string) => {
     const categories: { [key: string]: string } = {
-      oriental: "Oriental",
-      floral: "Floral",
-      woody: "Boisé",
-      fresh: "Frais",
+      oriental: t("product.categories.oriental"),
+      floral: t("product.categories.floral"),
+      woody: t("product.categories.woody"),
+      fresh: t("product.categories.fresh"),
     };
     return (
       categories[category] ||
       category.charAt(0).toUpperCase() + category.slice(1)
     );
+  };
+
+  // Traduction dynamique du genre
+  const formatGender = (gender?: string) => {
+    if (gender === "male") return t("product.genders.male");
+    if (gender === "female") return t("product.genders.female");
+    return t("product.genders.unisex");
   };
 
   return (
@@ -49,42 +58,40 @@ const Details: React.FC<DetailsProps> = ({
       <div className=" border border-white/20 rounded-xl p-8 shadow-lg w-full max-w-xl mx-auto">
         <h1 className="text-4xl font-serif text-white mb-2">{product.name}</h1>
         <div className="uppercase text-xs tracking-widest text-gray-300 mb-4">
-          Extrait de parfum
+          {t("product.extrait")}
         </div>
         <div className="flex flex-wrap gap-4 mb-4">
           <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-400">Taille</span>
+            <span className="text-xs text-gray-400">{t("product.size")}</span>
             <span className="text-base text-white font-medium">
               {product.size}
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-400">Catégorie</span>
+            <span className="text-xs text-gray-400">
+              {t("product.category")}
+            </span>
             <span className="text-base text-white font-medium">
               {formatCategory(product.category)}
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-xs text-gray-400">Genre</span>
+            <span className="text-xs text-gray-400">{t("product.gender")}</span>
             <span className="text-base text-white font-medium">
-              {product.gender === "male"
-                ? "Homme"
-                : product.gender === "female"
-                ? "Femme"
-                : "Mixte"}
+              {formatGender(product.gender)}
             </span>
           </div>
         </div>
         <div className="flex items-center justify-between mb-4">
-          <span className="text-gray-400 text-sm">Prix</span>
+          <span className="text-gray-400 text-sm">{t("product.price")}</span>
           <span className="text-2xl text-white font-semibold">
             {product.price.toFixed(2)} €
           </span>
         </div>
         <div className="flex items-center justify-between mb-6">
-          <span className="text-gray-400 text-sm">Stock</span>
+          <span className="text-gray-400 text-sm">{t("product.stock")}</span>
           <span className="px-2 py-1 text-green-400 rounded-md text-xs">
-            Disponible
+            {t("product.available")}
           </span>
         </div>
         <div className="flex flex-col gap-3">
@@ -94,7 +101,7 @@ const Details: React.FC<DetailsProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            Ajouter au panier
+            {t("product.addToCart")}
           </motion.button>
           <motion.button
             className="w-full px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-md transition-colors duration-300"
@@ -102,7 +109,9 @@ const Details: React.FC<DetailsProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {showPaymentOptions ? "Masquer les options" : "Acheter maintenant"}
+            {showPaymentOptions
+              ? t("product.hideOptions")
+              : t("product.buyNow")}
           </motion.button>
         </div>
         {/* Options de paiement */}

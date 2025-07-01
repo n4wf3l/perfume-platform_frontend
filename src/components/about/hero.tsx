@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const Hero: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Ajout de CSS pour un défilement fluide
   useEffect(() => {
-    // On ajoute un style global pour assurer le défilement doux sur toutes les ancres
     const styleElement = document.createElement("style");
     styleElement.innerHTML = `
       html {
@@ -81,7 +83,7 @@ const Hero: React.FC = () => {
           initial="hidden"
           animate="visible"
         >
-          L'Art du Parfum
+          {t("about.heroTitle")}
         </motion.h1>
 
         <motion.p
@@ -90,14 +92,14 @@ const Hero: React.FC = () => {
           initial="hidden"
           animate="visible"
         >
-          Découvrez l'histoire et l'inspiration derrière nos créations parfumées
+          {t("about.heroSubtitle")}
         </motion.p>
 
         {/* Flèche avec un anchor link vers le Header - animation avancée */}
         <motion.a
           href="#brand-header"
           className="mt-16 cursor-pointer focus:outline-none hover:scale-110 transition-transform duration-300"
-          aria-label="Défiler vers la présentation de notre marque"
+          aria-label={t("about.scrollToBrand")}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8 }}

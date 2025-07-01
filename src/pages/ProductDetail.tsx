@@ -6,6 +6,15 @@ import Details from "../components/productDetail/details";
 import SeeAlso from "../components/productDetail/seeAlso";
 import Toast from "../components/common/Toast";
 import Description from "../components/productDetail/description";
+import { useTranslation } from "react-i18next"; // Ajout import
+
+// Skeleton Loader
+const Skeleton = () => (
+  <div className="flex flex-col lg:flex-row gap-10 items-center justify-center min-h-[600px] animate-pulse">
+    <div className="w-80 h-96 bg-gray-800 rounded-xl" />
+    <div className="w-full max-w-xl h-96 bg-gray-800 rounded-xl" />
+  </div>
+);
 
 // Données des produits (simulant une API)
 const productsData = [
@@ -58,6 +67,7 @@ const relatedProductsDemo = [
 ];
 
 const ProductDetail: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<any>(null);
@@ -68,7 +78,7 @@ const ProductDetail: React.FC = () => {
 
   // Effet pour charger le produit
   useEffect(() => {
-    // Simuler la récupération API avec un court délai
+    setLoading(true);
     const timer = setTimeout(() => {
       const foundProduct = productsData.find((p) => p.id === Number(id));
       setProduct(foundProduct || null);
@@ -104,17 +114,13 @@ const ProductDetail: React.FC = () => {
   // Gestion du toast pour PayPal
   const handlePayPalClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setToastMessage(
-      "Le système de paiement PayPal est actuellement en maintenance. Veuillez passer par WhatsApp."
-    );
+    setToastMessage(t("product.paypalMaintenance"));
     setShowToast(true);
   };
 
   // Gestion du toast pour Ajouter au panier
   const handleAddToCart = () => {
-    setToastMessage(
-      "Le système de paiement n'est actuellement pas disponible. Veuillez nous contacter via WhatsApp."
-    );
+    setToastMessage(t("product.cartUnavailable"));
     setShowToast(true);
   };
 
@@ -156,21 +162,14 @@ const ProductDetail: React.FC = () => {
               d="M10 19l-7-7m0 0l7-7m-7 7h18"
             />
           </svg>
-          Retour à la boutique
+          {t("product.backToShop")}
         </Link>
 
-        {loading && (
-          <motion.div
-            className="min-h-screen bg-black flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="text-white text-2xl">Chargement...</div>
-          </motion.div>
-        )}
+        {/* Skeleton Loader */}
+        {loading && <Skeleton />}
 
-        {!product && (
+        {/* Produit non trouvé */}
+        {!loading && !product && (
           <motion.div
             className="min-h-screen bg-black py-12 px-4"
             initial={{ opacity: 0 }}
@@ -179,49 +178,48 @@ const ProductDetail: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto text-center">
               <h2 className="text-3xl font-serif text-white mb-4">
-                Produit non trouvé
+                {t("product.notFoundTitle")}
               </h2>
-              <p className="text-white mb-8">
-                Nous n'avons pas pu trouver le parfum que vous recherchez.
-              </p>
+              <p className="text-white mb-8">{t("product.notFoundText")}</p>
               <button
                 onClick={() => navigate("/shop")}
                 className="px-6 py-3 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300"
               >
-                Retour à la boutique
+                {t("product.backToShop")}
               </button>
             </div>
           </motion.div>
         )}
 
-        {product && (
-          <div className="flex flex-col lg:flex-row gap-10 items-center justify-center min-h-[600px]">
-            {/* Composant Images */}
-            <Images
-              images={product.images}
-              currentImageIndex={currentImageIndex}
-              setCurrentImageIndex={setCurrentImageIndex}
-              productName={product.name}
+        {/* Affichage du produit */}
+        {!loading && product && (
+          <>
+            <div className="flex flex-col lg:flex-row gap-10 items-center justify-center min-h-[600px]">
+              {/* Composant Images */}
+              <Images
+                images={product.images}
+                currentImageIndex={currentImageIndex}
+                setCurrentImageIndex={setCurrentImageIndex}
+                productName={product.name}
+              />
+
+              {/* Composant Details */}
+              <Details
+                product={product}
+                onAddToCart={handleAddToCart}
+                onPayPalClick={handlePayPalClick}
+              />
+            </div>
+
+            <Description
+              description={product.description}
+              ingredientsDescription={product.ingredients}
             />
 
-            {/* Composant Details */}
-            <Details
-              product={product}
-              onAddToCart={handleAddToCart}
-              onPayPalClick={handlePayPalClick}
-            />
-          </div>
+            {/* Composant SeeAlso */}
+            <SeeAlso relatedProducts={relatedProductsDemo} />
+          </>
         )}
-
-        {product && (
-          <Description
-            description={product.description}
-            ingredientsDescription={product.ingredients}
-          />
-        )}
-
-        {/* Composant SeeAlso */}
-        <SeeAlso relatedProducts={relatedProductsDemo} />
       </div>
     </motion.div>
   );

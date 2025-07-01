@@ -1,7 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const TwoGifs: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   return (
     <section
       className="py-16 relative"
@@ -23,7 +26,7 @@ const TwoGifs: React.FC = () => {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          L'Art de la Parfumerie
+          {t("about.twoGifsTitle")}
         </motion.h2>
 
         <div className="flex flex-col md:flex-row gap-8 justify-center items-center">
@@ -38,16 +41,15 @@ const TwoGifs: React.FC = () => {
             <div className="overflow-hidden rounded-lg shadow-lg shadow-white/20">
               <img
                 src="/parfumgif.webp"
-                alt="Processus de création de parfum"
+                alt={t("about.twoGifsFirstAlt")}
                 className="w-full h-auto object-cover rounded-lg hover:scale-105 transition-transform duration-700"
               />
               <div className="p-4 bg-black backdrop-blur-sm">
                 <h3 className="text-lg font-serif text-white">
-                  La création artistique
+                  {t("about.twoGifsFirstTitle")}
                 </h3>
                 <p className="text-gray-300 text-sm mt-2">
-                  Nos maîtres parfumeurs travaillent avec passion pour créer des
-                  fragrances uniques et captivantes.
+                  {t("about.twoGifsFirstText")}
                 </p>
               </div>
             </div>
@@ -64,16 +66,15 @@ const TwoGifs: React.FC = () => {
             <div className="overflow-hidden rounded-lg shadow-lg shadow-white/20">
               <img
                 src="/parfumgif.webp"
-                alt="Production de parfum de luxe"
+                alt={t("about.twoGifsSecondAlt")}
                 className="w-full h-auto object-cover rounded-lg hover:scale-105 transition-transform duration-700"
               />
               <div className="p-4 bg-black backdrop-blur-sm">
                 <h3 className="text-lg font-serif text-white">
-                  L'excellence technique
+                  {t("about.twoGifsSecondTitle")}
                 </h3>
                 <p className="text-gray-300 text-sm mt-2">
-                  Notre savoir-faire et notre rigueur garantissent des parfums
-                  d'exception aux senteurs inoubliables.
+                  {t("about.twoGifsSecondText")}
                 </p>
               </div>
             </div>

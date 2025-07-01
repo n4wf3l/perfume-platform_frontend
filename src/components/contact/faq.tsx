@@ -1,12 +1,15 @@
 import React from "react";
 import { motion, easeOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface FaqProps {
   // Props si nécessaire
 }
 
 const FAQ: React.FC<FaqProps> = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -47,11 +50,10 @@ const FAQ: React.FC<FaqProps> = () => {
           className="text-3xl font-serif text-white mb-6"
           variants={fadeInUp}
         >
-          Questions Fréquentes
+          {t("contact.faqTitle")}
         </motion.h2>
         <motion.p className="text-gray-300 mb-10" variants={fadeInUp}>
-          Consultez notre section FAQ pour des réponses aux questions les plus
-          courantes concernant nos produits et services.
+          {t("contact.faqSubtitle")}
         </motion.p>
         <motion.div
           variants={fadeInUp}
@@ -75,7 +77,7 @@ const FAQ: React.FC<FaqProps> = () => {
               href="/confidentiality#faq"
               className="relative inline-flex items-center px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded-md transition-colors duration-300"
             >
-              Voir la FAQ
+              {t("contact.faqButton")}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 ml-2"

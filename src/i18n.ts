@@ -1,7 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-// import Backend from "i18next-http-backend"; // NE PAS utiliser le backend ici
 
 import enFileImport from "./locales/en";
 import frFileImport from "./locales/fr";
@@ -12,7 +11,6 @@ const frFile = (frFileImport as any).default || frFileImport;
 const nlFile = (nlFileImport as any).default || nlFileImport;
 
 i18n
-  // .use(Backend) // NE PAS utiliser le backend pour du local
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -25,6 +23,18 @@ i18n
       en: { translation: enFile },
       fr: { translation: frFile },
       nl: { translation: nlFile },
+    },
+    detection: {
+      // Priorité : localStorage > querystring > navigator > htmlTag > path > subdomain
+      order: [
+        "localStorage",
+        "querystring",
+        "navigator",
+        "htmlTag",
+        "path",
+        "subdomain",
+      ],
+      caches: ["localStorage"], // Stocke la langue dans le localStorage
     },
   });
 

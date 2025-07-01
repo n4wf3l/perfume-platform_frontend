@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface DescriptionProps {
   description: string;
@@ -9,6 +10,7 @@ const Description: React.FC<DescriptionProps> = ({
   description,
   ingredientsDescription,
 }) => {
+  const { t } = useTranslation(); // Ajout hook
   const firstLetter = description.charAt(0);
   const rest = description.slice(1);
 
@@ -25,7 +27,7 @@ const Description: React.FC<DescriptionProps> = ({
           </span>
           <div className="flex-1">
             <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4">
-              Histoire
+              {t("product.description")}
             </span>
             <p className="font-serif text-lg text-white leading-relaxed tracking-wide">
               {rest}
@@ -45,7 +47,7 @@ const Description: React.FC<DescriptionProps> = ({
             </span>
             <div className="flex-1">
               <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4">
-                Ingrédients
+                {t("product.ingredients")}
               </span>
               <p className="font-serif text-base text-white tracking-wide">
                 {ingredientsDescription}

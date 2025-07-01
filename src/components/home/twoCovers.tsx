@@ -1,23 +1,11 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-interface TwoCoversProps {
-  title1?: string;
-  subtitle1?: string;
-  buttonText1?: string;
-  title2?: string;
-  subtitle2?: string;
-  buttonText2?: string;
-}
-
-const TwoCovers: React.FC<TwoCoversProps> = ({
-  title1 = "Collection Homme",
-  subtitle1 = "Des fragrances intenses et sophistiquées, pour l'homme qui affirme sa personnalité.",
-  buttonText1 = "Découvrir",
-  title2 = "Collection Femme",
-  subtitle2 = "Des parfums élégants et captivants, qui révèlent la féminité sous toutes ses facettes.",
-  buttonText2 = "Explorer",
-}) => {
+const TwoCovers: React.FC = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const firstCoverRef = useRef(null);
   const secondCoverRef = useRef(null);
 
@@ -29,6 +17,14 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
     once: true,
     margin: "-100px",
   });
+
+  // Ajout des handlers pour filtrer par genre
+  const goToMen = () => {
+    navigate("/shop?gender=homme");
+  };
+  const goToWomen = () => {
+    navigate("/shop?gender=femme");
+  };
 
   return (
     <>
@@ -60,7 +56,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             }
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            {title1}
+            {t("home.menCollectionTitle")}
           </motion.h2>
           <motion.p
             className="text-lg text-white mb-8"
@@ -68,7 +64,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             animate={firstCoverInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            {subtitle1}
+            {t("home.menCollectionSubtitle")}
           </motion.p>
           <motion.button
             className="px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
@@ -79,8 +75,9 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             transition={{ duration: 0.6, delay: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={goToMen}
           >
-            {buttonText1}
+            {t("home.menCollectionButton")}
           </motion.button>
         </motion.div>
       </div>
@@ -113,7 +110,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             }
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            {title2}
+            {t("home.womenCollectionTitle")}
           </motion.h2>
           <motion.p
             className="text-lg text-white mb-8"
@@ -121,7 +118,7 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             animate={secondCoverInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            {subtitle2}
+            {t("home.womenCollectionSubtitle")}
           </motion.p>
           <motion.button
             className="px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"
@@ -132,8 +129,9 @@ const TwoCovers: React.FC<TwoCoversProps> = ({
             transition={{ duration: 0.6, delay: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={goToWomen}
           >
-            {buttonText2}
+            {t("home.womenCollectionButton")}
           </motion.button>
         </motion.div>
       </div>

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Banner from "../components/home/banner";
 import ProductCard from "../components/home/productCard";
 import NewPerfums from "../components/home/newPerfums";
-import TwoCovers from "../components/home/twoCovers"; // Importer le nouveau composant
-
+import TwoCovers from "../components/home/twoCovers";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 // Mock featured product data
 const featuredProduct = {
@@ -51,6 +51,7 @@ const Home: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const productsRef = useRef(null);
   const collectionRef = useRef(null);
+  const { t } = useTranslation(); // Ajout hook
 
   const productsInView = useInView(productsRef, {
     once: true,
@@ -84,8 +85,8 @@ const Home: React.FC = () => {
       >
         <Banner
           product={featuredProduct}
-          title="Parfums de Luxe"
-          subtitle="Découvrez des fragrances qui racontent votre histoire"
+          title={t("home.bannerTitle")}
+          subtitle={t("home.bannerSubtitle")}
         />
       </motion.section>
 
@@ -109,7 +110,7 @@ const Home: React.FC = () => {
             variants={fadeIn}
             transition={{ duration: 0.6 }}
           >
-            Produits Phares
+            {t("home.featuredProducts")}
           </motion.h2>
 
           <motion.div
@@ -126,8 +127,7 @@ const Home: React.FC = () => {
             variants={fadeIn}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            Explorez nos parfums les plus populaires, élaborés avec les
-            meilleurs ingrédients.
+            {t("home.featuredDescription")}
           </motion.p>
 
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* Section TwoCovers - Ajoutée ici entre productCard et newPerfums */}
+      {/* Section TwoCovers */}
       <TwoCovers />
 
       {/* Nouveaux Parfums Section */}

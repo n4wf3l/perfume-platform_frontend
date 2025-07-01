@@ -4,18 +4,26 @@ import Confidentiality from "../components/confidentiality/confidentiality";
 import Terms from "../components/confidentiality/terms";
 import Cookies from "../components/confidentiality/cookies";
 import FAQ from "../components/confidentiality/faq";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const ConfidentialityPage: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
   const [activeSection, setActiveSection] = useState<
     "confidentiality" | "terms" | "cookies"
   >("confidentiality");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  // Titre dynamique selon la section
-  const sectionTitles: Record<typeof activeSection, string> = {
-    confidentiality: "Politique de Confidentialité",
-    terms: "Mentions Légales",
-    cookies: "Gestion des Cookies",
+  const getSectionTitle = (section: typeof activeSection) => {
+    switch (section) {
+      case "confidentiality":
+        return t("confidentiality.sections.confidentiality");
+      case "terms":
+        return t("confidentiality.sections.terms");
+      case "cookies":
+        return t("confidentiality.sections.cookies");
+      default:
+        return "";
+    }
   };
 
   const scrollToHash = () => {
@@ -65,7 +73,7 @@ const ConfidentialityPage: React.FC = () => {
                 : "text-gray-300 hover:text-white"
             }`}
           >
-            Confidentialité
+            {t("confidentiality.sections.confidentiality")}
           </button>
           <button
             onClick={() => setActiveSection("terms")}
@@ -75,7 +83,7 @@ const ConfidentialityPage: React.FC = () => {
                 : "text-gray-300 hover:text-white"
             }`}
           >
-            Mentions légales
+            {t("confidentiality.sections.terms")}
           </button>
           <button
             onClick={() => setActiveSection("cookies")}
@@ -85,7 +93,7 @@ const ConfidentialityPage: React.FC = () => {
                 : "text-gray-300 hover:text-white"
             }`}
           >
-            Cookies
+            {t("confidentiality.sections.cookies")}
           </button>
         </div>
         {/* Mobile */}
@@ -93,9 +101,9 @@ const ConfidentialityPage: React.FC = () => {
           <button
             className="text-white bg-black border border-white/20 rounded-lg px-4 py-2 text-lg font-serif flex items-center gap-2"
             onClick={() => setShowMobileMenu(true)}
-            aria-label="Ouvrir le menu de navigation"
+            aria-label={t("confidentiality.openMenu")}
           >
-            {sectionTitles[activeSection]}
+            {getSectionTitle(activeSection)}
             <svg
               className="w-5 h-5 ml-1"
               fill="none"
@@ -125,7 +133,7 @@ const ConfidentialityPage: React.FC = () => {
               <button
                 onClick={() => setShowMobileMenu(false)}
                 className="absolute top-6 right-6 text-white text-3xl"
-                aria-label="Fermer"
+                aria-label={t("confidentiality.closeMenu")}
               >
                 ×
               </button>
@@ -141,7 +149,7 @@ const ConfidentialityPage: React.FC = () => {
                       : "bg-black text-white hover:bg-white/10"
                   }`}
                 >
-                  Confidentialité
+                  {t("confidentiality.sections.confidentiality")}
                 </button>
                 <button
                   onClick={() => {
@@ -154,7 +162,7 @@ const ConfidentialityPage: React.FC = () => {
                       : "bg-black text-white hover:bg-white/10"
                   }`}
                 >
-                  Mentions légales
+                  {t("confidentiality.sections.terms")}
                 </button>
                 <button
                   onClick={() => {
@@ -167,7 +175,7 @@ const ConfidentialityPage: React.FC = () => {
                       : "bg-black text-white hover:bg-white/10"
                   }`}
                 >
-                  Cookies
+                  {t("confidentiality.sections.cookies")}
                 </button>
               </nav>
             </motion.div>
@@ -183,7 +191,7 @@ const ConfidentialityPage: React.FC = () => {
         transition={{ duration: 0.7, delay: 0.2 }}
       >
         <h1 className="text-4xl md:text-5xl font-serif text-white mb-8 text-center drop-shadow">
-          {sectionTitles[activeSection]}
+          {getSectionTitle(activeSection)}
         </h1>
         {activeSection === "confidentiality" && <Confidentiality />}
         {activeSection === "terms" && <Terms />}

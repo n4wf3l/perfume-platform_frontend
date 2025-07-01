@@ -1,8 +1,11 @@
 import React from "react";
 import { motion, easeOut, easeInOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const Header: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Variants pour les animations avec typage correct
   const fadeIn: Variants = {
     hidden: { opacity: 0 },
@@ -60,8 +63,7 @@ const Header: React.FC = () => {
         className="text-sm tracking-wider uppercase max-w-3xl mx-auto mb-16 text-gray-200"
         variants={fadeIn}
       >
-        SOGNO D'ORO CONTINUE DE CRÉER DES PRODUITS INATTENDUS QUI INCARNENT
-        SOPHISTICATION ULTIME ET LUXE INTEMPOREL.
+        {t("about.brandDescription")}
       </motion.p>
 
       {/* Ligne horizontale avec "BIOGRAPHIE" */}
@@ -79,7 +81,7 @@ const Header: React.FC = () => {
           transition={{ delay: 1, duration: 0.6 }}
         >
           <span className="bg-black px-8 text-white text-sm tracking-widest uppercase">
-            BIOGRAPHIE
+            {t("about.biography")}
           </span>
         </motion.div>
       </motion.div>
@@ -87,27 +89,13 @@ const Header: React.FC = () => {
       {/* Texte biographique */}
       <div className="max-w-3xl mx-auto text-gray-300 leading-relaxed">
         <motion.p className="mb-6" custom={0} variants={paragraphVariants}>
-          Née au cœur de la tradition parfumière italienne, la maison Sogno
-          D'Oro transpose la sensibilité et la vision héritées de ses fondateurs
-          dans l'univers du parfum. Une culture de recherche de luxe absolu et
-          son approche audacieuse et novatrice définissent la marque Sogno
-          D'Oro.
+          {t("about.bioParagraph1")}
         </motion.p>
         <motion.p className="mb-6" custom={1} variants={paragraphVariants}>
-          Chaque création est une œuvre d'art olfactive, alliant savoir-faire
-          ancestral et innovation contemporaine, pour offrir une expérience
-          sensorielle unique qui transporte l'imaginaire vers des horizons
-          inexplorés.
+          {t("about.bioParagraph2")}
         </motion.p>
         <motion.p className="mb-6" custom={2} variants={paragraphVariants}>
-          Notre philosophie repose sur l'idée que le parfum est une forme
-          d'expression personnelle, une signature invisible qui raconte une
-          histoire unique. À travers nos créations, nous explorons les émotions
-          humaines les plus profondes, en nous inspirant de voyages
-          extraordinaires, de rencontres mémorables et de paysages envoûtants
-          qui stimulent nos sens et nourrissent notre imagination créative.
-          Chaque fragrance Sogno D'Oro est le témoignage de cette quête
-          d'excellence et d'émotion pure.
+          {t("about.bioParagraph3")}
         </motion.p>
       </div>
     </motion.div>

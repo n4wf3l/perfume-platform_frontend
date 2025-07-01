@@ -1,19 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, easeOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface FormProps {
   // Props si nécessaire
 }
 
-// Options du menu déroulant
-const subjectOptions = [
-  { value: "", label: "Sélectionnez un sujet", disabled: true },
-  { value: "customer-service", label: "Service client" },
-  { value: "product-inquiry", label: "Renseignements sur les produits" },
-  { value: "wholesale", label: "Vente en gros" },
-  { value: "press", label: "Presse" },
-  { value: "other", label: "Autre" },
+// Options du menu déroulant (désormais traduites dynamiquement)
+const subjectKeys = [
+  { value: "", labelKey: "contact.form.subjectPlaceholder", disabled: true },
+  {
+    value: "customer-service",
+    labelKey: "contact.form.subjectCustomerService",
+  },
+  { value: "product-inquiry", labelKey: "contact.form.subjectProductInquiry" },
+  { value: "wholesale", labelKey: "contact.form.subjectWholesale" },
+  { value: "press", labelKey: "contact.form.subjectPress" },
+  { value: "other", labelKey: "contact.form.subjectOther" },
 ];
 
 // Composant menu déroulant personnalisé
@@ -26,6 +30,7 @@ const CustomSelect = ({
   onChange: (name: string, value: string) => void;
   name: string;
 }) => {
+  const { t } = useTranslation(); // Ajout hook
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -76,13 +81,15 @@ const CustomSelect = ({
     },
   };
 
-  const currentLabel =
-    subjectOptions.find((option) => option.value === value)?.label ||
-    "Sélectionnez un sujet";
+  const currentLabel = subjectKeys.find((option) => option.value === value)
+    ? t(subjectKeys.find((option) => option.value === value)!.labelKey)
+    : t("contact.form.subjectPlaceholder");
 
   return (
     <div className="relative" ref={selectRef}>
-      <label className="block text-sm text-gray-400 mb-1">Sujet</label>
+      <label className="block text-sm text-gray-400 mb-1">
+        {t("contact.form.subjectLabel")}
+      </label>
 
       <motion.div
         className={`w-full px-4 py-3 bg-black border ${
@@ -128,7 +135,7 @@ const CustomSelect = ({
             animate="visible"
             exit="hidden"
           >
-            {subjectOptions
+            {subjectKeys
               .filter((option) => !option.disabled)
               .map((option, index) => (
                 <motion.div
@@ -145,7 +152,7 @@ const CustomSelect = ({
                   onMouseLeave={() => setHighlightedIndex(-1)}
                   whileTap={{ scale: 0.98 }}
                 >
-                  {option.label}
+                  {t(option.labelKey)}
                 </motion.div>
               ))}
           </motion.div>
@@ -156,6 +163,8 @@ const CustomSelect = ({
 };
 
 const ContactForm: React.FC<FormProps> = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -208,7 +217,7 @@ const ContactForm: React.FC<FormProps> = () => {
         });
       } else {
         setFormStatus("error");
-        setFormError("Une erreur est survenue. Veuillez réessayer plus tard.");
+        setFormError(t("contact.form.error"));
       }
     }, 1800);
   };
@@ -281,7 +290,7 @@ const ContactForm: React.FC<FormProps> = () => {
             transition={{ duration: 0.6, ease: [0.21, 0.45, 0.18, 1] }}
             viewport={{ once: true }}
           >
-            Entrer en Contact
+            {t("contact.form.title")}
           </motion.h2>
 
           <AnimatePresence mode="wait">
@@ -310,10 +319,10 @@ const ContactForm: React.FC<FormProps> = () => {
                   </svg>
                   <div>
                     <div className="font-medium mb-1">
-                      Message envoyé avec succès
+                      {t("contact.form.success")}
                     </div>
                     <div className="text-sm text-green-400/80">
-                      Nous vous répondrons dans les plus brefs délais.
+                      {t("contact.form.successSub")}
                     </div>
                   </div>
                 </div>
@@ -344,7 +353,9 @@ const ContactForm: React.FC<FormProps> = () => {
                     />
                   </svg>
                   <div>
-                    <div className="font-medium mb-1">Erreur</div>
+                    <div className="font-medium mb-1">
+                      {t("contact.form.errorTitle")}
+                    </div>
                     <div className="text-sm text-red-400/80">{formError}</div>
                   </div>
                 </div>
@@ -376,7 +387,7 @@ const ContactForm: React.FC<FormProps> = () => {
                   htmlFor="name"
                   className="absolute text-sm text-gray-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-white"
                 >
-                  Nom
+                  {t("contact.form.name")}
                 </label>
               </motion.div>
 
@@ -396,7 +407,7 @@ const ContactForm: React.FC<FormProps> = () => {
                   htmlFor="email"
                   className="absolute text-sm text-gray-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-white"
                 >
-                  Email
+                  {t("contact.form.email")}
                 </label>
               </motion.div>
 
@@ -425,7 +436,7 @@ const ContactForm: React.FC<FormProps> = () => {
                   htmlFor="message"
                   className="absolute text-sm text-gray-400 duration-300 transform -translate-y-3 scale-75 top-4 z-10 origin-[0] left-5 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-white"
                 >
-                  Message
+                  {t("contact.form.message")}
                 </label>
               </motion.div>
 
@@ -472,8 +483,8 @@ const ContactForm: React.FC<FormProps> = () => {
                   )}
                   <span className="tracking-wide">
                     {formStatus === "submitting"
-                      ? "Envoi en cours..."
-                      : "Envoyer"}
+                      ? t("contact.form.sending")
+                      : t("contact.form.send")}
                   </span>
                 </button>
               </motion.div>

@@ -1,8 +1,11 @@
 import React from "react";
 import { motion, easeOut, easeInOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const Parcours: React.FC = () => {
+  const { t, i18n } = useTranslation(); // Ajout hook
+
   // Animation pour le titre avec typage correct
   const titleVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
@@ -51,37 +54,32 @@ const Parcours: React.FC = () => {
     }),
   };
 
-  // Les événements de la timeline
+  // Les événements de la timeline (traduits dynamiquement)
   const events = [
     {
-      title: "Héritage",
-      subtitle: "Racines artistiques",
-      content:
-        "Alessandro Romano grandit dans une famille d'artisans italiens, où il développe une sensibilité olfactive unique auprès de son grand-père, parfumeur amateur passionné. Cette immersion précoce dans l'univers des essences naturelles forge sa vision.",
+      title: t("about.timeline.heritage.title"),
+      subtitle: t("about.timeline.heritage.subtitle"),
+      content: t("about.timeline.heritage.content"),
     },
     {
-      title: "Formation",
-      subtitle: "L'apprentissage de l'excellence",
-      content:
-        "Après des études à l'Institut de Parfumerie de Grasse et une décennie comme nez au service de grandes maisons françaises et italiennes, Alessandro affine son expertise et sa compréhension profonde des essences rares.",
+      title: t("about.timeline.formation.title"),
+      subtitle: t("about.timeline.formation.subtitle"),
+      content: t("about.timeline.formation.content"),
     },
     {
-      title: "Janvier 2025",
-      subtitle: "Naissance de Sogno D'Oro",
-      content:
-        "Alessandro fonde Sogno D'Oro à Florence, avec une vision claire : créer des parfums qui transcendent les tendances éphémères pour devenir des signatures olfactives intemporelles. Un petit atelier dans le quartier historique devient le laboratoire de ses premières créations.",
+      title: t("about.timeline.jan2025.title"),
+      subtitle: t("about.timeline.jan2025.subtitle"),
+      content: t("about.timeline.jan2025.content"),
     },
     {
-      title: "Mai 2025",
-      subtitle: "Première Collection",
-      content:
-        "Lancement de notre collection inaugurale \"Essenza Prima\" avec trois fragrances distinctives, présentées lors d'un événement intimiste à Florence qui attire l'attention de connaisseurs et d'éditeurs spécialisés en parfumerie de niche.",
+      title: t("about.timeline.may2025.title"),
+      subtitle: t("about.timeline.may2025.subtitle"),
+      content: t("about.timeline.may2025.content"),
     },
     {
-      title: "Aujourd'hui et Demain",
-      subtitle: "Une vision en développement",
-      content:
-        "Nous travaillons actuellement sur l'ouverture de notre première boutique permanente à Florence et sur le développement de nouvelles fragrances. Notre engagement envers l'excellence et la durabilité guide chaque étape de notre jeune maison, avec l'ambition de faire rayonner internationalement l'art parfumé italien.",
+      title: t("about.timeline.today.title"),
+      subtitle: t("about.timeline.today.subtitle"),
+      content: t("about.timeline.today.content"),
     },
   ];
 
@@ -97,7 +95,7 @@ const Parcours: React.FC = () => {
           className="text-3xl md:text-4xl font-serif text-white mb-12 text-center"
           variants={titleVariants}
         >
-          Notre Parcours
+          {t("about.timelineTitle")}
         </motion.h2>
 
         {/* Timeline Responsive */}
@@ -111,7 +109,7 @@ const Parcours: React.FC = () => {
             <div className="space-y-24 relative">
               {events.map((event, idx) => (
                 <div
-                  key={event.title}
+                  key={event.title + idx}
                   className={`flex flex-col md:flex-row items-center`}
                 >
                   {idx % 2 === 0 ? (
@@ -174,7 +172,7 @@ const Parcours: React.FC = () => {
               ></motion.div>
               {events.map((event, idx) => (
                 <motion.div
-                  key={event.title}
+                  key={event.title + idx}
                   className="flex items-start relative z-10"
                   variants={eventVariants}
                   custom={idx}

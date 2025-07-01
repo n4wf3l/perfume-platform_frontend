@@ -6,16 +6,376 @@ const en = {
     contact: "Contact",
   },
   home: {
-    bannerTitle: "Luxury Fragrances",
-    bannerSubtitle: "Discover scents that tell your story",
+    bannerTitle: "Luxury Perfumes",
+    bannerSubtitle: "Discover perfumes that tell your story",
     featuredProducts: "Featured Products",
     featuredDescription:
-      "Explore our most popular fragrances, crafted with the finest ingredients.",
+      "Explore our most popular perfumes, crafted with the finest ingredients.",
     newCollection: "New Collection",
     collectionTitle: "Autumn Impressions",
-    collectionDescription: "Inspired by the rich, warm notes of autumn.",
-    exploreButton: "Explore Collection",
-    testimonials: "What Our Customers Say",
+    collectionDescription: "Inspired by the rich and warm notes of autumn.",
+    exploreButton: "Explore the Collection",
+    seeButton: "See",
+    testimonials: "What our customers say",
+    menCollectionTitle: "Men's Collection",
+    menCollectionSubtitle:
+      "Intense and sophisticated fragrances for the man who asserts his personality.",
+    menCollectionButton: "Discover",
+    womenCollectionTitle: "Women's Collection",
+    womenCollectionSubtitle:
+      "Elegant and captivating perfumes that reveal femininity in all its facets.",
+    womenCollectionButton: "Explore",
+  },
+  shop: {
+    headerTitle: "Our Collection",
+    searchPlaceholder: "Search for a perfume...",
+    close: "Close",
+    categories: {
+      all: "All perfumes",
+      floral: "Floral",
+      woody: "Woody",
+      oriental: "Oriental",
+      fresh: "Fresh",
+      category: "Category",
+    },
+    genders: {
+      all: "All",
+      homme: "Men",
+      femme: "Women",
+      unisexe: "Unisex",
+    },
+    title: "Shop",
+  },
+  footer: {
+    brandSlogan: "Luxury perfumes that tell your story.",
+    quickLinks: "Quick Links",
+    contactUs: "Contact Us",
+    address: "123 Rue des Parfums, Brussels, Belgium",
+    phone: "+32 123 456 789",
+    email: "info@sognodoro.com",
+    emailPlaceholder: "Your email",
+    newsletter: "Newsletter",
+    newsletterDesc: "Subscribe for exclusive offers and updates.",
+    subscribe: "Subscribe",
+    copyright: "All rights reserved.",
+    privacy: "Privacy Policy",
+    terms: "Terms of Use",
+    admin: "Administration",
+    about: "About",
+    contact: "Contact",
+  },
+  about: {
+    heroTitle: "The Art of Perfume",
+    heroSubtitle: "Discover the story and inspiration behind our creations",
+    scrollToBrand: "Scroll to our brand presentation",
+    brandDescription:
+      "SOGNO D'ORO CONTINUES TO CREATE UNEXPECTED PRODUCTS THAT EMBODY ULTIMATE SOPHISTICATION AND TIMELESS LUXURY.",
+    biography: "BIOGRAPHY",
+    bioParagraph1:
+      "Born in the heart of Italian perfumery tradition, Sogno D'Oro brings the sensitivity and vision inherited from its founders into the world of perfume. A culture of absolute luxury and its bold, innovative approach define the Sogno D'Oro brand.",
+    bioParagraph2:
+      "Each creation is an olfactory work of art, combining ancestral know-how and contemporary innovation, to offer a unique sensory experience that transports the imagination to unexplored horizons.",
+    bioParagraph3:
+      "Our philosophy is based on the idea that perfume is a form of personal expression, an invisible signature that tells a unique story. Through our creations, we explore the deepest human emotions, inspired by extraordinary journeys, memorable encounters, and captivating landscapes that stimulate our senses and nourish our creative imagination. Each Sogno D'Oro fragrance is a testament to this quest for excellence and pure emotion.",
+    historyTitle: "Our Story",
+    historyParagraph1:
+      "Founded in 2008 by Alessandro Romano, Sogno D'Oro was born from a passion for rare aromas and precious essences. Our founder, from a long line of Italian perfumers, has combined ancestral tradition and modern innovation to create fragrances that evoke deep emotions.",
+    historyParagraph2:
+      "Each perfume is carefully crafted in our Florence workshop, where we select only the finest and rarest ingredients from around the world. Our commitment to excellence and authenticity has enabled us to create a collection of perfumes that represents the pinnacle of luxury and olfactory art.",
+    historyParagraph3:
+      "Our philosophy is based on the idea that perfume is a form of personal expression, an invisible signature that tells a unique story. Through our creations, we explore the deepest human emotions, inspired by extraordinary journeys, memorable encounters, and captivating landscapes that stimulate our senses and nourish our creative imagination.",
+    historyButton: "Discover the Collection",
+    twoGifsTitle: "The Art of Perfumery",
+    twoGifsFirstAlt: "Perfume creation process",
+    twoGifsFirstTitle: "Artistic creation",
+    twoGifsFirstText:
+      "Our master perfumers work with passion to create unique and captivating fragrances.",
+    twoGifsSecondAlt: "Luxury perfume production",
+    twoGifsSecondTitle: "Technical excellence",
+    twoGifsSecondText:
+      "Our expertise and rigor guarantee exceptional perfumes with unforgettable scents.",
+    timelineTitle: "Our Journey",
+    timeline: {
+      heritage: {
+        title: "Heritage",
+        subtitle: "Artistic roots",
+        content:
+          "Alessandro Romano grew up in a family of Italian artisans, where he developed a unique olfactory sensitivity with his grandfather, a passionate amateur perfumer. This early immersion in the world of natural essences shaped his vision.",
+      },
+      formation: {
+        title: "Training",
+        subtitle: "Learning excellence",
+        content:
+          "After studying at the Grasse Perfumery Institute and a decade as a nose for major French and Italian houses, Alessandro honed his expertise and deep understanding of rare essences.",
+      },
+      jan2025: {
+        title: "January 2025",
+        subtitle: "Birth of Sogno D'Oro",
+        content:
+          "Alessandro founded Sogno D'Oro in Florence, with a clear vision: to create perfumes that transcend fleeting trends to become timeless olfactory signatures. A small workshop in the historic district became the laboratory for his first creations.",
+      },
+      may2025: {
+        title: "May 2025",
+        subtitle: "First Collection",
+        content:
+          'Launch of our inaugural collection "Essenza Prima" with three distinctive fragrances, presented at an intimate event in Florence that attracted the attention of connoisseurs and niche perfume editors.',
+      },
+      today: {
+        title: "Today and Tomorrow",
+        subtitle: "A developing vision",
+        content:
+          "We are currently working on opening our first permanent boutique in Florence and developing new fragrances. Our commitment to excellence and sustainability guides every step of our young house, with the ambition to make Italian perfumery art shine internationally.",
+      },
+    },
+    valuesTitle: "Our Values",
+    values: {
+      luxuryTitle: "Luxury",
+      luxuryText:
+        "We are committed to offering exceptional olfactory experiences, thanks to rare and precious ingredients selected with the utmost rigor.",
+      craftTitle: "Craftsmanship",
+      craftText:
+        "Each perfume is handcrafted using traditional methods, respecting know-how passed down through generations of master perfumers.",
+      sustainabilityTitle: "Sustainability",
+      sustainabilityText:
+        "Our commitment to the environment is reflected in responsible practices, from ethical sourcing of ingredients to the design of recyclable bottles.",
+    },
+    ctaTitle: "Join Our Olfactory Adventure",
+    ctaText:
+      "Discover the exclusive world of Sogno D'Oro and let yourself be carried away by exceptional fragrances that tell unique stories.",
+    ctaButton: "Contact us",
+  },
+  contact: {
+    title: "Contact Us",
+    subtitle:
+      "We would be delighted to talk with you and help you discover our exceptional creations.",
+    form: {
+      title: "Get in Touch",
+      name: "Name",
+      email: "Email",
+      subjectLabel: "Subject",
+      subjectPlaceholder: "Select a subject",
+      subjectCustomerService: "Customer Service",
+      subjectProductInquiry: "Product Inquiry",
+      subjectWholesale: "Wholesale",
+      subjectPress: "Press",
+      subjectOther: "Other",
+      message: "Message",
+      send: "Send",
+      sending: "Sending...",
+      success: "Message sent successfully",
+      successSub: "We will get back to you as soon as possible.",
+      errorTitle: "Error",
+      error: "An error occurred. Please try again later.",
+    },
+    info: {
+      title: "Contact Information",
+      visitTitle: "Visit Us",
+      shopName: "Sogno D'Oro Main Boutique",
+      address1: "123 Rue des Parfums",
+      address2: "Brussels, 1000",
+      country: "Belgium",
+      callTitle: "Call Us",
+      phone: "+32 123 456 789",
+      hours: "Monday to Friday, 9am-6pm",
+      emailTitle: "Write to Us",
+      email1: "info@sognodoro.com",
+      email2: "support@sognodoro.com",
+      followTitle: "Follow Us",
+    },
+    faqTitle: "Frequently Asked Questions",
+    faqSubtitle:
+      "Check our FAQ section for answers to the most common questions about our products and services.",
+    faqButton: "See FAQ",
+    faq: {
+      q1: "How do I choose the perfume that suits me?",
+      a1: "A perfume is personal. It evokes memories, emotions, an identity. We offer a variety of inspirations: woody, floral, oriental, gourmand... Tell us what you like (or what you already wear), and we will gladly help you find the one that suits you best.",
+      q2: "Are your perfumes authentic and of high quality?",
+      a2: "Yes. Our perfumes are inspired by renowned niche fragrances, selected for their elegance and character. We work with serious laboratories and quality essences to offer you long-lasting, faithful, and accessible perfumes, without compromising on emotion.",
+      q3: "Can I order a sample before buying?",
+      a3: "Yes, it is possible. We know that a perfume is discovered on the skin, not through a screen. You can order a sample to test at home and find the one that truly speaks to you.",
+      q4: "What are the delivery times?",
+      a4: "On average, between 2 and 5 working days. We prepare each order with care and do everything to ensure your perfume arrives quickly and in perfect condition.",
+      q5: "How can I track my order?",
+      a5: "Once shipped, you will receive an email with a tracking link. You can see in real time where your package is.",
+      q6: "Can I return a perfume if I change my mind?",
+      a6: "Yes, as long as the bottle is new, unopened, and in its original packaging. You have 14 days to change your mind, as we want your purchase to be a pleasure, never a pressure.",
+      q7: "How are the perfumes packaged?",
+      a7: "With great care. Each perfume is protected and presented in a simple yet elegant packaging. Opening the package should already be a little emotion.",
+      q8: "Do you offer gift cards?",
+      a8: "Yes! If you want to please without making a mistake, the gift card is perfect. We can also include a personalized note if you wish.",
+      q9: "Can I give a perfume as a gift and have it delivered to another address?",
+      a9: "Of course. Just indicate the recipient's address when ordering. And if it's a gift, you can also ask us to add a personalized message.",
+      q10: "What payment methods do you accept?",
+      a10: "Credit card, PayPal, and other options depending on your country. Payment is 100% secure.",
+      q11: "Can I modify or cancel my order after validation?",
+      a11: "If your order has not yet been shipped, yes. Contact us quickly and we will do our best to help you.",
+      q12: "Do you deliver internationally?",
+      a12: "Yes, we deliver to several countries. Delivery times and costs vary depending on the destination, but we will give you all the information when you order.",
+      q13: "How do I care for and store my perfume?",
+      a13: "Keep your perfume away from heat, humidity, and direct light. A dry place at room temperature is ideal to maintain its intensity.",
+      q14: "Are the perfumes tested on animals?",
+      a14: "No. None of our perfumes are tested on animals. This is a value we hold dear.",
+      q15: "Do you offer vegan or natural perfumes?",
+      a15: "No, these are not natural perfumes, but inspirations from niche perfumes. They are created with safe and regulated synthetic compositions, without animal ingredients.",
+      q16: "How can I get personalized advice?",
+      a16: "You can contact us directly (by email or social networks), we take the time to answer everyone. Talking about perfume is always a pleasure for us.",
+      q17: "What should I do if my package is damaged or lost?",
+      a17: "Contact us quickly, with a photo if possible. We will find a quick solution: your perfume must reach you as it should.",
+      q18: "How can I be informed about new products and offers?",
+      a18: "You can subscribe to our newsletter or follow us on social networks. We share our news, advice, and also a bit of our perfumed world.",
+      q19: "Other question?",
+      a19: "Contact us, we are always happy to help!",
+    },
+  },
+  product: {
+    extrait: "Perfume extract",
+    size: "Size",
+    category: "Category",
+    gender: "Gender",
+    price: "Price",
+    stock: "Stock",
+    available: "Available",
+    addToCart: "Add to cart",
+    buyNow: "Buy now",
+    hideOptions: "Hide options",
+    categories: {
+      oriental: "Oriental",
+      floral: "Floral",
+      woody: "Woody",
+      fresh: "Fresh",
+    },
+    genders: {
+      male: "Male",
+      female: "Female",
+      unisex: "Unisex",
+    },
+    seeAlso: "You may also like",
+    noRelated: "No similar products available at the moment.",
+    backToShop: "Back to shop",
+    notFoundTitle: "Product not found",
+    notFoundText: "We couldn't find the fragrance you are looking for.",
+    paypalMaintenance:
+      "The PayPal payment system is currently under maintenance. Please use WhatsApp.",
+    cartUnavailable:
+      "The payment system is currently unavailable. Please contact us via WhatsApp.",
+  },
+  confidentiality: {
+    title: "Privacy Policy",
+    intro:
+      "We attach great importance to the protection of your personal data and respect for your privacy. This policy explains what information we collect, how we use it, and what your rights are.",
+    collectTitle: "What data do we collect?",
+    collect: {
+      lang: "Preferred language",
+      langDesc:
+        ": stored locally in your browser (localStorage) to improve your user experience.",
+      products: "Selected products",
+      productsDesc:
+        ": we remember the products you choose to facilitate your navigation and order.",
+      personal: "Personal details",
+      personalDesc:
+        ": name, surname, address, email, phone number, necessary for managing your orders and delivery.",
+      bank: "Bank details",
+      bankDesc:
+        ": collected only during payment, via a secure connection. We never store your bank data on our servers.",
+      whatsapp: "WhatsApp number",
+      whatsappDesc:
+        ": if you contact us via WhatsApp, your number is kept in our conversation history.",
+      orders: "Order history",
+      ordersDesc:
+        ": your orders are recorded in our ultra-secure database, hosted on a Hostinger VPS (Node.js).",
+    },
+    useTitle: "How do we use your data?",
+    use: {
+      orders: "To process your orders and ensure delivery.",
+      contact:
+        "To contact you if necessary (customer service, order tracking, etc.).",
+      experience:
+        "To improve your experience on the platform (language, preferences, etc.).",
+      whatsapp: "To respond to your requests via WhatsApp or email.",
+      legal: "To comply with our legal and tax obligations.",
+    },
+    securityTitle: "Data security and retention",
+    security: {
+      servers:
+        "All data is stored on secure servers (Hostinger VPS, France/EU).",
+      access:
+        "Database access is strictly limited to the technical team (Nawfel Ajari, Kristian Vasiaj).",
+      payments:
+        "Payments are processed via secure, PCI DSS certified solutions. We never store your bank data.",
+      retention:
+        "Order histories are kept as long as necessary for business and tax management, unless you request deletion.",
+    },
+    rightsTitle: "Your rights",
+    rights: {
+      access:
+        "In accordance with the GDPR, you can request access, rectification or deletion of your personal data at any time by contacting us at ",
+      delete:
+        "You can also request the deletion of your order history or your WhatsApp exchanges.",
+      delay: "We undertake to process any request within a maximum of 30 days.",
+    },
+    transparencyTitle: "Transparency and compliance",
+    transparency: {
+      custom:
+        "Platform custom-developed, without the use of third-party tracking or advertising solutions.",
+      cookies:
+        "No advertising or tracking cookies are used (see Cookies section).",
+      law: "We strictly comply with European data protection legislation (GDPR).",
+      breach:
+        "In the event of a security breach, you will be informed as soon as possible in accordance with regulations.",
+    },
+    questions:
+      "For any questions regarding privacy or the management of your data, contact us at ",
+    sections: {
+      confidentiality: "Privacy Policy",
+      terms: "Legal Notice",
+      cookies: "Cookie Management",
+    },
+  },
+  terms: {
+    title: "Legal Notice",
+    editor: "Publisher:",
+    frontend: "Frontend Developer:",
+    backend: "Backend Developer:",
+    platform: "Platform:",
+    platformDesc:
+      "Custom application with admin interface for product and order management.",
+    hosting: "Hosting:",
+    contact: "Contact:",
+    copyright:
+      "Any reproduction, even partial, of the content of this site is prohibited without prior authorization.",
+  },
+  cookies: {
+    title: "Cookie Management",
+    intro:
+      "This site does not use any tracking, advertising, or analytics cookies.",
+    technical:
+      "Only essential technical cookies may be used to ensure the proper functioning of the site (e.g. session management, cart).",
+    noThirdParty:
+      "No third-party cookies, trackers, or analytics tools are present on the platform.",
+    noBanner: "You therefore have no consent banner to accept.",
+    footer: "Platform custom-developed, privacy-friendly and GDPR compliant.",
+  },
+  auth: {
+    title: "Sign in to your account",
+    loginTab: "Login",
+    resetTab: "Forgot password",
+    email: "Email",
+    password: "Password",
+    showPassword: "Show password",
+    hidePassword: "Hide password",
+    loginButton: "Sign in",
+    loginLoading: "Signing in...",
+    resetIntro:
+      "Enter your email address to receive password reset instructions.",
+    resetButton: "Reset password",
+    resetLoading: "Sending...",
+    resetSentTitle: "Email sent!",
+    resetSentDesc:
+      "If an account exists with the address {{email}}, you will receive an email with instructions to reset your password.",
+    backToLogin: "Back to login",
+    errorLogin: "Login failed. Please check your credentials.",
+    errorReset: "Unable to send reset email. Please try again.",
+    backToSite: "Back to site",
   },
 };
 export default en;

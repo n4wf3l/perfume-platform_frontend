@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next"; // Ajout import
+import i18n from "../i18n";
 
 // Ajout du composant Toast simple
 const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
@@ -30,24 +31,44 @@ const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
 );
 
 const Header: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  // Utilise la langue active d'i18next
   const [currentLanguage, setCurrentLanguage] = useState<"fr" | "en" | "nl">(
     "fr"
   );
-  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const location = useLocation();
-  const { t, i18n } = useTranslation(); // Hook i18n
+
+  // Synchronise le state avec i18next (utile au refresh ou changement externe)
+  // Helper to check if a string is a supported language
+  const isSupportedLanguage = (lng: string): lng is "fr" | "en" | "nl" =>
+    lng === "fr" || lng === "en" || lng === "nl";
+
+  useEffect(() => {
+    const onLangChanged = (lng: string) => {
+      if (isSupportedLanguage(lng)) setCurrentLanguage(lng);
+    };
+    i18n.on("languageChanged", onLangChanged);
+    // Init au cas où i18n.language change après le render
+    if (isSupportedLanguage(i18n.language)) {
+      setCurrentLanguage(i18n.language);
+    }
+    return () => {
+      i18n.off("languageChanged", onLangChanged);
+    };
+  }, [i18n]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleLangMenu = () => setIsLangMenuOpen((v) => !v);
 
   const changeLanguage = (lng: "fr" | "en" | "nl") => {
-    setCurrentLanguage(lng);
-    setIsLangMenuOpen(false);
     i18n.changeLanguage(lng);
+    setIsLangMenuOpen(false);
   };
 
+  const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
   // Noms longs pour le menu déroulant

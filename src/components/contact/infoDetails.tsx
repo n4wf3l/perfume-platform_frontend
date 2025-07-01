@@ -1,12 +1,15 @@
 import React from "react";
 import { motion, easeOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 interface InfoDetailsProps {
   // Props si nécessaire
 }
 
 const InfoDetails: React.FC<InfoDetailsProps> = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Animation variants
   const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -44,7 +47,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
           className="text-2xl font-serif text-white mb-6"
           variants={fadeInUp}
         >
-          Informations de Contact
+          {t("contact.info.title")}
         </motion.h2>
 
         <div className="space-y-8">
@@ -58,6 +61,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
+                {/* ...svg... */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -82,13 +86,13 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-200 mb-2">
-                Visitez-nous
+                {t("contact.info.visitTitle")}
               </h3>
               <address className="not-italic text-gray-400">
-                <p>Sogno D'Oro Boutique Principale</p>
-                <p>123 Rue des Parfums</p>
-                <p>Bruxelles, 1000</p>
-                <p>Belgique</p>
+                <p>{t("contact.info.shopName")}</p>
+                <p>{t("contact.info.address1")}</p>
+                <p>{t("contact.info.address2")}</p>
+                <p>{t("contact.info.country")}</p>
               </address>
             </div>
           </motion.div>
@@ -103,6 +107,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
+                {/* ...svg... */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -121,12 +126,10 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-200 mb-2">
-                Appelez-nous
+                {t("contact.info.callTitle")}
               </h3>
-              <p className="text-gray-400 mb-1">+32 123 456 789</p>
-              <p className="text-sm text-gray-500">
-                Du lundi au vendredi, 9h-18h
-              </p>
+              <p className="text-gray-400 mb-1">{t("contact.info.phone")}</p>
+              <p className="text-sm text-gray-500">{t("contact.info.hours")}</p>
             </div>
           </motion.div>
 
@@ -140,6 +143,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
+                {/* ...svg... */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -158,10 +162,10 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-200 mb-2">
-                Écrivez-nous
+                {t("contact.info.emailTitle")}
               </h3>
-              <p className="text-gray-400 mb-1">info@sognodoro.com</p>
-              <p className="text-gray-400">support@sognodoro.com</p>
+              <p className="text-gray-400 mb-1">{t("contact.info.email1")}</p>
+              <p className="text-gray-400">{t("contact.info.email2")}</p>
             </div>
           </motion.div>
 
@@ -175,6 +179,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   backgroundColor: "rgba(255,255,255,0.15)",
                 }}
               >
+                {/* ...svg... */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -193,14 +198,16 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
             </div>
             <div>
               <h3 className="text-lg font-medium text-gray-200 mb-2">
-                Suivez-nous
+                {t("contact.info.followTitle")}
               </h3>
               <div className="flex space-x-4">
+                {/* Réseaux sociaux */}
                 <motion.a
                   href="#"
                   className="text-gray-400 hover:text-white transition-colors"
                   whileHover={{ scale: 1.2, color: "#fff" }}
                 >
+                  {/* ...svg... */}
                   <svg
                     className="h-6 w-6"
                     fill="currentColor"
@@ -214,6 +221,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   className="text-gray-400 hover:text-white transition-colors"
                   whileHover={{ scale: 1.2, color: "#fff" }}
                 >
+                  {/* ...svg... */}
                   <svg
                     className="h-6 w-6"
                     fill="currentColor"
@@ -227,6 +235,7 @@ const InfoDetails: React.FC<InfoDetailsProps> = () => {
                   className="text-gray-400 hover:text-white transition-colors"
                   whileHover={{ scale: 1.2, color: "#fff" }}
                 >
+                  {/* ...svg... */}
                   <svg
                     className="h-6 w-6"
                     fill="currentColor"

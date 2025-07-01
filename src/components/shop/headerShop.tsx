@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
-// Catégories en français pour l'en-tête avec style onglet
+// Catégories dynamiques via i18n
 const categories = [
-  { id: "all", name: "TOUS LES PARFUMS" },
-  { id: "floral", name: "LES FLORAUX" },
-  { id: "woody", name: "LES BOISÉS" },
-  { id: "oriental", name: "LES ORIENTAUX" },
-  { id: "fresh", name: "LES FRAIS" },
+  { id: "all", nameKey: "shop.categories.all" },
+  { id: "floral", nameKey: "shop.categories.floral" },
+  { id: "woody", nameKey: "shop.categories.woody" },
+  { id: "oriental", nameKey: "shop.categories.oriental" },
+  { id: "fresh", nameKey: "shop.categories.fresh" },
 ];
 
 interface HeaderShopProps {
@@ -28,6 +29,18 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   setSelectedGender,
 }) => {
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
+  const { t } = useTranslation();
+
+  // Genres dynamiques via i18n
+  const genders = [
+    { id: "all", label: t("shop.genders.all") },
+    { id: "homme", label: t("shop.genders.homme") },
+    { id: "femme", label: t("shop.genders.femme") },
+    { id: "unisexe", label: t("shop.genders.unisexe") },
+  ];
+
+  // Fonction pour forcer la majuscule (compatible multilingue)
+  const toUpper = (str: string) => (str ? str.toLocaleUpperCase() : "");
 
   return (
     <div className="mb-16">
@@ -37,7 +50,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        Notre Collection
+        {t("shop.headerTitle")}
       </motion.h1>
 
       {/* Barre de recherche centrée */}
@@ -50,7 +63,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         <div className="relative w-full max-w-md">
           <input
             type="text"
-            placeholder="Rechercher un parfum..."
+            placeholder={t("shop.searchPlaceholder")}
             className="w-full bg-black border border-gray-700 rounded-full py-3 px-6 text-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -73,7 +86,6 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
       </motion.div>
 
       {/* Onglets de catégories */}
-      {/* Desktop : onglets, Mobile : menu déroulant en overlay plein écran */}
       <motion.div
         className="w-full overflow-x-auto scrollbar-hide"
         initial={{ opacity: 0 }}
@@ -93,7 +105,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                     : "text-gray-400 hover:text-gray-200"
                 }`}
               >
-                {category.name}
+                {toUpper(t(category.nameKey))}
                 {selectedCategory === category.id && (
                   <motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
@@ -114,8 +126,12 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
               onClick={() => setCatDropdownOpen((v) => !v)}
               className="w-full flex justify-between items-center px-4 py-3 bg-black border border-gray-700 rounded-lg text-white font-medium text-base focus:outline-none"
             >
-              {categories.find((c) => c.id === selectedCategory)?.name ||
-                "Catégorie"}
+              {toUpper(
+                t(
+                  categories.find((c) => c.id === selectedCategory)?.nameKey ||
+                    "shop.categories.category"
+                )
+              )}
               <svg
                 className={`w-5 h-5 ml-2 transition-transform ${
                   catDropdownOpen ? "rotate-180" : ""
@@ -150,7 +166,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
               <button
                 onClick={() => setCatDropdownOpen(false)}
                 className="absolute top-6 right-6 text-white text-3xl"
-                aria-label="Fermer"
+                aria-label={t("shop.close")}
               >
                 ×
               </button>
@@ -168,7 +184,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                           : "bg-black text-white hover:bg-white/10"
                       }`}
                     >
-                      {category.name}
+                      {toUpper(t(category.nameKey))}
                     </button>
                   </li>
                 ))}
@@ -180,19 +196,17 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
 
       {/* Filtres genre */}
       <div className="flex justify-center gap-4 mt-6">
-        {["all", "homme", "femme", "unisexe"].map((gender) => (
+        {genders.map((gender) => (
           <button
-            key={gender}
-            onClick={() => setSelectedGender(gender)}
+            key={gender.id}
+            onClick={() => setSelectedGender(gender.id)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-              selectedGender === gender
+              selectedGender === gender.id
                 ? "bg-white text-black"
                 : "bg-gray-900 text-white hover:bg-white hover:text-black"
             }`}
           >
-            {gender === "all"
-              ? "Tous"
-              : gender.charAt(0).toUpperCase() + gender.slice(1)}
+            {gender.label}
           </button>
         ))}
       </div>
