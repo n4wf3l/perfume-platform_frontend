@@ -63,9 +63,10 @@ const en = {
     copyright: "All rights reserved.",
     privacy: "Privacy Policy",
     terms: "Terms of Use",
-    admin: "Administration",
+    admin: "Admin",
     about: "About",
     contact: "Contact",
+    shop: "Shop",
   },
   about: {
     heroTitle: "The Art of Perfume",

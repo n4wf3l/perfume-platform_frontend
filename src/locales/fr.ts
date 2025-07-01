@@ -68,6 +68,7 @@ const fr = {
     admin: "Administration",
     about: "À propos",
     contact: "Contact",
+    shop: "Boutique",
   },
   about: {
     heroTitle: "L'Art du Parfum",

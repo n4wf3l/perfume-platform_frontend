@@ -14,25 +14,37 @@ const Images: React.FC<ImagesProps> = ({
   setCurrentImageIndex,
   productName,
 }) => {
+  // Détection mobile simple
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
-    <div className="lg:w-1/2">
+    <div className={isMobile ? "w-full" : "lg:w-1/2"}>
       <motion.div
-        className="bg-black rounded-lg overflow-hidden mb-4 relative"
+        className={`bg-black rounded-lg overflow-hidden mb-4 relative ${
+          isMobile ? "w-full h-[340px] sm:h-[400px]" : ""
+        }`}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        style={{ height: "500px" }}
+        style={
+          isMobile
+            ? { height: "340px", maxHeight: "60vw", minHeight: "220px" }
+            : { height: "500px" }
+        }
       >
         <AnimatePresence mode="wait">
           <motion.img
             key={currentImageIndex}
             src={images[currentImageIndex]}
             alt={productName}
-            className="w-full h-full object-cover absolute inset-0"
+            className={`w-full h-full object-cover absolute inset-0 ${
+              isMobile ? "object-contain bg-black" : ""
+            }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
+            style={isMobile ? { objectFit: "contain" } : { objectFit: "cover" }}
           />
         </AnimatePresence>
       </motion.div>
@@ -40,7 +52,9 @@ const Images: React.FC<ImagesProps> = ({
       {/* Sélecteur de miniatures */}
       {images.length > 1 && (
         <motion.div
-          className="flex gap-2 overflow-x-auto py-2 justify-center"
+          className={`flex gap-2 overflow-x-auto py-2 justify-center ${
+            isMobile ? "px-2" : ""
+          }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -53,14 +67,19 @@ const Images: React.FC<ImagesProps> = ({
                 currentImageIndex === index
                   ? "border-white"
                   : "border-transparent"
-              }`}
+              } ${isMobile ? "w-14 h-14" : ""}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <img
                 src={image}
                 alt={`${productName} - ${index + 1}`}
-                className="w-full h-full object-cover"
+                className={`w-full h-full ${
+                  isMobile ? "object-contain bg-black" : "object-cover"
+                }`}
+                style={
+                  isMobile ? { objectFit: "contain" } : { objectFit: "cover" }
+                }
               />
             </motion.button>
           ))}

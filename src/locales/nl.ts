@@ -67,6 +67,7 @@ const nl = {
     admin: "Beheer",
     about: "Over ons",
     contact: "Contact",
+    shop: "Winkel",
   },
   about: {
     heroTitle: "De Kunst van Parfum",
@@ -242,6 +243,8 @@ const nl = {
     addToCart: "Toevoegen aan winkelmand",
     buyNow: "Nu kopen",
     hideOptions: "Opties verbergen",
+    description: "Beschrijving",
+    ingredients: "Ingrediënten",
     categories: {
       oriental: "Oosters",
       floral: "Bloemig",

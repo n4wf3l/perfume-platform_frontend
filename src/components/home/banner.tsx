@@ -40,7 +40,8 @@ const Banner: React.FC<BannerProps> = ({ product, title, subtitle }) => {
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.4)",
+          // ↓↓↓ Moins sombre qu'avant
+          filter: isMobile ? "brightness(0.7)" : "brightness(0.4)",
           transition: isMobile
             ? "opacity 1.2s cubic-bezier(0.4,0,0.2,1)"
             : undefined,
@@ -55,8 +56,9 @@ const Banner: React.FC<BannerProps> = ({ product, title, subtitle }) => {
         <div
           className="absolute inset-0 z-10 pointer-events-none"
           style={{
+            // ↓↓↓ Moins opaque qu'avant
             background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 100%)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.45) 100%)",
           }}
         />
       )}

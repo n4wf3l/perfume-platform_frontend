@@ -49,12 +49,15 @@ const fadeIn = {
   visible: { opacity: 1, y: 0 },
 };
 
+const ITALIAN_QUOTE = "Il profumo dei tuoi sogni";
+
 const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const productsRef = useRef(null);
   const collectionRef = useRef(null);
+  const [typed, setTyped] = useState("");
 
   const productsInView = useInView(productsRef, {
     once: true,
@@ -71,6 +74,18 @@ const Home: React.FC = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    setTyped("");
+    let i = 0;
+    const interval = setInterval(() => {
+      setTyped(ITALIAN_QUOTE.slice(0, i + 1));
+      i++;
+      if (i === ITALIAN_QUOTE.length) clearInterval(interval);
+    }, 55); // vitesse d'écriture
+    return () => clearInterval(interval);
+  }, [isMobile]);
 
   // Handlers boutons
   const goToWomen = () => navigate("/shop?gender=femme");
@@ -110,12 +125,13 @@ const Home: React.FC = () => {
                 fontWeight: 700,
                 letterSpacing: "0.02em",
                 textShadow: "0 1px 8px rgba(0,0,0,0.25)",
+                minHeight: "2.5rem", // évite le saut de layout
               }}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              Il profumo dei tuoi sogni
+              {typed}
             </motion.p>
             <motion.div
               className="flex items-center justify-center mb-10 w-full"
