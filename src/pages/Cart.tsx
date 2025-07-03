@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import Summary from "../components/cart/summary";
 import BottomCover from "../components/cart/bottomCover";
 
@@ -52,6 +53,7 @@ const cartItemVariants: Variants = {
 };
 
 const Cart: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(initialCartItems);
   const [promoCode, setPromoCode] = useState("");
@@ -101,7 +103,7 @@ const Cart: React.FC = () => {
             animate="visible"
             className="text-4xl font-serif text-white text-center mb-12"
           >
-            Votre Panier
+            {t("cart.title")}
           </motion.h1>
 
           {cartItems.length === 0 ? (
@@ -112,11 +114,9 @@ const Cart: React.FC = () => {
               className="border border-white/20 rounded-lg p-8 text-center mb-8"
             >
               <h2 className="text-2xl font-serif text-white mb-4">
-                Votre panier est vide
+                {t("cart.empty")}
               </h2>
-              <p className="text-gray-300 mb-6">
-                Découvrez notre collection de parfums exclusifs
-              </p>
+              <p className="text-gray-300 mb-6">{t("cart.emptyDesc")}</p>
               <motion.div
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -125,7 +125,7 @@ const Cart: React.FC = () => {
                   to="/shop"
                   className="inline-block px-6 py-3 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300"
                 >
-                  Continuer mes achats
+                  {t("cart.continueShopping")}
                 </Link>
               </motion.div>
             </motion.div>
@@ -142,11 +142,13 @@ const Cart: React.FC = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-white/20 text-gray-400 text-left">
-                        <th className="px-4 py-3">Produit</th>
-                        <th className="px-4 py-3">Prix</th>
-                        <th className="px-4 py-3">Quantité</th>
-                        <th className="px-4 py-3">Total</th>
-                        <th className="px-4 py-3 sr-only">Actions</th>
+                        <th className="px-4 py-3">{t("cart.product")}</th>
+                        <th className="px-4 py-3">{t("cart.price")}</th>
+                        <th className="px-4 py-3">{t("cart.quantity")}</th>
+                        <th className="px-4 py-3">{t("cart.total")}</th>
+                        <th className="px-4 py-3 sr-only">
+                          {t("cart.actions")}
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/10">
@@ -269,7 +271,7 @@ const Cart: React.FC = () => {
                           d="M10 19l-7-7m0 0l7-7m-7 7h18"
                         />
                       </svg>
-                      Continuer mes achats
+                      {t("cart.continueShopping")}
                     </Link>
                   </motion.div>
 
@@ -293,7 +295,7 @@ const Cart: React.FC = () => {
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                       />
                     </svg>
-                    Vider mon panier
+                    {t("cart.clear")}
                   </motion.button>
                 </motion.div>
               </div>

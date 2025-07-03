@@ -200,14 +200,31 @@ const ContactForm: React.FC<FormProps> = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("submitting");
+    setFormError("");
 
-    // Simulate form submission
-    setTimeout(() => {
-      if (Math.random() > 0.2) {
-        // 80% success rate
+    // Validation simple
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.subject ||
+      !formData.message
+    ) {
+      setFormStatus("error");
+      setFormError(t("contact.form.error"));
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
         setFormStatus("success");
         setFormData({
           name: "",
@@ -219,7 +236,10 @@ const ContactForm: React.FC<FormProps> = () => {
         setFormStatus("error");
         setFormError(t("contact.form.error"));
       }
-    }, 1800);
+    } catch (error) {
+      setFormStatus("error");
+      setFormError(t("contact.form.error"));
+    }
   };
 
   // Animation variants - Déroulement plus doux

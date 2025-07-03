@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion"; // Ajout d'AnimatePresence
+import { useTranslation } from "react-i18next";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 
 // Mock cart data for summary
@@ -152,6 +153,7 @@ const summarySectionVariants: Variants = {
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Calculate totals
   const subtotal = cartItems.reduce(
@@ -226,10 +228,10 @@ const Checkout: React.FC = () => {
       variants={fadeIn}
     >
       <motion.h1
-        className="text-3xl font-serif text-white mb-6" // BLANC FORT
+        className="text-3xl font-serif text-white mb-6"
         variants={titleVariants}
       >
-        Paiement
+        {t("checkout.title")}
       </motion.h1>
 
       {/* Progress indicator */}
@@ -243,8 +245,8 @@ const Checkout: React.FC = () => {
             1
           </motion.div>
           <motion.div
-            className="flex-1 h-1 mx-2 overflow-hidden" // Ajout de overflow-hidden pour contenir l'animation
-            style={{ position: "relative" }} // Pour positionner correctement la barre animée
+            className="flex-1 h-1 mx-2 overflow-hidden"
+            style={{ position: "relative" }}
           >
             <motion.div
               className="h-full w-full absolute"
@@ -268,9 +270,11 @@ const Checkout: React.FC = () => {
         </div>
         <div className="flex justify-between mt-2">
           <span className="text-sm text-gray-400">
-            Informations de livraison
+            {t("checkout.shippingStep")}
           </span>
-          <span className="text-sm text-gray-400">Paiement</span>
+          <span className="text-sm text-gray-400">
+            {t("checkout.paymentStep")}
+          </span>
         </div>
       </motion.div>
 
@@ -281,17 +285,17 @@ const Checkout: React.FC = () => {
             {/* Step 1: Shipping Information */}
             {currentStep === 1 && (
               <motion.div
-                className="bg-black p-6 rounded-lg border border-white/10" // BLANC FORT
+                className="bg-black p-6 rounded-lg border border-white/10"
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
                 <motion.h2
-                  className="text-xl font-medium text-white mb-4" // BLANC FORT
+                  className="text-xl font-medium text-white mb-4"
                   variants={titleVariants}
                 >
-                  Informations de livraison
+                  {t("checkout.shippingTitle")}
                 </motion.h2>
 
                 <motion.div
@@ -303,7 +307,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="firstName"
                     >
-                      Prénom*
+                      {t("checkout.firstName")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -325,7 +329,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="lastName"
                     >
-                      Nom*
+                      {t("checkout.lastName")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -352,7 +356,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="email"
                     >
-                      Email*
+                      {t("checkout.email")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -374,7 +378,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="phone"
                     >
-                      Téléphone
+                      {t("checkout.phone")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -396,7 +400,7 @@ const Checkout: React.FC = () => {
                     className="block text-gray-400 text-sm mb-2"
                     htmlFor="address"
                   >
-                    Adresse*
+                    {t("checkout.address")}
                   </label>
                   <motion.input
                     whileFocus={{
@@ -422,7 +426,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="city"
                     >
-                      Ville*
+                      {t("checkout.city")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -444,7 +448,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="postalCode"
                     >
-                      Code Postal*
+                      {t("checkout.postalCode")}
                     </label>
                     <motion.input
                       whileFocus={{
@@ -466,7 +470,7 @@ const Checkout: React.FC = () => {
                       className="block text-gray-400 text-sm mb-2"
                       htmlFor="country"
                     >
-                      Pays*
+                      {t("checkout.country")}
                     </label>
                     <motion.select
                       whileFocus={{
@@ -480,12 +484,12 @@ const Checkout: React.FC = () => {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value="">Sélectionnez un pays</option>
-                      <option value="BE">Belgique</option>
-                      <option value="FR">France</option>
-                      <option value="DE">Allemagne</option>
-                      <option value="NL">Pays-Bas</option>
-                      <option value="UK">Royaume-Uni</option>
+                      <option value="">{t("checkout.selectCountry")}</option>
+                      <option value="BE">{t("checkout.countries.BE")}</option>
+                      <option value="FR">{t("checkout.countries.FR")}</option>
+                      <option value="DE">{t("checkout.countries.DE")}</option>
+                      <option value="NL">{t("checkout.countries.NL")}</option>
+                      <option value="UK">{t("checkout.countries.UK")}</option>
                     </motion.select>
                   </motion.div>
                 </motion.div>
@@ -495,21 +499,23 @@ const Checkout: React.FC = () => {
             {/* Step 2: Payment Information */}
             {currentStep === 2 && (
               <motion.div
-                className="bg-black p-6 rounded-lg border border-white/10" // BLANC FORT
+                className="bg-black p-6 rounded-lg border border-white/10"
                 variants={formVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
                 <motion.h2
-                  className="text-xl font-medium text-white mb-4" // BLANC FORT
+                  className="text-xl font-medium text-white mb-4"
                   variants={titleVariants}
                 >
-                  Paiement
+                  {t("checkout.paymentTitle")}
                 </motion.h2>
 
                 <motion.div className="mb-6" variants={staggerContainer}>
-                  <p className="text-gray-300 mb-4">Méthode de paiement</p>
+                  <p className="text-gray-300 mb-4">
+                    {t("checkout.paymentMethod")}
+                  </p>
 
                   <div className="flex flex-col space-y-3">
                     <motion.label
@@ -530,7 +536,7 @@ const Checkout: React.FC = () => {
                         className="h-5 w-5 text-[#d4af37]"
                       />
                       <div className="flex items-center">
-                        <span className="ml-2">Carte de crédit</span>
+                        <span className="ml-2">{t("checkout.creditCard")}</span>
                         <div className="flex space-x-2 ml-4">
                           <motion.div
                             className="w-8 h-5 bg-blue-700 rounded"
@@ -574,7 +580,7 @@ const Checkout: React.FC = () => {
                         onChange={handleInputChange}
                         className="h-5 w-5 text-[#d4af37]"
                       />
-                      <span className="ml-2">PayPal</span>
+                      <span className="ml-2">{t("checkout.paypal")}</span>
                     </motion.label>
 
                     <motion.label
@@ -594,7 +600,7 @@ const Checkout: React.FC = () => {
                         onChange={handleInputChange}
                         className="h-5 w-5 text-[#d4af37]"
                       />
-                      <span className="ml-2">Virement bancaire</span>
+                      <span className="ml-2">{t("checkout.bankTransfer")}</span>
                     </motion.label>
                   </div>
                 </motion.div>
@@ -615,7 +621,7 @@ const Checkout: React.FC = () => {
                   >
                     <motion.div variants={itemVariants}>
                       <label className="block text-gray-400 text-sm mb-2">
-                        Numéro de carte
+                        {t("checkout.cardNumber")}
                       </label>
                       <motion.input
                         whileFocus={{
@@ -631,7 +637,7 @@ const Checkout: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <motion.div variants={itemVariants}>
                         <label className="block text-gray-400 text-sm mb-2">
-                          Date d'expiration
+                          {t("checkout.cardExpiry")}
                         </label>
                         <motion.input
                           whileFocus={{
@@ -646,7 +652,7 @@ const Checkout: React.FC = () => {
 
                       <motion.div variants={itemVariants}>
                         <label className="block text-gray-400 text-sm mb-2">
-                          CVV
+                          {t("checkout.cardCVV")}
                         </label>
                         <motion.input
                           whileFocus={{
@@ -677,8 +683,7 @@ const Checkout: React.FC = () => {
                     }}
                   >
                     <p className="text-gray-300 text-sm">
-                      Vous serez redirigé vers PayPal pour compléter votre
-                      paiement après avoir validé votre commande.
+                      {t("checkout.paypalInfo")}
                     </p>
                   </motion.div>
                 )}
@@ -698,9 +703,7 @@ const Checkout: React.FC = () => {
                     }}
                   >
                     <p className="text-gray-300 text-sm mb-4">
-                      Veuillez effectuer un virement sur notre compte bancaire
-                      avec les informations suivantes. Votre commande sera
-                      traitée après réception du paiement.
+                      {t("checkout.bankInfo")}
                     </p>
                     <motion.div
                       className="text-gray-300 text-sm"
@@ -709,16 +712,17 @@ const Checkout: React.FC = () => {
                       animate="visible"
                     >
                       <motion.p variants={itemVariants}>
-                        <strong>IBAN:</strong> BE00 0000 0000 0000
+                        <strong>{t("checkout.iban")}:</strong> BE00 0000 0000
+                        0000
                       </motion.p>
                       <motion.p variants={itemVariants}>
-                        <strong>BIC:</strong> GEBABEBB
+                        <strong>{t("checkout.bic")}:</strong> GEBABEBB
                       </motion.p>
                       <motion.p variants={itemVariants}>
-                        <strong>Banque:</strong> Example Bank
+                        <strong>{t("checkout.bank")}:</strong> Example Bank
                       </motion.p>
                       <motion.p variants={itemVariants}>
-                        <strong>Référence:</strong> ORDER-
+                        <strong>{t("checkout.reference")}:</strong> ORDER-
                         {Math.floor(Math.random() * 1000000)}
                       </motion.p>
                     </motion.div>
@@ -746,7 +750,7 @@ const Checkout: React.FC = () => {
                   whileTap="tap"
                   disabled={isProcessing}
                 >
-                  Retour
+                  {t("checkout.back")}
                 </motion.button>
               )}
 
@@ -818,11 +822,11 @@ const Checkout: React.FC = () => {
 
                 {currentStep === 1
                   ? isAnimating
-                    ? "Chargement..."
-                    : "Continuer"
+                    ? t("checkout.loading")
+                    : t("checkout.continue")
                   : isProcessing
-                  ? "Traitement en cours..."
-                  : "Commander"}
+                  ? t("checkout.processing")
+                  : t("checkout.order")}
               </motion.button>
             </motion.div>
           </form>
@@ -836,7 +840,7 @@ const Checkout: React.FC = () => {
           animate="visible"
         >
           <motion.div
-            className="bg-black p-6 rounded-lg border border-white/10 sticky top-8" // BLANC FORT
+            className="bg-black p-6 rounded-lg border border-white/10 sticky top-8"
             whileHover={{
               boxShadow:
                 "0 10px 25px -5px rgba(212,175,55,0.1), 0 8px 10px -6px rgba(212,175,55,0.05)",
@@ -844,10 +848,10 @@ const Checkout: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             <motion.h2
-              className="text-xl font-medium text-white mb-4" // BLANC FORT
+              className="text-xl font-medium text-white mb-4"
               variants={titleVariants}
             >
-              Récapitulatif
+              {t("checkout.summary")}
             </motion.h2>
 
             <motion.div className="space-y-4 mb-6" variants={staggerContainer}>
@@ -892,14 +896,14 @@ const Checkout: React.FC = () => {
                 className="flex justify-between text-gray-400"
                 variants={itemVariants}
               >
-                <span>Sous-total</span>
+                <span>{t("checkout.subtotal")}</span>
                 <span>{subtotal.toFixed(2)}€</span>
               </motion.div>
               <motion.div
                 className="flex justify-between text-gray-400"
                 variants={itemVariants}
               >
-                <span>Livraison</span>
+                <span>{t("checkout.shipping")}</span>
                 <span>{shipping.toFixed(2)}€</span>
               </motion.div>
               <motion.div
@@ -915,7 +919,7 @@ const Checkout: React.FC = () => {
                   },
                 }}
               >
-                <span>Total</span>
+                <span>{t("checkout.total")}</span>
                 <motion.span
                   className="text-white"
                   initial={{ scale: 1 }}
