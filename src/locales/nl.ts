@@ -453,6 +453,8 @@ const nl = {
       contactSupport: "Neem contact op met onze support",
       contactUs: "Contact opnemen",
     },
+    paypalMessage:
+      "Klik op de PayPal-knop hieronder om uw aankoop veilig af te ronden.",
     // Voeg meer sleutels toe indien nodig
   },
   cart: {

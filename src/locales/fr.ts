@@ -457,6 +457,8 @@ const fr = {
       contactSupport: "Contactez notre équipe de support",
       contactUs: "Nous contacter",
     },
+    paypalMessage:
+      "Cliquez sur le bouton PayPal ci-dessous pour finaliser votre achat en toute sécurité.",
     // Ajoute d'autres clés si besoin
   },
   cart: {

@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
+
+// Extend the Window interface to include paypal
+declare global {
+  interface Window {
+    paypal?: any;
+  }
+}
 
 // Mock cart data for summary
 const cartItems = [
@@ -197,28 +205,138 @@ const Checkout: React.FC = () => {
     e.preventDefault();
 
     if (currentStep === 1) {
-      // Déclencher l'animation de la barre de progression
       setIsAnimating(true);
-
-      // Après la durée de l'animation, passer à l'étape suivante
       setTimeout(() => {
         setCurrentStep(2);
         setIsAnimating(false);
         window.scrollTo(0, 0);
-      }, 1300); // Un peu plus que la durée de l'animation (1.2s) pour être sûr
-
+      }, 1300);
       return;
     }
 
-    // Traitement du paiement (étape finale)
-    setIsProcessing(true);
+    // Si PayPal est sélectionné, ne rien faire ici
+    // L'utilisateur doit cliquer sur le bouton PayPal directement
+    if (formData.paymentMethod === "paypal") {
+      return;
+    }
 
-    // Simulation du traitement du paiement
+    // Pour les autres méthodes de paiement, comportement inchangé
+    setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
       navigate("/thank-you");
     }, 2000);
   };
+
+  // Ajoute cette fonction dans ton composant
+  const initiatePayPalCheckout = () => {
+    setIsProcessing(true);
+
+    // Créer une commande PayPal directement via le SDK
+    if (window.paypal) {
+      try {
+        window.paypal.Buttons.driver("react", { React, ReactDOM });
+      } catch (err) {
+        console.error("Failed to trigger PayPal manually:", err);
+
+        // Si ça échoue, on essaie la redirection directe
+        const paypalURL = `https://www.sandbox.paypal.com/checkoutnow?token=${generateUUID()}`;
+        window.open(paypalURL, "_blank");
+      }
+
+      setTimeout(() => setIsProcessing(false), 1000);
+    } else {
+      // Si le SDK PayPal n'est pas disponible, rediriger vers PayPal directement
+      window.open("https://www.paypal.com", "_blank");
+      setIsProcessing(false);
+    }
+  };
+
+  // Fonction utilitaire pour générer un UUID pour le token
+  const generateUUID = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0,
+          v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (formData.paymentMethod === "paypal" && window.paypal) {
+      console.log("Mounting PayPal button...");
+
+      const container = document.getElementById("paypal-button-container");
+      if (container) {
+        container.innerHTML = "";
+
+        try {
+          window.paypal
+            .Buttons({
+              // Customise l'apparence
+              style: {
+                color: "gold",
+                shape: "rect",
+                label: "pay",
+                height: 45,
+              },
+
+              // Création de la commande avec les URLs de redirection
+              createOrder: (data: Record<string, unknown>, actions: any) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: total.toFixed(2),
+                        currency_code: "EUR",
+                      },
+                    },
+                  ],
+                  // Spécifie les URLs de redirection ici
+                  application_context: {
+                    return_url: window.location.origin + "/thank-you", // URL après paiement réussi
+                    cancel_url: window.location.origin + "/checkout", // URL si annulation
+                    brand_name: "SOGNO D'ORO", // Nom de ta marque
+                    user_action: "PAY_NOW", // Encourage l'action immédiate
+                    shipping_preference: "NO_SHIPPING", // Si pas besoin d'adresse de livraison supplémentaire
+                  },
+                });
+              },
+
+              // Validation du paiement
+              onApprove: (data: Record<string, unknown>, actions: any) => {
+                setIsProcessing(true);
+                return actions.order.capture().then(function (details: any) {
+                  setIsProcessing(false);
+                  navigate("/thank-you");
+                });
+              },
+
+              // Annulation du paiement
+              onCancel: () => {
+                console.log("Payment cancelled");
+              },
+
+              // Erreur
+              onError: (err: any) => {
+                console.error("PayPal Error:", err);
+              },
+            })
+            .render("#paypal-button-container")
+            .then(() => {
+              console.log("PayPal button rendered successfully!");
+            })
+            .catch((err: any) => {
+              console.error("PayPal button error:", err);
+            });
+        } catch (error) {
+          console.error("Error creating PayPal button:", error);
+        }
+      }
+    }
+  }, [formData.paymentMethod, total, navigate]);
 
   return (
     <motion.div
@@ -671,7 +789,8 @@ const Checkout: React.FC = () => {
                 {/* PayPal instructions */}
                 {formData.paymentMethod === "paypal" && (
                   <motion.div
-                    className="bg-black border border-[#d4af37]/10 p-4 rounded-md mb-6"
+                    className="mt-4 p-4 border-2 border-yellow-500 rounded-md bg-black"
+                    variants={itemVariants}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{
                       opacity: 1,
@@ -682,9 +801,41 @@ const Checkout: React.FC = () => {
                       },
                     }}
                   >
-                    <p className="text-gray-300 text-sm">
-                      {t("checkout.paypalInfo")}
+                    <p className="text-yellow-400 mb-4 font-bold">
+                      {t("checkout.paypalMessage")}
                     </p>
+
+                    {/* Container pour le SDK PayPal */}
+                    <div
+                      id="paypal-button-container"
+                      className="min-h-[60px]"
+                    ></div>
+
+                    {/* Bouton PayPal personnalisé de secours */}
+                    <button
+                      type="button"
+                      className="w-full bg-[#0070ba] hover:bg-[#003087] text-white font-bold py-3 px-4 rounded flex items-center justify-center transition-colors mt-4"
+                      onClick={() => initiatePayPalCheckout()}
+                      disabled={isProcessing}
+                    >
+                      <span className="mr-2">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M20.067 7.301C20.067 9.328 19.043 10.807 17.221 10.807H14.555C14.355 10.807 14.188 10.949 14.155 11.145L13.441 15.849C13.408 16.042 13.242 16.184 13.046 16.184H10.891C10.758 16.184 10.655 16.075 10.666 15.941L10.986 13.715C10.998 13.583 11.103 13.484 11.236 13.484H12.116C14.459 13.484 16.168 11.718 16.168 9.291C16.168 8.079 15.558 7.061 14.528 6.569C15.715 6.569 16.557 6.569 16.557 6.569C18.553 6.569 20.067 7.301 20.067 9.328V7.301ZM7.49 7.301C7.49 9.328 6.466 10.807 4.643 10.807H1.978C1.778 10.807 1.611 10.949 1.578 11.145L0.864 15.849C0.831 16.042 0.665 16.184 0.469 16.184H0.183C0.05 16.184 -0.053 16.075 -0.042 15.941L1.114 7.544C1.147 7.359 1.309 7.226 1.497 7.226H4.643C6.466 7.226 7.49 8.705 7.49 10.731V7.301ZM10.754 7.301C10.754 9.328 9.73 10.807 7.908 10.807H5.242C5.042 10.807 4.875 10.949 4.842 11.145L4.128 15.849C4.095 16.042 3.929 16.184 3.733 16.184H3.447C3.314 16.184 3.211 16.075 3.222 15.941L4.378 7.544C4.411 7.359 4.573 7.226 4.761 7.226H7.908C9.73 7.226 10.754 8.705 10.754 10.731V7.301Z"
+                            fill="white"
+                          />
+                        </svg>
+                      </span>
+                      {isProcessing
+                        ? t("checkout.processing")
+                        : "PayPal Checkout"}
+                    </button>
                   </motion.div>
                 )}
 

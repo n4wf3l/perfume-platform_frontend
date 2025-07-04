@@ -450,6 +450,8 @@ const en = {
       contactSupport: "Contact our support team",
       contactUs: "Contact us",
     },
+    paypalMessage:
+      "Click the PayPal button below to complete your purchase securely.",
     // Add more keys if needed
   },
   cart: {
