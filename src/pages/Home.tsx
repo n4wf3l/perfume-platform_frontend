@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Banner from "../components/home/banner";
 import ProductCard from "../components/home/productCard";
-import TwoCovers from "../components/home/twoCovers";
 import NewPerfums from "../components/home/newPerfums";
 import TwoCovers from "../components/home/twoCovers";
+import Header from "../components/Header";
 import productService from "../services/productService";
 import type { Product } from "../types/api";
 
@@ -82,6 +80,7 @@ const Home: React.FC = () => {
   }, [isMobile]);
 
   // Handlers boutons
+  const navigate = useNavigate();
   const goToWomen = () => navigate("/shop?gender=femme");
   const goToMen = () => navigate("/shop?gender=homme");
 
@@ -97,7 +96,7 @@ const Home: React.FC = () => {
         <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
           {/* Banner cover en fond */}
           <div className="absolute inset-0 z-0">
-            <Banner product={featuredProduct} title="" subtitle="" />
+            {heroProduct && <Banner product={heroProduct} title="" subtitle="" />}
           </div>
           {/* Overlay noir pour foncer la cover */}
           <div className="absolute inset-0 bg-black/60 z-10" />
