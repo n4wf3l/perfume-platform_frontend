@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { Product } from "../../types/api";
 
 interface ProductCardProps {
@@ -8,6 +9,8 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
+  const { t } = useTranslation();
+
   // Ensure an image is always available
   const productImage =
     product.images && product.images.length > 0
@@ -19,9 +22,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Link to={`/product/${product.id}`} className="block">
         <div className="overflow-hidden">
           <img
-            src={productImage}
+            src={product.images[0]}
             alt={product.name}
-            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-72 object-cover rounded-t-lg" // h-72 = 18rem, adapte si besoin
           />
         </div>
 
@@ -37,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
             </span>
             <button className="px-4 py-2 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300">
-              Voir
+              {t("home.seeButton", "Voir")}
             </button>
           </div>
         </div>

@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion, cubicBezier, easeInOut, spring } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const History: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Variants pour l'animation des éléments textuels avec typage correct
   const textVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -57,55 +60,39 @@ const History: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="md:text-left text-center flex flex-col items-center md:items-start">
             <motion.h2
               className="text-3xl md:text-4xl font-serif text-white mb-6"
               variants={textVariants}
               custom={0}
             >
-              Notre Histoire
+              {t("about.historyTitle")}
             </motion.h2>
-            <div className="space-y-4">
+            <div className="space-y-4 w-full">
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={1}
               >
-                Fondée en 2008 par Alessandro Romano, Sogno D'Oro est née d'une
-                passion pour les arômes rares et les essences précieuses. Notre
-                fondateur, issu d'une longue lignée d'artisans parfumeurs
-                italiens, a su combiner tradition ancestrale et innovation
-                moderne pour créer des fragrances qui évoquent des émotions
-                profondes.
+                {t("about.historyParagraph1")}
               </motion.p>
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={2}
               >
-                Chaque parfum est élaboré avec soin dans notre atelier à
-                Florence, où nous sélectionnons uniquement les ingrédients les
-                plus fins et les plus rares du monde entier. Notre engagement
-                envers l'excellence et l'authenticité nous a permis de créer une
-                collection de parfums qui représente le summum du luxe et de
-                l'art olfactif.
+                {t("about.historyParagraph2")}
               </motion.p>
               <motion.p
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed md:text-left text-center"
                 variants={textVariants}
                 custom={3}
               >
-                Notre philosophie repose sur l'idée que le parfum est une forme
-                d'expression personnelle, une signature invisible qui raconte
-                une histoire unique. À travers nos créations, nous explorons les
-                émotions humaines les plus profondes, en nous inspirant de
-                voyages extraordinaires, de rencontres mémorables et de paysages
-                envoûtants qui stimulent nos sens et nourrissent notre
-                imagination créative.
+                {t("about.historyParagraph3")}
               </motion.p>
             </div>
             <motion.div
-              className="mt-8 inline-block relative"
+              className="mt-8 inline-block relative w-full md:w-auto"
               variants={textVariants}
               custom={4}
             >
@@ -117,9 +104,9 @@ const History: React.FC = () => {
               >
                 <Link
                   to="/shop"
-                  className="relative bg-gray-900 hover:bg-gray-800 border border-white/50 text-white px-8 py-3 rounded-lg transition-all duration-300 block"
+                  className="relative bg-gray-900 hover:bg-gray-800 border border-white/50 text-white px-8 py-3 rounded-lg transition-all duration-300 block mx-auto md:mx-0"
                 >
-                  Découvrir la Collection
+                  {t("about.historyButton")}
                 </Link>
               </motion.div>
             </motion.div>

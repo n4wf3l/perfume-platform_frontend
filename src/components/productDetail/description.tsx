@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface DescriptionProps {
   description?: string;
@@ -11,8 +12,12 @@ const Description: React.FC<DescriptionProps> = ({
 }) => {
   if (!description) return null;
   
+  const { t } = useTranslation();
   const firstLetter = description.charAt(0);
   const rest = description.slice(1);
+
+  // Détection mobile simple
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <section className="w-full bg-black py-16 px-4 flex justify-center">
@@ -27,7 +32,7 @@ const Description: React.FC<DescriptionProps> = ({
           </span>
           <div className="flex-1">
             <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4">
-              Histoire
+              {t("product.description")}
             </span>
             <p className="font-serif text-lg text-white leading-relaxed tracking-wide">
               {rest}
@@ -35,26 +40,36 @@ const Description: React.FC<DescriptionProps> = ({
           </div>
         </div>
         {/* Bloc Ingrédients */}
-        {ingredientsDescription && (
-          <div className="flex flex-row items-start gap-8">
-            {/* Pour garder l'alignement, on met un span vide de même taille */}
-            <span
-              className="font-serif text-[7rem] leading-none text-white select-none opacity-0"
-              style={{ letterSpacing: "0.05em", lineHeight: "1" }}
-              aria-hidden
-            >
-              {firstLetter}
-            </span>
-            <div className="flex-1">
-              <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4">
-                Ingrédients
+        {ingredientsDescription &&
+          (isMobile ? (
+            <div className="flex flex-col items-center justify-center mt-10 w-full">
+              <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4 text-center">
+                {t("product.ingredients")}
               </span>
-              <p className="font-serif text-base text-white tracking-wide">
+              <p className="font-serif text-base text-white tracking-wide text-left max-w-xs w-full">
                 {ingredientsDescription}
               </p>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="flex flex-row items-start gap-8">
+              {/* Pour garder l'alignement, on met un span vide de même taille */}
+              <span
+                className="font-serif text-[7rem] leading-none text-white select-none opacity-0"
+                style={{ letterSpacing: "0.05em", lineHeight: "1" }}
+                aria-hidden
+              >
+                {firstLetter}
+              </span>
+              <div className="flex-1">
+                <span className="inline-block text-xs uppercase tracking-widest text-white bg-white/10 px-3 py-1 rounded-full mb-4">
+                  {t("product.ingredients")}
+                </span>
+                <p className="font-serif text-base text-white tracking-wide">
+                  {ingredientsDescription}
+                </p>
+              </div>
+            </div>
+          ))}
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import ProductCard from "./productCard";
 import productService from "../../services/productService";
 import type { Product } from "../../types/api";
@@ -18,6 +19,7 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
   title = "Nouveaux parfums",
   subtitle = "Découvrez nos créations les plus récentes, alliant innovation et tradition.",
 }) => {
+  const { t } = useTranslation();
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
   const [newProducts, setNewProducts] = useState<Product[]>([]);

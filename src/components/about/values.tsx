@@ -1,8 +1,11 @@
 import React from "react";
 import { motion, easeOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const Values: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Typage explicite des variants
   const titleVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
@@ -53,7 +56,7 @@ const Values: React.FC = () => {
           className="text-3xl md:text-4xl font-serif text-white mb-12 text-center"
           variants={titleVariants}
         >
-          Nos Valeurs
+          {t("about.valuesTitle")}
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -62,7 +65,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={0}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
@@ -88,12 +91,10 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-white mb-3">Luxe</h3>
-            <p className="text-gray-400">
-              Nous nous engageons à offrir des expériences olfactives
-              d'exception, grâce à des ingrédients rares et précieux
-              sélectionnés avec la plus grande rigueur.
-            </p>
+            <h3 className="text-xl font-serif text-white mb-3">
+              {t("about.values.luxuryTitle")}
+            </h3>
+            <p className="text-gray-400">{t("about.values.luxuryText")}</p>
           </motion.div>
 
           {/* Artisanat */}
@@ -101,7 +102,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={1}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
@@ -127,12 +128,10 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-white mb-3">Artisanat</h3>
-            <p className="text-gray-400">
-              Chaque parfum est élaboré à la main selon des méthodes
-              traditionnelles, en respectant un savoir-faire transmis depuis des
-              générations de maîtres parfumeurs.
-            </p>
+            <h3 className="text-xl font-serif text-white mb-3">
+              {t("about.values.craftTitle")}
+            </h3>
+            <p className="text-gray-400">{t("about.values.craftText")}</p>
           </motion.div>
 
           {/* Durabilité */}
@@ -140,7 +139,7 @@ const Values: React.FC = () => {
             variants={cardVariants}
             custom={2}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group"
+            className="bg-black p-8 rounded-xl border border-white/20 hover:border-white/50 transition-all duration-300 group flex flex-col items-center"
           >
             <motion.div
               className="w-16 h-16 flex items-center justify-center rounded-full bg-white/10 border border-white/30 mb-6 group-hover:bg-white/20 transition-all"
@@ -166,11 +165,11 @@ const Values: React.FC = () => {
                 />
               </svg>
             </motion.div>
-            <h3 className="text-xl font-serif text-white mb-3">Durabilité</h3>
+            <h3 className="text-xl font-serif text-white mb-3">
+              {t("about.values.sustainabilityTitle")}
+            </h3>
             <p className="text-gray-400">
-              Notre engagement pour l'environnement se traduit par des pratiques
-              responsables, du sourcing éthique des ingrédients à la conception
-              de flacons recyclables.
+              {t("about.values.sustainabilityText")}
             </p>
           </motion.div>
         </div>

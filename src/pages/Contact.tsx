@@ -4,8 +4,11 @@ import type { Variants } from "framer-motion";
 import ContactForm from "../components/contact/form";
 import InfoDetails from "../components/contact/infoDetails";
 import FAQ from "../components/contact/faq";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const Contact: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   // Animation variants with proper typing
   const fadeIn: Variants = {
     hidden: { opacity: 0 },
@@ -61,7 +64,7 @@ const Contact: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Contactez-nous
+            {t("contact.title")}
           </motion.h1>
           <motion.p
             className="text-xl max-w-3xl mx-auto text-gray-300 mb-8 drop-shadow"
@@ -69,8 +72,7 @@ const Contact: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Nous serions ravis d'échanger avec vous et de vous aider à découvrir
-            nos créations olfactives d'exception.
+            {t("contact.subtitle")}
           </motion.p>
         </motion.div>
       </motion.section>

@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ProductCard from "../home/productCard";
+import { useTranslation } from "react-i18next"; // Ajout import
 import type { Product as ApiProduct } from "../../types/api";
 
 interface ProductsProps {
@@ -18,6 +19,7 @@ const Products: React.FC<ProductsProps> = ({
   productsPerPage,
   totalProducts,
 }) => {
+  const { t } = useTranslation(); // Ajout hook
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const fadeIn = {
@@ -58,9 +60,7 @@ const Products: React.FC<ProductsProps> = ({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-xl text-gray-400">
-            Aucun parfum ne correspond à votre recherche.
-          </p>
+          <p className="text-xl text-gray-400">{t("shop.noResults")}</p>
         </motion.div>
       )}
 

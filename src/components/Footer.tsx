@@ -1,8 +1,10 @@
 import React from "react";
-import { Link, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
 
   return (
     <footer className="bg-black border-t border-[#d4af37]/30 w-full">
@@ -15,9 +17,7 @@ const Footer: React.FC = () => {
                 Sogno D'Oro
               </span>
             </Link>
-            <p className="text-gray-400 text-sm">
-              Parfums de luxe qui racontent votre histoire.
-            </p>
+            <p className="text-gray-400 text-sm">{t("footer.brandSlogan")}</p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white">
                 <span className="sr-only">Facebook</span>
@@ -54,14 +54,16 @@ const Footer: React.FC = () => {
 
           {/* Liens Rapides */}
           <div>
-            <h3 className="text-white font-medium mb-4">Liens Rapides</h3>
+            <h3 className="text-white font-medium mb-4">
+              {t("footer.quickLinks")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/shop"
                   className="text-gray-400 hover:text-white text-sm"
                 >
-                  Boutique
+                  {t("footer.shop")}
                 </Link>
               </li>
               <li>
@@ -69,7 +71,7 @@ const Footer: React.FC = () => {
                   to="/about"
                   className="text-gray-400 hover:text-white text-sm"
                 >
-                  À propos
+                  {t("footer.about")}
                 </Link>
               </li>
               <li>
@@ -77,7 +79,7 @@ const Footer: React.FC = () => {
                   to="/contact"
                   className="text-gray-400 hover:text-white text-sm"
                 >
-                  Contact
+                  {t("footer.contact")}
                 </Link>
               </li>
             </ul>
@@ -85,7 +87,9 @@ const Footer: React.FC = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-medium mb-4">Contactez-nous</h3>
+            <h3 className="text-white font-medium mb-4">
+              {t("footer.contactUs")}
+            </h3>
             <ul className="space-y-2">
               <li className="text-gray-400 text-sm flex items-start">
                 <svg
@@ -100,7 +104,7 @@ const Footer: React.FC = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span>123 Rue des Parfums, Bruxelles, Belgique</span>
+                <span>{t("footer.address")}</span>
               </li>
               <li className="text-gray-400 text-sm flex items-center">
                 <svg
@@ -111,7 +115,7 @@ const Footer: React.FC = () => {
                 >
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
-                <span>+32 123 456 789</span>
+                <span>{t("footer.phone")}</span>
               </li>
               <li className="text-gray-400 text-sm flex items-center">
                 <svg
@@ -123,21 +127,23 @@ const Footer: React.FC = () => {
                   <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
-                <span>info@sognodoro.com</span>
+                <span>{t("footer.email")}</span>
               </li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div>
-            <h3 className="text-white font-medium mb-4">Newsletter</h3>
+            <h3 className="text-white font-medium mb-4">
+              {t("footer.newsletter")}
+            </h3>
             <p className="text-gray-400 text-sm mb-4">
-              Abonnez-vous pour des offres exclusives et des mises à jour.
+              {t("footer.newsletterDesc")}
             </p>
             <form className="flex flex-col sm:flex-row gap-2">
               <input
                 type="email"
-                placeholder="Votre email"
+                placeholder={t("footer.emailPlaceholder")}
                 className="bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
                 required
               />
@@ -145,7 +151,7 @@ const Footer: React.FC = () => {
                 type="submit"
                 className="bg-white hover:bg-white/90 text-black font-medium py-2 px-4 rounded-md transition-colors duration-300"
               >
-                S'abonner
+                {t("footer.subscribe")}
               </button>
             </form>
           </div>
@@ -154,28 +160,28 @@ const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-xs mb-4 md:mb-0">
-            &copy; {currentYear} Sogno D'Oro. Tous droits réservés.
+            &copy; {currentYear} Sogno D'Oro. {t("footer.copyright")}
           </p>
           <div className="flex space-x-6">
             <Link
               to="/confidentiality"
               className="text-gray-500 hover:text-white text-xs"
             >
-              Politique de confidentialité
+              {t("footer.privacy")}
             </Link>
 
             <Link
               to="/confidentiality"
               className="text-gray-500 hover:text-white text-xs"
             >
-              Conditions d'utilisation
+              {t("footer.terms")}
             </Link>
 
             <Link
               to="/admin"
               className="text-gray-500 hover:text-white text-xs"
             >
-              Administration
+              {t("footer.admin")}
             </Link>
           </div>
         </div>

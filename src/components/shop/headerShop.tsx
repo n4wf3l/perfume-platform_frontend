@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import type { Category } from "../../types/api";
+import { useTranslation } from "react-i18next";
 
 interface HeaderShopProps {
   searchTerm: string;
@@ -21,6 +22,20 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   setSelectedGender,
   categories = [],
 }) => {
+  const [catDropdownOpen, setCatDropdownOpen] = useState(false);
+  const { t } = useTranslation();
+
+  // Genres dynamiques via i18n
+  const genders = [
+    { id: "all", label: t("shop.genders.all") },
+    { id: "homme", label: t("shop.genders.homme") },
+    { id: "femme", label: t("shop.genders.femme") },
+    { id: "unisexe", label: t("shop.genders.unisexe") },
+  ];
+
+  // Fonction pour forcer la majuscule (compatible multilingue)
+  const toUpper = (str: string) => (str ? str.toLocaleUpperCase() : "");
+
   return (
     <div className="mb-16">
       <motion.h1
@@ -29,7 +44,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        Notre Collection
+        {t("shop.headerTitle")}
       </motion.h1>
 
       {/* Barre de recherche centrée */}
@@ -42,7 +57,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         <div className="relative w-full max-w-md">
           <input
             type="text"
-            placeholder="Rechercher un parfum..."
+            placeholder={t("shop.searchPlaceholder")}
             className="w-full bg-black border border-gray-700 rounded-full py-3 px-6 text-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -71,7 +86,8 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <div className="flex justify-center min-w-max w-full pb-2">
+        {/* Desktop */}
+        <div className="hidden md:flex justify-center min-w-max w-full pb-2">
           <div className="flex space-x-8 border-b border-gray-700 w-full max-w-4xl">
             <button
               key="all"
@@ -118,23 +134,94 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
             ))}
           </div>
         </div>
+        {/* Mobile */}
+        <div className="md:hidden flex justify-center w-full pb-2">
+          <div className="relative w-full max-w-xs">
+            <button
+              onClick={() => setCatDropdownOpen((v) => !v)}
+              className="w-full flex justify-between items-center px-4 py-3 bg-black border border-gray-700 rounded-lg text-white font-medium text-base focus:outline-none"
+            >
+              {toUpper(
+                t(
+                  categories.find((c) => c.id === selectedCategory)?.nameKey ||
+                    "shop.categories.category"
+                )
+              )}
+              <svg
+                className={`w-5 h-5 ml-2 transition-transform ${
+                  catDropdownOpen ? "rotate-180" : ""
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            {/* Overlay déroulant plein écran */}
+            <motion.div
+              initial={false}
+              animate={catDropdownOpen ? "open" : "closed"}
+              variants={{
+                open: { opacity: 1, pointerEvents: "auto" },
+                closed: { opacity: 0, pointerEvents: "none" },
+              }}
+              transition={{ duration: 0.2 }}
+              className={`fixed inset-0 z-40 bg-black/90 flex flex-col items-center justify-center ${
+                catDropdownOpen ? "" : "pointer-events-none"
+              }`}
+              style={{ display: catDropdownOpen ? "flex" : "none" }}
+            >
+              {/* Fermer */}
+              <button
+                onClick={() => setCatDropdownOpen(false)}
+                className="absolute top-6 right-6 text-white text-3xl"
+                aria-label={t("shop.close")}
+              >
+                ×
+              </button>
+              <ul className="w-full max-w-xs space-y-4 px-6">
+                {categories.map((category) => (
+                  <li key={category.id}>
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        setCatDropdownOpen(false);
+                      }}
+                      className={`w-full text-center py-4 text-lg  rounded-lg transition ${
+                        selectedCategory === category.id
+                          ? "bg-white text-black"
+                          : "bg-black text-white hover:bg-white/10"
+                      }`}
+                    >
+                      {toUpper(t(category.nameKey))}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
 
       {/* Filtres genre */}
       <div className="flex justify-center gap-4 mt-6">
-        {["all", "homme", "femme", "unisexe"].map((gender) => (
+        {genders.map((gender) => (
           <button
-            key={gender}
-            onClick={() => setSelectedGender(gender)}
+            key={gender.id}
+            onClick={() => setSelectedGender(gender.id)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-              selectedGender === gender
+              selectedGender === gender.id
                 ? "bg-white text-black"
                 : "bg-gray-900 text-white hover:bg-white hover:text-black"
             }`}
           >
-            {gender === "all"
-              ? "Tous"
-              : gender.charAt(0).toUpperCase() + gender.slice(1)}
+            {gender.label}
           </button>
         ))}
       </div>

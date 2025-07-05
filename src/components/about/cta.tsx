@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion, easeInOut } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next"; // Ajout import
 
 const CTA: React.FC = () => {
+  const { t } = useTranslation(); // Ajout hook
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -73,14 +76,13 @@ const CTA: React.FC = () => {
           className="text-3xl md:text-4xl font-serif text-white mb-6"
           variants={childVariants}
         >
-          Rejoignez Notre Aventure Olfactive
+          {t("about.ctaTitle")}
         </motion.h2>
         <motion.p
           className="text-gray-300 text-lg mb-10"
           variants={childVariants}
         >
-          Découvrez l'univers exclusif de Sogno D'Oro et laissez-vous emporter
-          par des fragrances d'exception qui racontent des histoires uniques.
+          {t("about.ctaText")}
         </motion.p>
         <motion.div
           className="inline-block relative"
@@ -96,7 +98,7 @@ const CTA: React.FC = () => {
             to="/contact"
             className="relative bg-black hover:bg-gray-900 border border-white/50 text-white px-10 py-4 rounded-lg transition-colors duration-300 text-lg inline-block"
           >
-            Contactez-nous
+            {t("about.ctaButton")}
           </Link>
         </motion.div>
 

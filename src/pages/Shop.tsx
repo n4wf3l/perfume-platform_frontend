@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import HeaderShop from "../components/shop/headerShop";
 import Products from "../components/shop/products";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import productService from "../services/productService";
 import categoryService from "../services/categoryService";
 import type { Product, Category } from "../types/api";
   
 const Shop: React.FC = () => {
+  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const genderParam = searchParams.get("gender"); // "homme" ou "femme" ou null
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | "all">("all");
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +24,7 @@ const Shop: React.FC = () => {
   const [error, setError] = useState("");
   const productsPerPage = 6;
 
+ 
   // Fetch products and categories from API
   useEffect(() => {
     const fetchData = async () => {
@@ -118,10 +125,10 @@ const Shop: React.FC = () => {
               categories={categories}
             />
 
-            {/* Titre de la boutique */}
-            <h1 className="text-4xl font-serif text-white mb-8 text-center">
-              Boutique
-            </h1>
+        {/* Titre de la boutique */}
+        <h1 className="text-4xl font-serif text-white mb-8 text-center">
+          {t("shop.title")}
+        </h1>
 
             {/* Section des produits et pagination */}
             <Products

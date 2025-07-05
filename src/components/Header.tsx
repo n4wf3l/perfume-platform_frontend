@@ -1,35 +1,134 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { X } from "lucide-react";
+import { useTranslation } from "react-i18next"; // Ajout import
+import i18n from "../i18n";
 
-const Header: React.FC = () => {
+// Ajout du composant Toast simple
+const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
+  message,
+  onClose,
+}) => (
+  <div className="fixed bottom-6 right-6 z-[9999]">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 40 }}
+      transition={{ duration: 0.3 }}
+      className="bg-black text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3"
+    >
+      <span>{message}</span>
+      <button
+        onClick={onClose}
+        className="ml-2 text-white text-xl font-bold focus:outline-none"
+        aria-label="Fermer"
+      >
+        ×
+      </button>
+    </motion.div>
+  </div>
+);
+
+const Header: React.FC<{ showMobileHeader?: boolean }> = ({
+  showMobileHeader = true,
+}) => {
+  const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState("fr");
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const location = useLocation();
+  const [showToast, setShowToast] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // Utilise la langue active d'i18next
+  const [currentLanguage, setCurrentLanguage] = useState<"fr" | "en" | "nl">(
+    "fr"
+  );
 
-  const changeLanguage = (lng: string) => {
-    setCurrentLanguage(lng);
+  // Synchronise le state avec i18next (utile au refresh ou changement externe)
+  // Helper to check if a string is a supported language
+  const isSupportedLanguage = (lng: string): lng is "fr" | "en" | "nl" =>
+    lng === "fr" || lng === "en" || lng === "nl";
+
+  useEffect(() => {
+    const onLangChanged = (lng: string) => {
+      if (isSupportedLanguage(lng)) setCurrentLanguage(lng);
+    };
+    i18n.on("languageChanged", onLangChanged);
+    // Init au cas où i18n.language change après le render
+    if (isSupportedLanguage(i18n.language)) {
+      setCurrentLanguage(i18n.language);
+    }
+    return () => {
+      i18n.off("languageChanged", onLangChanged);
+    };
+  }, [i18n]);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleLangMenu = () => setIsLangMenuOpen((v) => !v);
+
+  const changeLanguage = (lng: "fr" | "en" | "nl") => {
+    i18n.changeLanguage(lng);
     setIsLangMenuOpen(false);
   };
 
-  const toggleLangMenu = () => {
-    setIsLangMenuOpen(!isLangMenuOpen);
-  };
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
-  // Noms des langues en français
-  const languageNames = {
-    en: "Anglais",
+  // Noms longs pour le menu déroulant
+  const languageLabels = {
     fr: "Français",
-    nl: "Néerlandais",
+    en: "English",
+    nl: "Nederlands",
   };
+
+  // Labels courts pour l'affichage compact
+  const languageShort = {
+    fr: "FR",
+    en: "EN",
+    nl: "NL",
+  };
+
+  // Lien WhatsApp (remplace le numéro par le tien)
+  const whatsappUrl = "https://wa.me/33612345678";
+
+  // Ajoute ce bloc juste avant le return :
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  if (isHome && isMobile && !showMobileHeader && !isMenuOpen) {
+    return null;
+  }
+  if (isHome && isMobile && !isMenuOpen) {
+    return (
+      <header className="bg-black border-b border-white/40 fixed top-0 left-0 w-full z-40">
+        <div className="flex justify-between items-center h-16 px-4">
+          {/* Espaceur pour aligner à droite */}
+          <span className="w-6" />
+          <button
+            onClick={toggleMenu}
+            className="bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
+            aria-label="Ouvrir le menu"
+          >
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+    );
+  }
+
+  function isActive(path: string) {
+    return location.pathname === path;
+  }
 
   return (
     <header className="bg-black border-b border-white/40">
@@ -38,9 +137,12 @@ const Header: React.FC = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <span className="text-white font-serif text-2xl md:text-3xl">
-                Sogno D'Oro
-              </span>
+              {/* Affiche le logo sur desktop partout, et sur mobile sauf sur la Home */}
+              {(!isHome || !isMobile) && (
+                <span className="text-white font-serif text-2xl md:text-3xl">
+                  Sogno D'Oro
+                </span>
+              )}
             </Link>
           </div>
 
@@ -55,7 +157,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Accueil
+              {t("nav.home")}
             </Link>
             <Link
               to="/shop"
@@ -66,7 +168,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Boutique
+              {t("nav.shop")}
             </Link>
             <Link
               to="/about"
@@ -77,7 +179,7 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              À propos
+              {t("nav.about")}
             </Link>
             <Link
               to="/contact"
@@ -88,78 +190,71 @@ const Header: React.FC = () => {
               } 
                 transition-colors duration-200 px-1 py-2 text-sm font-medium`}
             >
-              Contact
+              {t("nav.contact")}
             </Link>
           </nav>
 
           {/* Right Side Elements */}
           <div className="flex items-center space-x-4">
             {/* Language Switcher Menu */}
-            <div className="hidden md:block relative">
+            <div className="hidden md:flex items-center space-x-6 relative">
               <button
                 onClick={toggleLangMenu}
-                className="flex items-center space-x-1 px-3 py-1 text-sm font-medium text-gray-300 hover:text-white"
+                className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition relative"
               >
-                <span>
-                  {languageNames[currentLanguage as keyof typeof languageNames]}
-                </span>
+                {languageShort[currentLanguage]}
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-4 w-4 transition-transform ${
+                  className={`w-4 h-4 ml-1 transition-transform ${
                     isLangMenuOpen ? "rotate-180" : ""
                   }`}
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
               </button>
-
-              {/* Language Dropdown Menu */}
-              {isLangMenuOpen && (
-                <div className="absolute right-0 mt-2 py-2 w-40 bg-black rounded-md shadow-lg z-50 border border-gray-700">
-                  <button
-                    onClick={() => changeLanguage("en")}
-                    className={`w-full text-left px-4 py-2 text-sm ${
-                      currentLanguage === "en"
-                        ? "bg-white/20 text-white"
-                        : "text-gray-300 hover:bg-white/20"
-                    }`}
+              <AnimatePresence>
+                {isLangMenuOpen && (
+                  <motion.div
+                    key="lang-dropdown"
+                    initial={{ opacity: 0, y: -10, x: 0 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    exit={{ opacity: 0, y: -10, x: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="absolute left-0 top-full mt-2 bg-black border border-white/20 rounded-lg shadow-lg z-50 min-w-[140px] flex flex-col"
+                    style={{ boxShadow: "0 8px 32px 0 rgba(0,0,0,0.25)" }}
+                    onMouseLeave={() => setIsLangMenuOpen(false)}
                   >
-                    Anglais
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("fr")}
-                    className={`w-full text-left px-4 py-2 text-sm ${
-                      currentLanguage === "fr"
-                        ? "bg-white/20 text-white"
-                        : "text-gray-300 hover:bg-white/20"
-                    }`}
-                  >
-                    Français
-                  </button>
-                  <button
-                    onClick={() => changeLanguage("nl")}
-                    className={`w-full text-left px-4 py-2 text-sm ${
-                      currentLanguage === "nl"
-                        ? "bg-white/20 text-white"
-                        : "text-gray-300 hover:bg-white/20"
-                    }`}
-                  >
-                    Néerlandais
-                  </button>
-                </div>
-              )}
+                    {(["fr", "en", "nl"] as const).map((lng) => (
+                      <button
+                        key={lng}
+                        onClick={() => changeLanguage(lng)}
+                        className={`px-4 py-2 text-left text-sm font-medium transition ${
+                          currentLanguage === lng
+                            ? "bg-white text-black"
+                            : "text-gray-300 hover:bg-white/10"
+                        }`}
+                      >
+                        {languageLabels[lng]}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Cart */}
-            <Link to="/cart" className="text-gray-300 hover:text-white">
+            {/* Cart - Masqué en mobile */}
+            <button
+              onClick={() => setShowToast(true)}
+              className="text-gray-300 hover:text-white hidden md:block"
+              aria-label="Ouvrir le panier"
+            >
               <div className="relative">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -179,14 +274,14 @@ const Header: React.FC = () => {
                   0
                 </span>
               </div>
-            </Link>
+            </button>
 
-            {/* Mobile menu button */}
+            {/* Mobile menu button - visible uniquement sur mobile */}
             <button
               onClick={toggleMenu}
-              className="md:hidden bg-gray-900 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-[#d4af37] hover:bg-gray-800 focus:outline-none"
+              className="md:hidden bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
+              aria-label="Ouvrir le menu"
             >
-              <span className="sr-only">Ouvrir le menu</span>
               <svg
                 className="h-6 w-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -206,105 +301,138 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`${isMenuOpen ? "block" : "hidden"} md:hidden`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-800">
-          <Link
-            to="/"
-            className={`${
-              isActive("/")
-                ? "bg-gray-900 text-[#d4af37]"
-                : "text-gray-300 hover:bg-gray-800 hover:text-[#d4af37]"
-            } 
-              block px-3 py-2 rounded-md text-base font-medium`}
-            onClick={() => setIsMenuOpen(false)}
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+            style={{
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              background: "rgba(0,0,0,0.85)",
+            }}
           >
-            Accueil
-          </Link>
-          <Link
-            to="/shop"
-            className={`${
-              isActive("/shop")
-                ? "bg-gray-900 text-[#d4af37]"
-                : "text-gray-300 hover:bg-gray-800 hover:text-[#d4af37]"
-            } 
-              block px-3 py-2 rounded-md text-base font-medium`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Boutique
-          </Link>
-          <Link
-            to="/about"
-            className={`${
-              isActive("/about")
-                ? "bg-gray-900 text-[#d4af37]"
-                : "text-gray-300 hover:bg-gray-800 hover:text-[#d4af37]"
-            } 
-              block px-3 py-2 rounded-md text-base font-medium`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            À propos
-          </Link>
-          <Link
-            to="/contact"
-            className={`${
-              isActive("/contact")
-                ? "bg-gray-900 text-[#d4af37]"
-                : "text-gray-300 hover:bg-gray-800 hover:text-[#d4af37]"
-            } 
-              block px-3 py-2 rounded-md text-base font-medium`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Contact
-          </Link>
+            {/* Close button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.25 }}
+              onClick={toggleMenu}
+              className="absolute top-6 right-6 text-white hover:text-gray-300 transition"
+              aria-label="Fermer le menu"
+            >
+              <X size={32} />
+            </motion.button>
 
-          {/* Mobile Language Menu */}
-          <div className="pt-4 border-t border-gray-800">
-            <p className="px-3 text-sm text-gray-400 mb-2">Langue</p>
-            <div className="space-y-1">
-              <button
-                onClick={() => {
-                  changeLanguage("en");
-                  setIsMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
-                  currentLanguage === "en"
-                    ? "bg-[#c5a028]/20 text-[#d4af37]"
-                    : "text-gray-300 hover:bg-gray-800"
-                }`}
-              >
-                Anglais
-              </button>
-              <button
-                onClick={() => {
-                  changeLanguage("fr");
-                  setIsMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
-                  currentLanguage === "fr"
-                    ? "bg-[#c5a028]/20 text-[#d4af37]"
-                    : "text-gray-300 hover:bg-gray-800"
-                }`}
-              >
-                Français
-              </button>
-              <button
-                onClick={() => {
-                  changeLanguage("nl");
-                  setIsMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
-                  currentLanguage === "nl"
-                    ? "bg-[#c5a028]/20 text-[#d4af37]"
-                    : "text-gray-300 hover:bg-gray-800"
-                }`}
-              >
-                Néerlandais
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+            <motion.nav
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 40, opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeInOut" }}
+              className="flex flex-col items-center space-y-8 w-full px-8"
+            >
+              {[
+                { to: "/", label: t("nav.home"), path: "/" },
+                { to: "/shop", label: t("nav.shop"), path: "/shop" },
+                { to: "/about", label: t("nav.about"), path: "/about" },
+                { to: "/contact", label: t("nav.contact"), path: "/contact" },
+              ].map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <motion.div
+                    key={item.to}
+                    className="w-full flex flex-col items-center"
+                    initial={false}
+                    animate={active ? "active" : "inactive"}
+                  >
+                    <Link
+                      to={item.to}
+                      onClick={toggleMenu}
+                      className={`w-full text-center py-3 transition font-sans font-semibold uppercase tracking-wide text-lg ${
+                        active ? "text-white" : "text-gray-300 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                    {/* Ligne dynamique sous le lien actif */}
+                    <motion.div
+                      layoutId="mobile-menu-underline"
+                      className="h-0.5 bg-white rounded-full mt-1"
+                      initial={false}
+                      animate={{
+                        width: active ? "60%" : "0%",
+                        opacity: active ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.35 }}
+                      style={{ margin: "0 auto" }}
+                    />
+                  </motion.div>
+                );
+              })}
+
+              {/* Langues */}
+              <div className="flex flex-row justify-center items-center gap-6 pt-6 w-full">
+                {(["fr", "en", "nl"] as const).map((lng) => (
+                  <button
+                    key={lng}
+                    onClick={() => {
+                      changeLanguage(lng);
+                      toggleMenu();
+                    }}
+                    className="relative text-lg font-extrabold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition"
+                    style={{
+                      fontFamily: "var(--font-serif, serif)",
+                      letterSpacing: "0.15em",
+                    }}
+                  >
+                    {lng.toUpperCase()}
+                    {currentLanguage === lng && (
+                      <motion.span
+                        layoutId="lang-underline"
+                        className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-white rounded-full"
+                        initial={false}
+                        animate={{ opacity: 1, width: "100%" }}
+                        transition={{ duration: 0.35 }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Paypal maintenance */}
+      <AnimatePresence>
+        {showToast && (
+          <Toast
+            message={
+              <>
+                Paypal est actuellement en maintenance.
+                <br />
+                Passez par{" "}
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-white font-bold"
+                >
+                  Whatsapp
+                </a>
+                .
+              </>
+            }
+            onClose={() => setShowToast(false)}
+          />
+        )}
+      </AnimatePresence>
     </header>
   );
 };
