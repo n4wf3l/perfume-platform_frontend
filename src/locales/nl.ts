@@ -77,18 +77,18 @@ const nl = {
       "SOGNO D'ORO BLIJFT ONVERWACHTE PRODUCTEN CREËREN DIE ULTIEME SOPHISTICATIE EN TIJDLOZE LUXE BELICHAMEN.",
     biography: "BIOGRAFIE",
     bioParagraph1:
-      "Geboren in het hart van de Italiaanse parfumtraditie, brengt Sogno D'Oro de gevoeligheid en visie van haar oprichters over in de wereld van parfum. Een cultuur van absoluut luxe en haar gedurfde, innovatieve aanpak definiëren het merk Sogno D'Oro.",
+      "Het begon allemaal met twee zielen, twee werelden. De een vormde zoetigheden, de ander vormde zijn lichaam. Een banketbakker. Een atleet. Twee zeer verschillende paden... maar dezelfde behoefte: uitdrukken wat ze voelen.",
     bioParagraph2:
-      "Elke creatie is een olfactorisch kunstwerk, dat eeuwenoude vakmanschap en hedendaagse innovatie combineert, om een unieke zintuiglijke ervaring te bieden die de verbeelding naar onontdekte horizonten voert.",
+      "Wat hen samenbracht was geen toeval. Het was parfum. Een stille maar krachtige taal. Een taal die harten raakt zonder een woord te zeggen. Zo werd Sogno D'Oro geboren, 'de gouden droom'. Een eenvoudige droom: parfums creëren die niet alleen gedragen worden, maar geleefd.",
     bioParagraph3:
-      "Onze filosofie is gebaseerd op het idee dat parfum een vorm van persoonlijke expressie is, een onzichtbare handtekening die een uniek verhaal vertelt. Via onze creaties verkennen we de diepste menselijke emoties, geïnspireerd door buitengewone reizen, gedenkwaardige ontmoetingen en betoverende landschappen die onze zintuigen prikkelen en onze creatieve verbeelding voeden. Elke Sogno D'Oro-geur is het bewijs van deze zoektocht naar uitmuntendheid en pure emotie.",
+      "Meer dan een parfum. Een emotie. Onze creaties zijn fragmenten van herinnering, echo's van kindertijd, stilstaande reizen. Elke geur is ontworpen om je iets te laten voelen: de zachtheid van een voorbij moment, de warmte van een omhelzing, de duizeligheid van een eerste liefde.",
     historyTitle: "Ons Verhaal",
     historyParagraph1:
-      "Opgericht in 2008 door Alessandro Romano, is Sogno D'Oro ontstaan uit een passie voor zeldzame aroma's en kostbare essences. Onze oprichter, afkomstig uit een lange lijn van Italiaanse parfumeurs, heeft eeuwenoude traditie en moderne innovatie gecombineerd om geuren te creëren die diepe emoties oproepen.",
+      "Bij Sogno D'Oro geloven we dat parfum een brug is tussen generaties, culturen en emoties. Het spreekt zowel tot het kind als tot de grote dromer. Het kent geen leeftijd of geslacht: het kent alleen het hart.",
     historyParagraph2:
-      "Elk parfum wordt zorgvuldig vervaardigd in ons atelier in Florence, waar we alleen de beste en zeldzaamste ingrediënten van over de hele wereld selecteren. Onze toewijding aan uitmuntendheid en authenticiteit heeft ons in staat gesteld een collectie parfums te creëren die het toppunt van luxe en olfactorische kunst vertegenwoordigt.",
+      "Onze essentie: Elegantie, om het alledaagse te verheffen. Reis, om buiten het kader te treden en elders te dromen. Oprechtheid, zodat elke druppel je echt raakt.",
     historyParagraph3:
-      "Onze filosofie is gebaseerd op het idee dat parfum een vorm van persoonlijke expressie is, een onzichtbare handtekening die een uniek verhaal vertelt. Via onze creaties verkennen we de diepste menselijke emoties, geïnspireerd door buitengewone reizen, gedenkwaardige ontmoetingen en betoverende landschappen die onze zintuigen prikkelen en onze creatieve verbeelding voeden.",
+      "We verkopen geen parfums. We delen een wereld. Een wereld waar elke fles een sleutel is naar een herinnering, een deur naar een emotie, een ontwaken van het hart voor degenen die meer dan goed willen ruiken: echt willen ruiken.",
     historyButton: "Ontdek de Collectie",
     twoGifsTitle: "De Kunst van Parfumerie",
     twoGifsFirstAlt: "Parfum creatieproces",
@@ -102,51 +102,51 @@ const nl = {
     timelineTitle: "Onze Reis",
     timeline: {
       heritage: {
-        title: "Erfgoed",
-        subtitle: "Artistieke wortels",
+        title: "Het Begin",
+        subtitle: "De ontmoeting",
         content:
-          "Alessandro Romano groeide op in een familie van Italiaanse ambachtslieden, waar hij een unieke olfactorische gevoeligheid ontwikkelde bij zijn grootvader, een gepassioneerde amateur-parfumeur. Deze vroege onderdompeling in de wereld van natuurlijke essences vormde zijn visie.",
+          "Twee gepassioneerde individuen met verschillende achtergronden - een banketbakker gespecialiseerd in aroma's en een atleet op zoek naar zintuiglijke expressies - ontmoeten elkaar en ontdekken hun gedeelde passie voor parfums die verhalen vertellen.",
       },
       formation: {
-        title: "Opleiding",
-        subtitle: "Leren van uitmuntendheid",
+        title: "De Visie",
+        subtitle: "Een idee neemt vorm aan",
         content:
-          "Na zijn studie aan het Grasse Parfuminstituut en een decennium als neus voor grote Franse en Italiaanse huizen, verfijnde Alessandro zijn expertise en diepgaand begrip van zeldzame essences.",
+          "Het idee ontstaat: geuren creëren die niet simpelweg parfums zijn, maar emoties in flesjes, vastgelegde herinneringen, levensmoment en gekristalliseerd in elke noot.",
       },
       jan2025: {
-        title: "Januari 2025",
+        title: "De Droom",
         subtitle: "Geboorte van Sogno D'Oro",
         content:
-          "Alessandro richtte Sogno D'Oro op in Florence, met een duidelijke visie: parfums creëren die voorbijgaande trends overstijgen om tijdloze olfactorische signaturen te worden. Een klein atelier in de historische wijk werd het laboratorium voor zijn eerste creaties.",
+          "Sogno D'Oro komt tot leven, 'de gouden droom'. Een belofte: meer bieden dan parfums, zintuiglijke ervaringen die mensen verbinden met hun diepste emoties.",
       },
       may2025: {
-        title: "Mei 2025",
-        subtitle: "Eerste Collectie",
+        title: "De Emoties",
+        subtitle: "Eerste creaties",
         content:
-          'Lancering van onze inaugurele collectie "Essenza Prima" met drie onderscheidende geuren, gepresenteerd tijdens een intiem evenement in Florence dat de aandacht trok van kenners en niche parfumredacteuren.',
+          "Lancering van de eerste geuren, elk ontworpen om een bepaalde emotie op te roepen, een universele herinnering, een levensmoment dat iedereen zich eigen kan maken en kan herbeleven.",
       },
       today: {
-        title: "Vandaag en Morgen",
-        subtitle: "Een zich ontwikkelende visie",
+        title: "Het Delen",
+        subtitle: "Onze visie vandaag",
         content:
-          "We werken momenteel aan de opening van onze eerste permanente boetiek in Florence en aan de ontwikkeling van nieuwe geuren. Onze toewijding aan uitmuntendheid en duurzaamheid begeleidt elke stap van ons jonge huis, met de ambitie om de Italiaanse parfumkunst internationaal te laten schitteren.",
+          "Vandaag blijven we bruggen bouwen tussen harten via onze parfums. Elke fles is een uitnodiging om te voelen, te reizen, deze stille maar welsprekende taal die parfum is te delen.",
       },
     },
     valuesTitle: "Onze Waarden",
     values: {
-      luxuryTitle: "Luxe",
+      luxuryTitle: "Elegantie",
       luxuryText:
-        "Wij streven ernaar uitzonderlijke geurervaringen te bieden, dankzij zeldzame en kostbare ingrediënten die met de grootste zorg zijn geselecteerd.",
-      craftTitle: "Vakmanschap",
+        "Wij creëren parfums die het alledaagse verheffen, gewone momenten transformeren in buitengewone door zorgvuldig samengestelde geuren.",
+      craftTitle: "Reis",
       craftText:
-        "Elk parfum wordt met de hand gemaakt volgens traditionele methoden, met respect voor vakmanschap dat generaties lang is doorgegeven.",
-      sustainabilityTitle: "Duurzaamheid",
+        "Onze parfums vervoeren je naar elders, openen deuren naar vergeten herinneringen of toekomstige dromen, om buiten het kader te treden en nieuwe emoties te verkennen.",
+      sustainabilityTitle: "Oprechtheid",
       sustainabilityText:
-        "Onze inzet voor het milieu blijkt uit verantwoorde praktijken, van ethische inkoop van ingrediënten tot het ontwerp van recyclebare flessen.",
+        "Elke druppel is ontworpen om je echt te raken, om een authentieke en diepe verbinding te creëren tussen het parfum en degene die het draagt.",
     },
     ctaTitle: "Doe Mee aan Ons Geuravontuur",
     ctaText:
-      "Ontdek de exclusieve wereld van Sogno D'Oro en laat je meevoeren door uitzonderlijke geuren die unieke verhalen vertellen.",
+      "Bedankt dat je deel uitmaakt van deze droom. En wat als jij iemand anders kon laten dromen met dit parfum? Daar gaat de magie verder. Sogno D'Oro — parfums om te ruiken, te voelen, te leven.",
     ctaButton: "Contacteer ons",
   },
   contact: {
@@ -180,11 +180,10 @@ const nl = {
       address2: "Brussel, 1000",
       country: "België",
       callTitle: "Bel ons",
-      phone: "+32 123 456 789",
+      phone: "+32 652 631 38",
       hours: "Maandag tot vrijdag, 9u-18u",
       emailTitle: "Schrijf ons",
       email1: "info@sognodoro.com",
-      email2: "support@sognodoro.com",
       followTitle: "Volg ons",
     },
     faqTitle: "Veelgestelde Vragen",
@@ -262,7 +261,7 @@ const nl = {
     notFoundTitle: "Product niet gevonden",
     notFoundText: "We konden het gezochte parfum niet vinden.",
     paypalMaintenance:
-      "Het PayPal-betalingssysteem is momenteel in onderhoud. Gebruik WhatsApp.",
+      "Deze betaalmethode is tijdelijk niet beschikbaar wegens onderhoud.",
     cartUnavailable:
       "Het betalingssysteem is momenteel niet beschikbaar. Neem contact met ons op via WhatsApp.",
   },

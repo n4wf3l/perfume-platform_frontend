@@ -79,18 +79,18 @@ const fr = {
       "SOGNO D'ORO CONTINUE DE CRÉER DES PRODUITS INATTENDUS QUI INCARNENT SOPHISTICATION ULTIME ET LUXE INTEMPOREL.",
     biography: "BIOGRAPHIE",
     bioParagraph1:
-      "Née au cœur de la tradition parfumière italienne, la maison Sogno D'Oro transpose la sensibilité et la vision héritées de ses fondateurs dans l'univers du parfum. Une culture de recherche de luxe absolu et son approche audacieuse et novatrice définissent la marque Sogno D'Oro.",
+      "Tout a commencé avec deux âmes, deux mondes. L'un façonnait des douceurs, l'autre forgeait son corps. Un pâtissier. Un sportif. Deux chemins très différents... mais un même besoin : exprimer ce qu'ils ressentent.",
     bioParagraph2:
-      "Chaque création est une œuvre d'art olfactive, alliant savoir-faire ancestral et innovation contemporaine, pour offrir une expérience sensorielle unique qui transporte l'imaginaire vers des horizons inexplorés.",
+      "Ce qui les a réunis, ce n'est pas le hasard. C'est le parfum. Un langage silencieux mais puissant. Un langage qui touche les cœurs sans dire un mot. C'est ainsi qu'est née Sogno D'Oro, 'le rêve d'or'. Un rêve simple : créer des parfums qui ne sont pas juste portés, mais vécus.",
     bioParagraph3:
-      "Notre philosophie repose sur l'idée que le parfum est une forme d'expression personnelle, une signature invisible qui raconte une histoire unique. À travers nos créations, nous explorons les émotions humaines les plus profondes, en nous inspirant de voyages extraordinaires, de rencontres mémorables et de paysages envoûtants qui stimulent nos sens et nourrissent notre imagination créative. Chaque fragrance Sogno D'Oro est le témoignage de cette quête d'excellence et d'émotion pure.",
+      "Plus qu'un parfum. Une émotion. Nos créations sont des fragments de mémoire, des échos d'enfance, des voyages immobiles. Chaque fragrance est pensée pour vous faire ressentir quelque chose : la douceur d'un moment passé, la chaleur d'une étreinte, le vertige d'un premier amour.",
     historyTitle: "Notre Histoire",
     historyParagraph1:
-      "Fondée en 2008 par Alessandro Romano, Sogno D'Oro est née d'une passion pour les arômes rares et les essences précieuses. Notre fondateur, issu d'une longue lignée d'artisans parfumeurs italiens, a su combiner tradition ancestrale et innovation moderne pour créer des fragrances qui évoquent des émotions profondes.",
+      "Chez Sogno D'Oro, nous croyons que le parfum est un pont entre les générations, les cultures et les émotions. Il parle autant à l'enfant qu'au grand rêveur. Il ne connaît ni âge ni genre : il connaît seulement le cœur.",
     historyParagraph2:
-      "Chaque parfum est élaboré avec soin dans notre atelier à Florence, où nous sélectionnons uniquement les ingrédients les plus fins et les plus rares du monde entier. Notre engagement envers l'excellence et l'authenticité nous a permis de créer une collection de parfums qui représente le summum du luxe et de l'art olfactif.",
+      "Notre essence : De l'élégance, pour sublimer le quotidien. Du voyage, pour sortir du cadre et rêver ailleurs. De la sincérité, pour que chaque goutte vous touche vraiment.",
     historyParagraph3:
-      "Notre philosophie repose sur l'idée que le parfum est une forme d'expression personnelle, une signature invisible qui raconte une histoire unique. À travers nos créations, nous explorons les émotions humaines les plus profondes, en nous inspirant de voyages extraordinaires, de rencontres mémorables et de paysages envoûtants qui stimulent nos sens et nourrissent notre imagination créative.",
+      "Nous ne vendons pas des parfums. Nous partageons un monde. Un monde où chaque flacon est une clé vers un souvenir, une porte vers une émotion, un éveil du cœur pour celles et ceux qui veulent sentir plus que bon : sentir vrai.",
     historyButton: "Découvrir la Collection",
     twoGifsTitle: "L'Art de la Parfumerie",
     twoGifsFirstAlt: "Processus de création de parfum",
@@ -104,51 +104,51 @@ const fr = {
     timelineTitle: "Notre Parcours",
     timeline: {
       heritage: {
-        title: "Héritage",
-        subtitle: "Racines artistiques",
+        title: "Les Débuts",
+        subtitle: "La rencontre",
         content:
-          "Alessandro Romano grandit dans une famille d'artisans italiens, où il développe une sensibilité olfactive unique auprès de son grand-père, parfumeur amateur passionné. Cette immersion précoce dans l'univers des essences naturelles forge sa vision.",
+          "Deux passionnés aux parcours différents - un pâtissier expert des arômes et un sportif à la recherche d'expressions sensorielles - se rencontrent et découvrent leur passion commune pour les parfums qui racontent des histoires.",
       },
       formation: {
-        title: "Formation",
-        subtitle: "L'apprentissage de l'excellence",
+        title: "La Vision",
+        subtitle: "Une idée prend forme",
         content:
-          "Après des études à l'Institut de Parfumerie de Grasse et une décennie comme nez au service de grandes maisons françaises et italiennes, Alessandro affine son expertise et sa compréhension profonde des essences rares.",
+          "L'idée germe : créer des fragrances qui ne sont pas simplement des parfums, mais des émotions en flacons, des souvenirs capturés, des moments de vie cristallisés dans chaque note.",
       },
       jan2025: {
-        title: "Janvier 2025",
+        title: "Le Rêve",
         subtitle: "Naissance de Sogno D'Oro",
         content:
-          "Alessandro fonde Sogno D'Oro à Florence, avec une vision claire : créer des parfums qui transcendent les tendances éphémères pour devenir des signatures olfactives intemporelles. Un petit atelier dans le quartier historique devient le laboratoire de ses premières créations.",
+          "Sogno D'Oro voit le jour, 'le rêve d'or'. Une promesse : offrir plus que des parfums, des expériences sensorielles qui relient les gens à leurs émotions les plus profondes.",
       },
       may2025: {
-        title: "Mai 2025",
-        subtitle: "Première Collection",
+        title: "Les Émotions",
+        subtitle: "Premières créations",
         content:
-          "Lancement de notre collection inaugurale \"Essenza Prima\" avec trois fragrances distinctives, présentées lors d'un événement intimiste à Florence qui attire l'attention de connaisseurs et d'éditeurs spécialisés en parfumerie de niche.",
+          "Lancement des premières fragrances, chacune conçue pour évoquer une émotion particulière, un souvenir universel, un moment de vie que chacun peut s'approprier et revivre.",
       },
       today: {
-        title: "Aujourd'hui et Demain",
-        subtitle: "Une vision en développement",
+        title: "Le Partage",
+        subtitle: "Notre vision aujourd'hui",
         content:
-          "Nous travaillons actuellement sur l'ouverture de notre première boutique permanente à Florence et sur le développement de nouvelles fragrances. Notre engagement envers l'excellence et la durabilité guide chaque étape de notre jeune maison, avec l'ambition de faire rayonner internationalement l'art parfumé italien.",
+          "Aujourd'hui, nous continuons à créer des ponts entre les cœurs à travers nos parfums. Chaque flacon est une invitation à ressentir, à voyager, à partager ce langage silencieux mais si éloquent qu'est le parfum.",
       },
     },
     valuesTitle: "Nos Valeurs",
     values: {
-      luxuryTitle: "Luxe",
+      luxuryTitle: "Élégance",
       luxuryText:
-        "Nous nous engageons à offrir des expériences olfactives d'exception, grâce à des ingrédients rares et précieux sélectionnés avec la plus grande rigueur.",
-      craftTitle: "Artisanat",
+        "Nous créons des parfums qui subliment le quotidien, transformant l'ordinaire en moments extraordinaires à travers des fragrances soigneusement élaborées.",
+      craftTitle: "Voyage",
       craftText:
-        "Chaque parfum est élaboré à la main selon des méthodes traditionnelles, en respectant un savoir-faire transmis depuis des générations de maîtres parfumeurs.",
-      sustainabilityTitle: "Durabilité",
+        "Nos parfums vous transportent ailleurs, ouvrent des portes vers des souvenirs oubliés ou des rêves à venir, pour sortir du cadre et explorer de nouvelles émotions.",
+      sustainabilityTitle: "Sincérité",
       sustainabilityText:
-        "Notre engagement pour l'environnement se traduit par des pratiques responsables, du sourcing éthique des ingrédients à la conception de flacons recyclables.",
+        "Chaque goutte est pensée pour vous toucher vraiment, pour créer une connexion authentique et profonde entre le parfum et celui qui le porte.",
     },
     ctaTitle: "Rejoignez Notre Aventure Olfactive",
     ctaText:
-      "Découvrez l'univers exclusif de Sogno D'Oro et laissez-vous emporter par des fragrances d'exception qui racontent des histoires uniques.",
+      "Merci de faire partie de ce rêve. Et si, à votre tour, vous pouviez faire rêver quelqu'un avec ce parfum ? C'est là que la magie continue. Sogno D'Oro — parfums à sentir, à ressentir, à vivre.",
     ctaButton: "Contactez-nous",
   },
   contact: {
@@ -182,7 +182,7 @@ const fr = {
       address2: "Bruxelles, 1000",
       country: "Belgique",
       callTitle: "Appelez-nous",
-      phone: "+32 123 456 789",
+      phone: "+32 652 631 38",
       hours: "Du lundi au vendredi, 9h-18h",
       emailTitle: "Écrivez-nous",
       email1: "info@sognodoro.com",
@@ -262,7 +262,7 @@ const fr = {
     notFoundTitle: "Produit non trouvé",
     notFoundText: "Nous n'avons pas pu trouver le parfum que vous recherchez.",
     paypalMaintenance:
-      "Le système de paiement PayPal est actuellement en maintenance. Veuillez passer par WhatsApp.",
+      "Ce mode de paiement est temporairement indisponible pour maintenance.",
     cartUnavailable:
       "Le système de paiement n'est actuellement pas disponible. Veuillez nous contacter via WhatsApp.",
   },
