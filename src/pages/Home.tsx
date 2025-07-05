@@ -2,45 +2,12 @@ import React, { useEffect, useState } from "react";
 import Banner from "../components/home/banner";
 import ProductCard from "../components/home/productCard";
 import NewPerfums from "../components/home/newPerfums";
-import TwoCovers from "../components/home/twoCovers"; // Importer le nouveau composant
+import TwoCovers from "../components/home/twoCovers";
+import productService from "../services/productService";
+import type { Product } from "../types/api";
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-
-// Mock featured product data
-const featuredProduct = {
-  id: 1,
-  name: "Sogno Intenso",
-  description:
-    "Notre parfum signature aux notes d'ambre, de vanille et de bois de santal.",
-  price: 149.99,
-  images: ["/perfums.jpg"],
-};
-
-// Mock featured products data
-const featuredProducts = [
-  {
-    id: 2,
-    name: "Luna Dorata",
-    description: "Mélange floral et d'agrumes avec des notes boisées.",
-    price: 129.99,
-    images: ["/perfum1.jpg"],
-  },
-  {
-    id: 3,
-    name: "Notte Stellata",
-    description: "Un mélange luxueux d'épices exotiques et de musc.",
-    price: 139.99,
-    images: ["/perfum2.jpg"],
-  },
-  {
-    id: 4,
-    name: "Velluto Nero",
-    description: "Profond et mystérieux avec des notes de oud et de patchouli.",
-    price: 159.99,
-    images: ["/perfum3.jpg"],
-  },
-];
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -48,7 +15,11 @@ const fadeIn = {
 };
 
 const Home: React.FC = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [heroProduct, setHeroProduct] = useState<Product | null>(null);
+  const [flagshipProducts, setFlagshipProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const productsRef = useRef(null);
   const collectionRef = useRef(null);
 
@@ -61,11 +32,31 @@ const Home: React.FC = () => {
     margin: "-100px",
   });
 
+  // Fetch products from API
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 500);
-    return () => clearTimeout(timer);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        
+        // Get hero products (is_hero = true)
+        const heroes = await productService.getHeroProducts();
+        if (heroes.length > 0) {
+          setHeroProduct(heroes[0]); // Use the first hero product
+        }
+        
+        // Get flagship products (is_flagship = true)
+        const flagships = await productService.getFlagshipProducts();
+        setFlagshipProducts(flagships.slice(0, 3)); // Limit to 3 products
+        
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('Une erreur est survenue lors du chargement des produits.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProducts();
   }, []);
 
   return (
@@ -82,11 +73,32 @@ const Home: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <Banner
-          product={featuredProduct}
-          title="Parfums de Luxe"
-          subtitle="Découvrez des fragrances qui racontent votre histoire"
-        />
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <div className="text-white text-2xl">Chargement...</div>
+          </div>
+        ) : heroProduct ? (
+          <Banner
+            product={heroProduct}
+            title="Parfums de Luxe"
+            subtitle="Découvrez des fragrances qui racontent votre histoire"
+          />
+        ) : error ? (
+          <div className="flex flex-col justify-center items-center h-screen">
+            <div className="text-white text-2xl mb-4">Impossible de charger le produit vedette</div>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-white text-black rounded-md"
+            >
+              Réessayer
+            </button>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center h-screen">
+            <div className="text-white text-2xl">Aucun produit vedette disponible</div>
+          </div>
+        )}
+
       </motion.section>
 
       {/* Featured Products Section */}
@@ -131,16 +143,41 @@ const Home: React.FC = () => {
           </motion.p>
 
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-            {featuredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                variants={fadeIn}
-                transition={{ duration: 0.6, delay: 0.2 + index * 0.2 }}
-                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
+            {loading ? (
+              // Display loading placeholders
+              Array(3).fill(0).map((_, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeIn}
+                  className="bg-gray-800/50 rounded-lg h-96 animate-pulse"
+                />
+              ))
+            ) : error ? (
+              <div className="col-span-3 text-center py-10">
+                <p className="text-red-400">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()}
+                  className="mt-4 px-6 py-2 bg-white text-black rounded-md"
+                >
+                  Réessayer
+                </button>
+              </div>
+            ) : flagshipProducts.length > 0 ? (
+              flagshipProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  variants={fadeIn}
+                  transition={{ duration: 0.6, delay: 0.2 + index * 0.2 }}
+                  whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-10">
+                <p>Aucun produit phare n'est disponible pour le moment.</p>
+              </div>
+            )}
           </motion.div>
         </motion.div>
       </section>

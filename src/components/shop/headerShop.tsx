@@ -1,22 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-// Catégories en français pour l'en-tête avec style onglet
-const categories = [
-  { id: "all", name: "TOUS LES PARFUMS" },
-  { id: "floral", name: "LES FLORAUX" },
-  { id: "woody", name: "LES BOISÉS" },
-  { id: "oriental", name: "LES ORIENTAUX" },
-  { id: "fresh", name: "LES FRAIS" },
-];
+import type { Category } from "../../types/api";
 
 interface HeaderShopProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
-  selectedCategory: string;
-  setSelectedCategory: (category: string) => void;
+  selectedCategory: number | "all";
+  setSelectedCategory: (category: number | "all") => void;
   selectedGender: string;
   setSelectedGender: (gender: string) => void;
+  categories?: Category[];
 }
 
 const HeaderShop: React.FC<HeaderShopProps> = ({
@@ -26,6 +19,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   setSelectedCategory,
   selectedGender,
   setSelectedGender,
+  categories = [],
 }) => {
   return (
     <div className="mb-16">
@@ -79,7 +73,28 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
       >
         <div className="flex justify-center min-w-max w-full pb-2">
           <div className="flex space-x-8 border-b border-gray-700 w-full max-w-4xl">
-            {categories.map((category) => (
+            <button
+              key="all"
+              onClick={() => setSelectedCategory("all")}
+              className={`relative px-2 py-3 text-sm font-medium tracking-wider transition-colors duration-300 ${
+                selectedCategory === "all"
+                  ? "text-white"
+                  : "text-gray-400 hover:text-gray-200"
+              }`}
+            >
+              TOUS LES PARFUMS
+              {selectedCategory === "all" && (
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"
+                  layoutId="underline"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+            </button>
+            
+            {categories?.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
@@ -89,7 +104,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                     : "text-gray-400 hover:text-gray-200"
                 }`}
               >
-                {category.name}
+                {category.name.toUpperCase()}
                 {selectedCategory === category.id && (
                   <motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"

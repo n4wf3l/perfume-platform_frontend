@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import categoryService from "../../services/categoryService";
 
 const AddCategory: React.FC = () => {
   const navigate = useNavigate();
@@ -8,6 +9,7 @@ const AddCategory: React.FC = () => {
   // État du formulaire simplifié - uniquement le nom
   const [name, setName] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Gestion des changements du nom
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,18 +20,19 @@ const AddCategory: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
 
     try {
-      // Simuler un appel API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log("Catégorie ajoutée:", { name });
-
+      // Appel réel à l'API pour ajouter la catégorie
+      await categoryService.createCategory({ 
+        name, 
+        slug: name.toLowerCase().replace(/\s+/g, '-') 
+      });
+      
       // Rediriger vers la liste des catégories avec un état pour afficher le toast
       navigate("/dashboard/categories", { state: { showToast: true } });
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de la catégorie:", error);
-      alert("Une erreur est survenue lors de l'ajout de la catégorie.");
+    } catch (err) {
+      setError("Une erreur est survenue lors de l'ajout de la catégorie. Veuillez réessayer.");
     } finally {
       setSubmitting(false);
     }
@@ -70,6 +73,27 @@ const AddCategory: React.FC = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="p-4 mx-6 mt-6 bg-red-900/40 border-l-4 border-red-500 text-sm text-red-300">
+          <div className="flex">
+            <svg
+              className="h-5 w-5 mr-2 text-red-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
+        </div>
+      )}
+      
       <form onSubmit={handleSubmit}>
         <div className="p-6 space-y-6">
           <div>
@@ -88,6 +112,9 @@ const AddCategory: React.FC = () => {
               onChange={handleNameChange}
               className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
               placeholder="Ex: Eau de Parfum"
+              disabled={submitting}
+              minLength={2}
+              maxLength={50}
             />
             <p className="mt-2 text-sm text-gray-500">
               Entrez un nom unique pour la catégorie de parfum.

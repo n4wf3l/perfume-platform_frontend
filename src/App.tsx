@@ -10,12 +10,17 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ThankYou from "./pages/ThankYou";
-import Dashboard from "./pages/Dashboard"; // Ajout de l'import Dashboard
-import Auth from "./pages/Auth"; // Import de la page Auth
+import Dashboard from "./pages/Dashboard";
+import Auth from "./pages/Auth";
 import ConfidentialityPage from "./pages/Confidentiality";
 // Component imports
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+
+// Context imports
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 
 // Style imports
 import "./index.css";
@@ -31,14 +36,16 @@ function App() {
         </div>
       }
     >
-      <Router>
-        <div className="flex flex-col min-h-screen w-full">
-          <AutoScrollToTop />
-          {/* Le Header n'apparaît pas sur les pages du dashboard */}
-          <Routes>
-            <Route path="/dashboard/*" element={null} />
-            <Route path="*" element={<Header />} />
-          </Routes>
+      <AuthProvider>
+        <CartProvider>
+          <Router>
+            <div className="flex flex-col min-h-screen w-full">
+              <AutoScrollToTop />
+              {/* Le Header n'apparaît pas sur les pages du dashboard */}
+              <Routes>
+                <Route path="/dashboard/*" element={null} />
+                <Route path="*" element={<Header />} />
+              </Routes>
           <main className="flex-grow w-full">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -49,7 +56,11 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="/dashboard/*" element={<Dashboard />} />
+              <Route path="/dashboard/*" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
               <Route path="/admin" element={<Auth />} />{" "}
               {/* Ajoutez cette ligne */}
               <Route
@@ -65,8 +76,10 @@ function App() {
             <Route path="*" element={<Footer />} />
           </Routes>
         </div>
+        <ScrollToTop />
       </Router>
-      <ScrollToTop />
+        </CartProvider>
+      </AuthProvider>
     </Suspense>
   );
 }

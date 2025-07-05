@@ -6,23 +6,17 @@ import Summary from "../components/cart/summary";
 import BottomCover from "../components/cart/bottomCover";
 
 // Mock cart data
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Sogno Intenso",
-    price: 149.99,
-    image: "/perfum1.jpg",
-    quantity: 1,
-    size: "100ml",
-  },
-  {
-    id: 3,
-    name: "Notte Stellata",
-    price: 139.99,
-    image: "/perfum2.jpg",
-    quantity: 1,
-    size: "50ml",
-  },
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  size: string;
+}
+
+const initialCartItems: CartItem[] = [
+
 ];
 
 // Variants avec typage correct pour les animations

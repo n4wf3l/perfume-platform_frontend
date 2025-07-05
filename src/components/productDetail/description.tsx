@@ -1,7 +1,7 @@
 import React from "react";
 
 interface DescriptionProps {
-  description: string;
+  description?: string;
   ingredientsDescription?: string;
 }
 
@@ -9,6 +9,8 @@ const Description: React.FC<DescriptionProps> = ({
   description,
   ingredientsDescription,
 }) => {
+  if (!description) return null;
+  
   const firstLetter = description.charAt(0);
   const rest = description.slice(1);
 

@@ -1,8 +1,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { ProductImage } from "../../types/api";
+
+const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
 
 interface ImagesProps {
-  images: string[];
+  images?: ProductImage[];
   currentImageIndex: number;
   setCurrentImageIndex: (index: number) => void;
   productName: string;
@@ -26,7 +29,7 @@ const Images: React.FC<ImagesProps> = ({
         <AnimatePresence mode="wait">
           <motion.img
             key={currentImageIndex}
-            src={images[currentImageIndex]}
+            src={images && images.length > 0 ? `${IMAGE_URL}/${images[currentImageIndex].path}` : '/perfum1.jpg'}
             alt={productName}
             className="w-full h-full object-cover absolute inset-0"
             initial={{ opacity: 0 }}
@@ -38,14 +41,14 @@ const Images: React.FC<ImagesProps> = ({
       </motion.div>
 
       {/* Sélecteur de miniatures */}
-      {images.length > 1 && (
+      {images && images.length > 1 && (
         <motion.div
           className="flex gap-2 overflow-x-auto py-2 justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          {images.map((image: string, index: number) => (
+          {images.map((image, index: number) => (
             <motion.button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
@@ -58,7 +61,7 @@ const Images: React.FC<ImagesProps> = ({
               whileTap={{ scale: 0.95 }}
             >
               <img
-                src={image}
+                src={`${IMAGE_URL}/${image.path}`}
                 alt={`${productName} - ${index + 1}`}
                 className="w-full h-full object-cover"
               />

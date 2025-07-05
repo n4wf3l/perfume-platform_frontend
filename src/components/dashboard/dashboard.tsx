@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
@@ -15,9 +15,23 @@ import ViewOrders from "./viewOrders";
 import Statistics from "./statistics";
 import KanbanOrders from "./kanbanOrders";
 
+// Import services
+import productService from "../../services/productService";
+import orderService from "../../services/orderService";
+import categoryService from "../../services/categoryService";
+
 interface DashboardProps {
   sidebarOpen: boolean;
   toggleSidebar: () => void;
+}
+
+interface StatItem {
+  title: string;
+  value: string;
+  change?: string;
+  status?: "up" | "down" | "neutral";
+  icon: React.ReactNode;
+  link: string;
 }
 
 const DashboardComponent: React.FC<DashboardProps> = ({
@@ -26,6 +40,8 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [stats, setStats] = useState<StatItem[]>([]);
 
   // Animation variants
   const fadeIn: Variants = {
@@ -49,101 +65,136 @@ const DashboardComponent: React.FC<DashboardProps> = ({
     }),
   };
 
-  // Dashboard stats
-  const stats = [
-    {
-      title: "Commandes",
-      value: "142",
-      change: "+12%",
-      status: "up",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-          ></path>
-        </svg>
-      ),
-      link: "/dashboard/orders",
-    },
-    {
-      title: "Produits",
-      value: "48",
-      change: "+3%",
-      status: "up",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-          ></path>
-        </svg>
-      ),
-      link: "/dashboard/products",
-    },
-    {
-      title: "Catégories",
-      value: "12",
-      change: "Stable",
-      status: "neutral",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-          ></path>
-        </svg>
-      ),
-      link: "/dashboard/categories",
-    },
-    {
-      title: "Clients",
-      value: "357",
-      change: "+5.3%",
-      status: "up",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-          ></path>
-        </svg>
-      ),
-      link: "/dashboard/customers",
-    },
-  ];
+  // Icons for stats cards
+  const orderIcon = (
+    <svg
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+      ></path>
+    </svg>
+  );
+
+  const productIcon = (
+    <svg
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+      ></path>
+    </svg>
+  );
+
+  const categoryIcon = (
+    <svg
+      className="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+      ></path>
+    </svg>
+  );
+
+  // Fetch dashboard data
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch data in parallel for better performance
+        const [products, orders, categories] = await Promise.all([
+          productService.getAllProducts(),
+          orderService.getAllOrders(),
+          categoryService.getAllCategories(),
+        ]);
+
+        // Prepare stats data with actual counts
+        const dashboardStats: StatItem[] = [
+          {
+            title: "Commandes",
+            value: orders.length.toString(),
+            change: "Mis à jour",
+            status: "up",
+            icon: orderIcon,
+            link: "/dashboard/orders",
+          },
+          {
+            title: "Produits",
+            value: products.length.toString(),
+            change: "Mis à jour",
+            status: "up",
+            icon: productIcon,
+            link: "/dashboard/products",
+          },
+          {
+            title: "Catégories",
+            value: categories.length.toString(),
+            change: "Mis à jour",
+            status: "neutral",
+            icon: categoryIcon,
+            link: "/dashboard/categories",
+          },
+        ];
+
+        setStats(dashboardStats);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        // Set default stats in case of error
+        setStats([
+          {
+            title: "Commandes",
+            value: "0",
+            change: "Erreur",
+            status: "neutral",
+            icon: orderIcon,
+            link: "/dashboard/orders",
+          },
+          {
+            title: "Produits",
+            value: "0",
+            change: "Erreur",
+            status: "neutral",
+            icon: productIcon,
+            link: "/dashboard/products",
+          },
+          {
+            title: "Catégories",
+            value: "0",
+            change: "Erreur",
+            status: "neutral",
+            icon: categoryIcon,
+            link: "/dashboard/categories",
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   // Fonction pour vérifier si nous sommes sur la route principale
   const isMainDashboard = location.pathname === "/dashboard";
@@ -255,91 +306,115 @@ const DashboardComponent: React.FC<DashboardProps> = ({
               element={
                 <>
                   {/* Stats Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {stats.map((stat, index) => (
-                      <motion.div
-                        key={stat.title}
-                        onClick={() => navigate(stat.link)}
-                        variants={cardVariants}
-                        custom={index}
-                        className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 shadow-lg shadow-[#d4af37]/5 cursor-pointer"
-                        whileHover={{
-                          y: -5,
-                          boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
-                        }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-[#d4af37]">{stat.icon}</span>
-                          <span
-                            className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                              stat.status === "up"
-                                ? "bg-green-900/30 text-green-400"
-                                : stat.status === "down"
-                                ? "bg-red-900/30 text-red-400"
-                                : "bg-yellow-900/30 text-yellow-400"
-                            }`}
-                          >
-                            {stat.status === "up" ? (
-                              <svg
-                                className="w-3 h-3 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M5 15l7-7 7 7"
-                                ></path>
-                              </svg>
-                            ) : stat.status === "down" ? (
-                              <svg
-                                className="w-3 h-3 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M19 9l-7 7-7-7"
-                                ></path>
-                              </svg>
-                            ) : (
-                              <svg
-                                className="w-3 h-3 mr-1"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M20 12H4"
-                                ></path>
-                              </svg>
-                            )}
-                            {stat.change}
-                          </span>
+                  {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                      {[1, 2, 3].map((index) => (
+                        <div
+                          key={index}
+                          className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 shadow-lg shadow-[#d4af37]/5"
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#d4af37] opacity-50">
+                              <div className="w-6 h-6 rounded-full animate-pulse bg-gray-700" />
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-800 text-gray-400 animate-pulse">
+                              Chargement...
+                            </span>
+                          </div>
+                          <div className="mt-4">
+                            <div className="h-4 bg-gray-800 rounded animate-pulse mb-2 w-20" />
+                            <div className="h-8 bg-gray-800 rounded animate-pulse w-12" />
+                          </div>
                         </div>
-                        <div className="mt-4">
-                          <h3 className="text-gray-400 text-sm font-medium">
-                            {stat.title}
-                          </h3>
-                          <p className="text-gray-100 text-2xl font-semibold mt-1">
-                            {stat.value}
-                          </p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                      {stats.map((stat, index) => (
+                        <motion.div
+                          key={stat.title}
+                          onClick={() => navigate(stat.link)}
+                          variants={cardVariants}
+                          custom={index}
+                          className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 shadow-lg shadow-[#d4af37]/5 cursor-pointer"
+                          whileHover={{
+                            y: -5,
+                            boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[#d4af37]">{stat.icon}</span>
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                stat.status === "up"
+                                  ? "bg-green-900/30 text-green-400"
+                                  : stat.status === "down"
+                                  ? "bg-red-900/30 text-red-400"
+                                  : "bg-yellow-900/30 text-yellow-400"
+                              }`}
+                            >
+                              {stat.status === "up" ? (
+                                <svg
+                                  className="w-3 h-3 mr-1"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M5 15l7-7 7 7"
+                                  ></path>
+                                </svg>
+                              ) : stat.status === "down" ? (
+                                <svg
+                                  className="w-3 h-3 mr-1"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M19 9l-7 7-7-7"
+                                  ></path>
+                                </svg>
+                              ) : (
+                                <svg
+                                  className="w-3 h-3 mr-1"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M20 12H4"
+                                  ></path>
+                                </svg>
+                              )}
+                              {stat.change}
+                            </span>
+                          </div>
+                          <div className="mt-4">
+                            <h3 className="text-gray-400 text-sm font-medium">
+                              {stat.title}
+                            </h3>
+                            <p className="text-gray-100 text-2xl font-semibold mt-1">
+                              {stat.value}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Action Buttons */}
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">

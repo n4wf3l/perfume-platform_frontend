@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 
 const Auth: React.FC = () => {
+  const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,21 +15,21 @@ const Auth: React.FC = () => {
   const [error, setError] = useState("");
   const [resetSent, setResetSent] = useState(false);
 
+  useEffect(() => {
+    // Redirect to dashboard if already authenticated
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
     try {
-      // Ici vous devez implémenter l'appel à votre API d'authentification
-      // Par exemple: await authService.login(email, password);
-      console.log("Tentative de connexion avec:", { email, password });
-
-      // Simuler un délai de traitement
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Rediriger vers le dashboard après connexion - CORRECTION ICI
-      window.location.href = "/dashboard"; // Modifier cette ligne
+      await login(email, password);
+      // Redirect will happen automatically in the useEffect
     } catch (err) {
       setError("Échec de connexion. Veuillez vérifier vos identifiants.");
       console.error(err);

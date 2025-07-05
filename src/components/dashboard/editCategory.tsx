@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import categoryService from "../../services/categoryService";
 
 const EditCategory: React.FC = () => {
   const navigate = useNavigate();
@@ -9,30 +10,32 @@ const EditCategory: React.FC = () => {
   // États pour gérer le chargement et la soumission
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // État du formulaire simplifié - uniquement le nom
   const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
 
   // Chargement des données de la catégorie
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        // Simuler un appel d'API
-        await new Promise((resolve) => setTimeout(resolve, 800));
-
-        // Données fictives de la catégorie (uniquement le nom)
-        const categoryData = {
-          id: id,
-          name: id === "1" ? "Eau de Parfum" : "Catégorie " + id,
-        };
-
-        // Mettre à jour le nom
+        setLoading(true);
+        setError(null);
+        
+        // Appel réel à l'API pour récupérer la catégorie
+        const categoryId = parseInt(id || "0", 10);
+        if (isNaN(categoryId) || categoryId <= 0) {
+          throw new Error("ID de catégorie invalide");
+        }
+        
+        const categoryData = await categoryService.getCategory(categoryId);
+        
+        // Mettre à jour les états avec les données récupérées
         setName(categoryData.name);
-      } catch (error) {
-        console.error("Erreur lors du chargement de la catégorie:", error);
-        alert(
-          "Impossible de charger les données de la catégorie. Veuillez réessayer."
-        );
+        setSlug(categoryData.slug);
+      } catch (err) {
+        setError("Impossible de charger les données de la catégorie. Veuillez réessayer.");
       } finally {
         setLoading(false);
       }
@@ -43,21 +46,38 @@ const EditCategory: React.FC = () => {
 
   // Gestion des changements dans le champ de nom
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const newName = e.target.value;
+    setName(newName);
+    // Générer automatiquement un slug à partir du nom (optionnel - le backend peut aussi le faire)
+    setSlug(newName.toLowerCase().replace(/\s+/g, '-'));
   };
 
   // Soumission du formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError(null);
 
     try {
-      // Simuler un appel API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Vérifier que l'ID est valide
+      const categoryId = parseInt(id || "0", 10);
+      if (isNaN(categoryId) || categoryId <= 0) {
+        throw new Error("ID de catégorie invalide");
+      }
+      
+      // Générer un slug à partir du nom si nécessaire
+      const updatedSlug = slug || name.toLowerCase().replace(/\s+/g, '-');
+      
+      // Appel réel à l'API pour mettre à jour la catégorie
+      await categoryService.updateCategory(categoryId, {
+        name,
+        slug: updatedSlug
+      });
 
       // Rediriger vers la liste des catégories
       navigate("/dashboard/categories", { state: { showToast: "edit" } });
-    } catch (error) {
+    } catch (err) {
+      setError("Une erreur est survenue lors de la mise à jour de la catégorie.");
     } finally {
       setSubmitting(false);
     }
@@ -129,6 +149,27 @@ const EditCategory: React.FC = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="p-4 mx-6 mt-6 bg-red-900/40 border-l-4 border-red-500 text-sm text-red-300">
+          <div className="flex">
+            <svg
+              className="h-5 w-5 mr-2 text-red-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error}</span>
+          </div>
+        </div>
+      )}
+    
       <form onSubmit={handleSubmit}>
         <div className="p-6 space-y-6">
           <div>
@@ -147,6 +188,9 @@ const EditCategory: React.FC = () => {
               onChange={handleNameChange}
               className="mt-1 block w-full rounded-md bg-gray-800 border border-gray-700 focus:border-[#d4af37] focus:ring focus:ring-[#d4af37]/20 focus:outline-none text-gray-300"
               placeholder="Ex: Eau de Parfum"
+              disabled={submitting}
+              minLength={2}
+              maxLength={50}
             />
             <p className="mt-2 text-sm text-gray-500">
               Entrez un nom unique pour cette catégorie de parfum.

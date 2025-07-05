@@ -1,18 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ProductCard from "../home/productCard";
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-  category: string;
-}
+import type { Product as ApiProduct } from "../../types/api";
 
 interface ProductsProps {
-  products: Product[];
+  products: ApiProduct[];
   currentPage: number;
   setCurrentPage: (page: number) => void;
   productsPerPage: number;
@@ -73,7 +65,7 @@ const Products: React.FC<ProductsProps> = ({
       )}
 
       {/* Pagination */}
-      {totalProducts > productsPerPage && (
+        {products.length > 0 && totalProducts > productsPerPage && (
         <motion.div
           className="flex justify-center mt-10"
           initial={{ opacity: 0, y: 20 }}

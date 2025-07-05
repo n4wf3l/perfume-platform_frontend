@@ -1,18 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-
-interface ProductDetails {
-  name: string;
-  price: number;
-  description: string;
-  category: string;
-  size: string;
-  gender?: string;
-  ingredientsDescription?: string;
-}
+import type { Product } from "../../types/api";
 
 interface DetailsProps {
-  product: ProductDetails;
+  product: Product;
   onAddToCart: () => void;
   onPayPalClick: (e: React.MouseEvent) => void;
 }
@@ -24,19 +15,30 @@ const Details: React.FC<DetailsProps> = ({
 }) => {
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
-  // Format de la catégorie pour l'affichage
-  const formatCategory = (category: string) => {
-    const categories: { [key: string]: string } = {
-      oriental: "Oriental",
-      floral: "Floral",
-      woody: "Boisé",
-      fresh: "Frais",
+  // Format gender for display
+  const formatGender = (gender: string | undefined) => {
+    if (!gender) return "Unisexe";
+    
+    const genders: { [key: string]: string } = {
+      male: "Homme",
+      female: "Femme",
+      unisex: "Unisexe"
     };
-    return (
-      categories[category] ||
-      category.charAt(0).toUpperCase() + category.slice(1)
-    );
+    
+    return genders[gender.toLowerCase()] || 
+      gender.charAt(0).toUpperCase() + gender.slice(1);
   };
+
+  const getStockStatus = (stock: number | undefined) => {
+  if (!stock || stock === 0) {
+    return { text: "Rupture de stock", color: "text-red-400" };
+  } else if (stock <= 2) {
+    return { text: "Stock Limité", color: "text-yellow-400" };
+  } else {
+    return { text: "Disponible", color: "text-green-400" };
+  }
+};
+
 
   return (
     <motion.div
@@ -55,37 +57,38 @@ const Details: React.FC<DetailsProps> = ({
           <div className="flex flex-col items-center">
             <span className="text-xs text-gray-400">Taille</span>
             <span className="text-base text-white font-medium">
-              {product.size}
+              {product.size_ml+" ml" || 'N/A'}
             </span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-xs text-gray-400">Catégorie</span>
             <span className="text-base text-white font-medium">
-              {formatCategory(product.category)}
+              {product.category?.name || 'N/A'}
             </span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-xs text-gray-400">Genre</span>
             <span className="text-base text-white font-medium">
-              {product.gender === "male"
-                ? "Homme"
-                : product.gender === "female"
-                ? "Femme"
-                : "Mixte"}
+              {product.gender?.toLowerCase()}
             </span>
           </div>
         </div>
         <div className="flex items-center justify-between mb-4">
           <span className="text-gray-400 text-sm">Prix</span>
           <span className="text-2xl text-white font-semibold">
-            {product.price.toFixed(2)} €
+            {typeof product.price === "number" ? product.price.toFixed(2) : "0.00"} €
           </span>
         </div>
         <div className="flex items-center justify-between mb-6">
           <span className="text-gray-400 text-sm">Stock</span>
-          <span className="px-2 py-1 text-green-400 rounded-md text-xs">
-            Disponible
-          </span>
+         {(() => {
+            const { text, color } = getStockStatus(product.stock);
+            return (
+              <span className={`px-2 py-1 ${color} rounded-md text-xs`}>
+                {text}
+              </span>
+            );
+          })()}
         </div>
         <div className="flex flex-col gap-3">
           <motion.button

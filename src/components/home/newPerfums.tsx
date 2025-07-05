@@ -1,34 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import ProductCard from "./productCard";
-
-// Données pour les nouveaux parfums - avec les mêmes images que les produits phares
-const newPerfumesList = [
-  {
-    id: 5,
-    name: "Aurora Orientale",
-    description:
-      "Une fragrance envoûtante avec des notes de rose, de safran et d'ambre.",
-    price: 169.99,
-    images: ["/perfum1.jpg"],
-  },
-  {
-    id: 6,
-    name: "Mare Nostrum",
-    description:
-      "Une brise marine fraîche avec des touches d'agrumes et de sel marin.",
-    price: 129.99,
-    images: ["/perfum2.jpg"],
-  },
-  {
-    id: 7,
-    name: "Fiore di Seta",
-    description:
-      "Délicat et floral avec des notes de jasmin, de pivoine et de musc blanc.",
-    price: 145.99,
-    images: ["/perfum3.jpg"],
-  },
-];
+import productService from "../../services/productService";
+import type { Product } from "../../types/api";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -46,6 +20,36 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
 }) => {
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const [newProducts, setNewProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchNewProducts = async () => {
+      try {
+        setLoading(true);
+        // Get all products and sort by creation date, newest first
+        const products = await productService.getAllProducts();
+        const sorted = products
+          .sort((a, b) => {
+            // Sort by creation date, newest first
+            const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+            const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+            return dateB - dateA;
+          })
+          .slice(0, 3); // Get only the 3 newest products
+        
+        setNewProducts(sorted);
+      } catch (err) {
+        console.error('Error fetching new products:', err);
+        setError('Une erreur est survenue lors du chargement des produits.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchNewProducts();
+  }, []);
 
   return (
     <div ref={sectionRef} className="py-10 mb-16 w-full">
@@ -87,18 +91,28 @@ const NewPerfums: React.FC<NewPerfumsProps> = ({
           {subtitle}
         </motion.p>
 
-        <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
-          {newPerfumesList.map((product, index) => (
-            <motion.div
-              key={product.id}
-              variants={fadeIn}
-              transition={{ duration: 0.6, delay: 0.2 + index * 0.2 }}
-              whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-            >
-              <ProductCard product={product} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {loading ? (
+          <div className="flex justify-center items-center h-60">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 py-8">{error}</div>
+        ) : newProducts.length === 0 ? (
+          <div className="text-center text-gray-300 py-8">Aucun nouveau parfum pour le moment.</div>
+        ) : (
+          <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+            {newProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                variants={fadeIn}
+                transition={{ duration: 0.6, delay: 0.2 + index * 0.2 }}
+                whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </motion.div>
     </div>
   );

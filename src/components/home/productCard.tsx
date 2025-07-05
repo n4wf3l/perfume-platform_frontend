@@ -1,23 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-}
+import type { Product } from "../../types/api";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  // Assurer qu'une image est toujours disponible
+  const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
+  // Ensure an image is always available
   const productImage =
     product.images && product.images.length > 0
-      ? product.images[0]
+       ? `${IMAGE_URL}/${product.images.sort((a, b) => a.order - b.order)[0].path}`
       : "/perfum1.jpg";
 
   return (
@@ -27,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <img
             src={productImage}
             alt={product.name}
-            className="w-full object-contain group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </div>
 
@@ -38,7 +32,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
           <div className="flex justify-between items-center">
             <span className="text-xl text-white">
-              {product.price.toFixed(2)} €
+             <p className="text-2xl text-white">
+            {Number(product.price || 0).toFixed(2)} €
+          </p>
             </span>
             <button className="px-4 py-2 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300">
               Voir

@@ -3,22 +3,27 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import Toast from "../common/Toast";
+import productService from "../../services/productService";
+import categoryService from "../../services/categoryService";
+import type { Category } from "../../types/api";
 
-const categoryOptions = [
-  "Eau de Parfum",
-  "Parfum",
-  "Eau de Toilette",
-  "Eau de Cologne",
+// Gender options with their backend values
+const genderOptions = [
+  { display: "Homme", value: "male" },
+  { display: "Femme", value: "female" },
+  { display: "Unisexe", value: "unisex" },
 ];
-
-const genderOptions = ["Homme", "Femme", "Unisexe"];
 
 const AddProducts: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [toastVisible, setToastVisible] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
 
   // Données du formulaire modifiées - notes remplacées par size (ml)
   const [formData, setFormData] = useState({
@@ -28,10 +33,29 @@ const AddProducts: React.FC = () => {
     stock: "",
     description: "",
     ingredientsDescription: "", // <-- Ajouté pour la description ingrédients
-    size: "", // Nouveau champ pour la taille en ML
-    featured: false,
+    size_ml: "", // Nouveau champ pour la taille en ML
+    is_flagship: false, // Using is_flagship instead of featured to match API
     gender: "", // <-- AJOUT
+    category_id: "", // Will be populated based on category selection
   });
+
+  // Fetch categories from API on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoadingCategories(true);
+        const fetchedCategories = await categoryService.getAllCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setError("Impossible de récupérer les catégories. Veuillez réessayer plus tard.");
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Animation variants
   const fadeIn: Variants = {
@@ -49,10 +73,24 @@ const AddProducts: React.FC = () => {
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    
+    // For numeric fields, ensure we're storing valid numbers
+    if (name === 'price' || name === 'stock' || name === 'size_ml') {
+      // Remove any non-numeric characters (except decimal point for price)
+      const sanitizedValue = name === 'price' 
+        ? value.replace(/[^\d.]/g, '')  // Allow decimals for price
+        : value.replace(/\D/g, '');     // Only digits for stock and size_ml
+      
+      setFormData((prev) => ({
+        ...prev,
+        [name]: sanitizedValue,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   // Gérer le changement pour les checkbox
@@ -65,16 +103,19 @@ const AddProducts: React.FC = () => {
   };
 
   // Gestion de l'ajout d'images
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const newImages: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      newImages.push(URL.createObjectURL(files[i]));
-    }
+    // Store the actual file object
+    const newImages = [...images];
+    newImages[index] = file;
+    setImages(newImages);
 
-    setImages([...images, ...newImages]);
+    // Create preview URL
+    const newImagePreview = [...imagePreview];
+    newImagePreview[index] = URL.createObjectURL(file);
+    setImagePreview(newImagePreview);
   };
 
   // Supprimer une image
@@ -82,17 +123,151 @@ const AddProducts: React.FC = () => {
     const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
+
+    const newImagePreview = [...imagePreview];
+    newImagePreview.splice(index, 1);
+    setImagePreview(newImagePreview);
+  };
+
+  // Handle category selection
+  const handleCategorySelect = (category: Category) => {
+    setFormData((prev) => ({
+      ...prev,
+      category: category.name,
+      category_id: category.id.toString(),
+    }));
+    setCategoryOpen(false);
+  };
+
+  // Handle gender selection
+  const handleGenderSelect = (genderOption: { display: string; value: string }) => {
+    setFormData((prev) => ({
+      ...prev,
+      gender: genderOption.value,
+    }));
+    setGenderOpen(false);
   };
 
   // Soumettre le formulaire
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      // Debug form values to check for missing required fields
+      console.log("Submitting form data:", formData);
+      console.log("Images count:", images.length);
+
+      // Validate required fields
+      if (!formData.name || !formData.description || !formData.price || 
+          !formData.stock || !formData.size_ml || !formData.category_id || 
+          !formData.gender || images.length === 0) {
+        setError('Veuillez remplir tous les champs obligatoires et ajouter au moins une image.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Create FormData object
+      const formDataObj = new FormData();
+      formDataObj.append('name', formData.name.trim());
+      formDataObj.append('description', formData.description.trim());
+      
+      // Ensure numeric values are properly formatted and valid
+      const price = parseFloat(formData.price);
+      const stock = parseInt(formData.stock);
+      const size_ml = parseInt(formData.size_ml);
+      
+      if (isNaN(price) || price <= 0) {
+        setError('Le prix doit être un nombre valide supérieur à 0.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (isNaN(stock) || stock < 0) {
+        setError('Le stock doit être un nombre valide positif ou zéro.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (isNaN(size_ml) || size_ml <= 0) {
+        setError('La taille en mL doit être un nombre valide supérieur à 0.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      formDataObj.append('price', price.toString());
+      formDataObj.append('stock', stock.toString());
+      formDataObj.append('size_ml', size_ml.toString());
+      formDataObj.append('is_flagship', formData.is_flagship ? '1' : '0');
+      formDataObj.append('gender', formData.gender);
+      
+      // Handle the ingredients description (olfactive notes)
+      if (formData.ingredientsDescription && formData.ingredientsDescription.trim()) {
+        formDataObj.append('olfactive_notes', formData.ingredientsDescription.trim());
+      }
+      
+      // Add category ID
+      formDataObj.append('category_id', formData.category_id);
+      
+      // Check if we have images to upload
+      if (images.length === 0) {
+        setError('Veuillez ajouter au moins une image pour le produit.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Add images with order values
+      images.forEach((image, index) => {
+        formDataObj.append(`images[${index}]`, image);
+        formDataObj.append(`image_orders[${index}]`, String(index));
+      });
+      
+      // Debug what's being sent to the API
+      console.log("FormData content:");
+      for (const pair of formDataObj.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      
+      // Send to API
+      const newProduct = await productService.createProduct(formDataObj);
+      console.log('Product created successfully:', newProduct);
+      
+      // Show success message and navigate back
       navigate("/dashboard/products", { state: { showToast: true } });
-    }, 1000);
+    } catch (err: any) {
+      console.error('Error creating product:', err);
+      console.log('Error response:', err.response);
+      
+      // Try to extract more detailed error information if available
+      let errorMessage = 'Une erreur est survenue lors de la création du produit. Veuillez réessayer.';
+      
+      if (err.response && err.response.data) {
+        console.log('Error response data:', err.response.data);
+        
+        if (err.response.data.message) {
+          errorMessage = err.response.data.message;
+        }
+        // Handle Laravel validation errors
+        if (err.response.data.errors) {
+          const validationErrors = Object.entries(err.response.data.errors)
+            .map(([field, messages]) => {
+              if (Array.isArray(messages)) {
+                return `${field}: ${messages.join(', ')}`;
+              }
+              return `${field}: ${String(messages)}`;
+            })
+            .join('\n');
+          
+          errorMessage = `Erreurs de validation:\n${validationErrors}`;
+          console.log('Validation errors:', err.response.data.errors);
+        }
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Pour le menu déroulant animé
@@ -133,7 +308,7 @@ const AddProducts: React.FC = () => {
   useEffect(() => {
     if (location.state?.showToast) {
       setToastVisible(true);
-      // Optionnel : nettoyer le state pour éviter de réafficher le toast si on revient sur la page
+      // Optionnel : nettoyer le state pour éviter de réafficher le toast si on revient sur la page
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -173,6 +348,12 @@ const AddProducts: React.FC = () => {
         onSubmit={handleSubmit}
         className="bg-gray-900 rounded-xl border border-white/10 p-6 shadow-lg"
       >
+        {error && (
+          <div className="mb-6 p-4 bg-red-900/40 border border-red-800 text-red-200 rounded-md">
+            {error}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Informations générales */}
           <div className="space-y-4 flex flex-col h-full">
@@ -209,10 +390,21 @@ const AddProducts: React.FC = () => {
               </label>
               <button
                 type="button"
-                className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition"
+                disabled={isLoadingCategories}
+                className={`w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition ${isLoadingCategories ? 'opacity-70 cursor-not-allowed' : ''}`}
                 onClick={() => setCategoryOpen((open) => !open)}
               >
-                {formData.category || "Sélectionner une catégorie"}
+                {isLoadingCategories ? (
+                  <span className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Chargement des catégories...
+                  </span>
+                ) : (
+                  formData.category || "Sélectionner une catégorie"
+                )}
                 <svg
                   className={`w-4 h-4 ml-2 transition-transform ${
                     categoryOpen ? "rotate-180" : ""
@@ -248,43 +440,41 @@ const AddProducts: React.FC = () => {
                 }}
                 className="absolute z-10 mt-2 w-full bg-gray-900 border border-white/30 rounded-md shadow-lg overflow-hidden"
               >
-                {categoryOptions.map((option) => (
-                  <li
-                    key={option}
-                    className={`px-4 py-2 cursor-pointer hover:bg-white/10 text-gray-200 ${
-                      formData.category === option
-                        ? "bg-white/20 text-white"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      setFormData((prev) => ({
-                        ...prev,
-                        category: option,
-                      }));
-                      setCategoryOpen(false);
-                    }}
-                  >
-                    {option}
-                  </li>
-                ))}
+                {categories.length === 0 && !isLoadingCategories ? (
+                  <li className="px-4 py-2 text-gray-400 italic">Aucune catégorie disponible</li>
+                ) : (
+                  categories.map((category) => (
+                    <li
+                      key={category.id}
+                      className={`px-4 py-2 cursor-pointer hover:bg-white/10 text-gray-200 ${
+                        formData.category_id === category.id.toString()
+                          ? "bg-white/20 text-white"
+                          : ""
+                      }`}
+                      onClick={() => handleCategorySelect(category)}
+                    >
+                      {category.name}
+                    </li>
+                  ))
+                )}
               </motion.ul>
             </div>
 
             {/* Taille en ML - Nouveau champ */}
             <div>
               <label
-                htmlFor="size"
+                htmlFor="size_ml"
                 className="block text-sm font-medium text-gray-300 mb-1"
               >
                 Taille (mL) *
               </label>
               <input
                 type="number"
-                id="size"
-                name="size"
+                id="size_ml"
+                name="size_ml"
                 required
                 min="1"
-                value={formData.size}
+                value={formData.size_ml}
                 onChange={handleChange}
                 className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
               />
@@ -341,7 +531,7 @@ const AddProducts: React.FC = () => {
                 className="w-full py-2 px-3 bg-gray-800 border border-gray-700 rounded-md text-gray-200 flex justify-between items-center focus:outline-none focus:ring-1 focus:ring-white focus:border-white transition"
                 onClick={() => setGenderOpen((open) => !open)}
               >
-                {formData.gender || "Sélectionner un genre"}
+                {formData.gender ? genderOptions.find(g => g.value === formData.gender)?.display || "Sélectionner un genre" : "Sélectionner un genre"}
                 <svg
                   className={`w-4 h-4 ml-2 transition-transform ${
                     genderOpen ? "rotate-180" : ""
@@ -379,21 +569,15 @@ const AddProducts: React.FC = () => {
               >
                 {genderOptions.map((option) => (
                   <li
-                    key={option}
+                    key={option.value}
                     className={`px-4 py-2 cursor-pointer hover:bg-white/10 text-gray-200 ${
-                      formData.gender === option.toLowerCase()
+                      formData.gender === option.value
                         ? "bg-white/20 text-white"
                         : ""
                     }`}
-                    onClick={() => {
-                      setFormData((prev) => ({
-                        ...prev,
-                        gender: option.toLowerCase(),
-                      }));
-                      setGenderOpen(false);
-                    }}
+                    onClick={() => handleGenderSelect(option)}
                   >
-                    {option}
+                    {option.display}
                   </li>
                 ))}
               </motion.ul>
@@ -403,14 +587,14 @@ const AddProducts: React.FC = () => {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                id="featured"
-                name="featured"
-                checked={formData.featured}
+                id="is_flagship"
+                name="is_flagship"
+                checked={formData.is_flagship}
                 onChange={handleCheckboxChange}
                 className="h-4 w-4 text-[#d4af37] rounded bg-gray-800 border-gray-700 focus:ring-[#d4af37] focus:ring-opacity-25"
               />
               <label
-                htmlFor="featured"
+                htmlFor="is_flagship"
                 className="ml-2 block text-sm font-medium text-gray-300"
               >
                 Mettre ce produit en avant sur la page d'accueil
@@ -479,10 +663,10 @@ const AddProducts: React.FC = () => {
                 key={idx}
                 className="relative flex flex-col items-center justify-center border-2 border-dashed border-gray-700 rounded-md bg-gray-800/50 h-40 group"
               >
-                {images[idx] ? (
+                {imagePreview[idx] ? (
                   <>
                     <img
-                      src={images[idx]}
+                      src={imagePreview[idx]}
                       alt={`Preview ${idx}`}
                       className="h-full w-full object-cover rounded-md"
                     />
@@ -537,14 +721,7 @@ const AddProducts: React.FC = () => {
                         name="images"
                         accept="image/*"
                         className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const newImages = [...images];
-                            newImages[idx] = URL.createObjectURL(file);
-                            setImages(newImages.slice(0, 3));
-                          }
-                        }}
+                        onChange={(e) => handleImageChange(e, idx)}
                       />
                     </label>
                   </>
@@ -565,9 +742,9 @@ const AddProducts: React.FC = () => {
           </button>
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isLoadingCategories}
             className={`px-6 py-2 bg-[#d4af37] hover:bg-[#c5a028] text-black rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-[#d4af37] ${
-              isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+              isSubmitting || isLoadingCategories ? "opacity-70 cursor-not-allowed" : ""
             }`}
           >
             {isSubmitting ? (
