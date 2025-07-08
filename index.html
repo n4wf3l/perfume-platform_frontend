@@ -1,21 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/logoicone.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Meta tags SEO -->
     <title>SOGNO D'ORO® | Belgian Luxury Perfums</title>
-    <!-- Dancing Script (ou remplace par Great Vibes si tu préfères) -->
+    <meta
+      name="description"
+      content="Découvrez SOGNO D'ORO, marque belge de parfums de luxe. Explorez notre collection exclusive de fragrances pour femme et homme qui racontent votre histoire."
+    />
+
+    <!-- Liens canoniques -->
+    <link rel="canonical" href="https://www.sognodoro.be" />
+
+    <!-- Open Graph Tags pour Facebook/Instagram -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SOGNO D'ORO | Parfums de Luxe Belges" />
+    <meta
+      property="og:description"
+      content="Des parfums qui racontent votre histoire. Collection exclusive de fragrances de luxe."
+    />
+    <meta property="og:url" content="https://www.sognodoro.be" />
+    <meta property="og:image" content="https://www.sognodoro.be/logo.png" />
+    <meta property="og:site_name" content="SOGNO D'ORO" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SOGNO D'ORO | Parfums de Luxe Belges" />
+    <meta
+      name="twitter:description"
+      content="Des parfums qui racontent votre histoire. Collection exclusive de fragrances de luxe."
+    />
+    <meta name="twitter:image" content="https://www.sognodoro.be/logo.png" />
+
+    <!-- Social Media -->
+    <meta name="instagram:creator" content="@sogno.doro_profumo" />
+    <meta name="snapchat:creator" content="@sogno-doro" />
+
+    <!-- Dancing Script -->
     <link
       href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap"
       rel="stylesheet"
     />
-    <!-- Place les scripts importants dans le head pour qu'ils se chargent avant le contenu -->
+
+    <!-- PayPal script -->
     <script src="https://www.paypal.com/sdk/js?client-id=Ae0s2ZBK-Maym1CMbbXHHdX6_DWtSjE-HaS-7r04uTSvfGZjNnkKQb1azvoNU-mtIedzrVYpYLciMGOy&currency=EUR&disable-funding=bancontact,card&components=buttons"></script>
+
+    <!-- Structured Data en JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Brand",
+        "name": "SOGNO D'ORO",
+        "description": "Parfums de luxe belges pour femme et homme",
+        "url": "https://www.sognodoro.be",
+        "logo": "https://www.sognodoro.be/logo.png",
+        "sameAs": [
+          "https://www.instagram.com/sogno.doro_profumo",
+          "https://snapchat.com/add/sogno-doro"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Ne mets plus le script PayPal ici -->
   </body>
 </html>

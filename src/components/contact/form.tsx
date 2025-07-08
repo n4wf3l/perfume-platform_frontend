@@ -289,6 +289,16 @@ const ContactForm: React.FC<FormProps> = () => {
     },
   };
 
+  // Ajoutez cette fonction au-dessus du return du composant ContactForm
+  const isFormValid = () => {
+    return (
+      formData.name.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      formData.subject !== "" &&
+      formData.message.trim() !== ""
+    );
+  };
+
   return (
     <motion.div
       variants={formContainerVariants}
@@ -469,10 +479,10 @@ const ContactForm: React.FC<FormProps> = () => {
               >
                 <button
                   type="submit"
-                  disabled={formStatus === "submitting"}
+                  disabled={formStatus === "submitting" || !isFormValid()}
                   className={`w-full px-8 py-4 bg-white hover:bg-white/90 text-black font-medium rounded-md transition-all duration-300 flex items-center justify-center ${
-                    formStatus === "submitting"
-                      ? "opacity-80 cursor-not-allowed"
+                    formStatus === "submitting" || !isFormValid()
+                      ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
                 >

@@ -13,13 +13,6 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {/* Colonne 1: Brand Info */}
           <div className="flex flex-col items-center">
-            <div className="mb-4">
-              <Link to="/" className="inline-block">
-                <span className="text-white font-serif text-2xl">
-                  Sogno D'Oro
-                </span>
-              </Link>
-            </div>
             <p className="text-gray-400 text-sm mb-4">
               {t("footer.brandSlogan")}
             </p>
@@ -156,6 +149,12 @@ const Footer: React.FC = () => {
             </Link>
           </div>
         </div>
+      </div>
+      {/* Logo central en haut du footer */}
+      <div className="flex justify-center mb-10">
+        <Link to="/">
+          <img src="/logo.png" alt="Sogno D'Oro" className="h-24 md:h-32" />
+        </Link>
       </div>
     </footer>
   );
