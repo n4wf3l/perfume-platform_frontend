@@ -34,6 +34,7 @@ const nl = {
     headerTitle: "Onze Collectie",
     searchPlaceholder: "Zoek een parfum...",
     close: "Sluiten",
+    noResults: "Geen parfums gevonden voor uw zoekopdracht.",
     categories: {
       all: "Alle parfums",
       floral: "Bloemig",

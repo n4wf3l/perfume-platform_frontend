@@ -33,6 +33,7 @@ const en = {
     headerTitle: "Our Collection",
     searchPlaceholder: "Search for a perfume...",
     close: "Close",
+    noResults: "No perfumes match your search.",
     categories: {
       all: "All perfumes",
       floral: "Floral",
@@ -232,6 +233,8 @@ const en = {
     addToCart: "Add to cart",
     buyNow: "Buy now",
     hideOptions: "Hide options",
+    description: "Description",
+    ingredients: "Ingredients",
     categories: {
       oriental: "Oriental",
       floral: "Floral",
