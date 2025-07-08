@@ -55,7 +55,7 @@ const nl = {
     quickLinks: "Snelle Links",
     contactUs: "Contacteer ons",
     address: "123 Rue des Parfums, Brussel, België",
-    phone: "+32 123 456 789",
+    phone: "+32 465 263 138",
     email: "info@sognodoro.com",
     emailPlaceholder: "Uw e-mail",
     newsletter: "Nieuwsbrief",
@@ -180,7 +180,7 @@ const nl = {
       address2: "Brussel, 1000",
       country: "België",
       callTitle: "Bel ons",
-      phone: "+32 652 631 38",
+      phone: "+32 465 263 138",
       hours: "Maandag tot vrijdag, 9u-18u",
       emailTitle: "Schrijf ons",
       email1: "info@sognodoro.com",
@@ -467,6 +467,10 @@ const nl = {
     quantity: "Aantal",
     total: "Totaal",
     actions: "Acties",
+  },
+  toast: {
+    paypalMaintenance: "Paypal is momenteel in onderhoud.",
+    useWhatsapp: "Gebruik",
   },
 };
 export default nl;

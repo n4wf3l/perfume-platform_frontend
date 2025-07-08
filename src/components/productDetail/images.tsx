@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { ProductImage } from "../../types/api";
+import { getImageSource } from "../../utils/imageUtils";
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
 
@@ -20,6 +21,16 @@ const Images: React.FC<ImagesProps> = ({
   // Détection mobile simple
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
+  // Dans votre fonction getImageUrl
+  const getImageUrl = (image: ProductImage | undefined) => {
+    if (!image) return "/perfum1.jpg";
+
+    // Utiliser le chemin avec l'URL du backend
+    if (!image.path) return "/perfum1.jpg";
+
+    return getImageSource(image.path, true); // true = image de la DB
+  };
+
   return (
     <div className={isMobile ? "w-full" : "lg:w-1/2"}>
       <motion.div
@@ -38,7 +49,11 @@ const Images: React.FC<ImagesProps> = ({
         <AnimatePresence mode="wait">
           <motion.img
             key={currentImageIndex}
-            src={images && images.length > 0 ? `${IMAGE_URL}/${images[currentImageIndex].path}` : '/perfum1.jpg'}
+            src={
+              images && images.length > 0
+                ? getImageUrl(images[currentImageIndex])
+                : "/perfum1.jpg"
+            }
             alt={productName}
             className={`w-full h-full object-cover absolute inset-0 ${
               isMobile ? "object-contain bg-black" : ""
@@ -75,7 +90,7 @@ const Images: React.FC<ImagesProps> = ({
               whileTap={{ scale: 0.95 }}
             >
               <img
-                src={`${IMAGE_URL}/${image.path}`}
+                src={getImageUrl(image)}
                 alt={`${productName} - ${index + 1}`}
                 className={`w-full h-full ${
                   isMobile ? "object-contain bg-black" : "object-cover"

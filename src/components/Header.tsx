@@ -88,7 +88,7 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
   };
 
   // Lien WhatsApp (remplace le numéro par le tien)
-  const whatsappUrl = "https://wa.me/33612345678";
+  const whatsappUrl = "https://wa.me/32465263138"; // Remplacez par votre numéro réel
 
   // Ajoute ce bloc juste avant le return :
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -415,9 +415,9 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
           <Toast
             message={
               <>
-                Paypal est actuellement en maintenance.
+                {t("toast.paypalMaintenance")}
                 <br />
-                Passez par{" "}
+                {t("toast.useWhatsapp")}{" "}
                 <a
                   href={whatsappUrl}
                   target="_blank"

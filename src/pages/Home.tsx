@@ -41,23 +41,21 @@ const Home: React.FC = () => {
 
   // Fetch products from API
   useEffect(() => {
-    
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        
+
         // Get flagship products (is_flagship = true)
         const flagships = await productService.getFlagshipProducts();
         setFlagshipProducts(flagships.slice(0, 3)); // Limit to 3 products
-        
       } catch (err) {
-        console.error('Error fetching products:', err);
-        setError('Une erreur est survenue lors du chargement des produits.');
+        console.error("Error fetching products:", err);
+        setError("Une erreur est survenue lors du chargement des produits.");
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchProducts();
   }, []);
 
@@ -189,7 +187,8 @@ const Home: React.FC = () => {
         >
           {loading ? (
             <div className="flex justify-center items-center h-screen">
-              <div className="text-white text-2xl">Chargement...</div>
+              {/* Remplacé le texte hardcodé par une icône de chargement */}
+              <div className="w-12 h-12 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
             </div>
           ) : (
             <Banner />
@@ -247,17 +246,19 @@ const Home: React.FC = () => {
           <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
             {loading ? (
               // Display loading placeholders
-              Array(3).fill(0).map((_, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeIn}
-                  className="bg-gray-800/50 rounded-lg h-96 animate-pulse"
-                />
-              ))
+              Array(3)
+                .fill(0)
+                .map((_, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeIn}
+                    className="bg-gray-800/50 rounded-lg h-96 animate-pulse"
+                  />
+                ))
             ) : error ? (
               <div className="col-span-3 text-center py-10">
                 <p className="text-red-400">{error}</p>
-                <button 
+                <button
                   onClick={() => window.location.reload()}
                   className="mt-4 px-6 py-2 bg-white text-black rounded-md"
                 >

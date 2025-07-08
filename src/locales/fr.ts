@@ -34,6 +34,7 @@ const fr = {
     headerTitle: "Notre Collection",
     searchPlaceholder: "Rechercher un parfum...",
     close: "Fermer",
+    noResults: "Aucun parfum ne correspond à votre recherche.",
     categories: {
       all: "Tous les parfums",
       floral: "Les Floraux",
@@ -55,7 +56,7 @@ const fr = {
     quickLinks: "Liens Rapides",
     contactUs: "Contactez-nous",
     address: "123 Rue des Parfums, Bruxelles, Belgique",
-    phone: "+32 123 456 789",
+    phone: "+32 465 263 138",
     email: "info@sognodoro.com",
     emailPlaceholder: "Votre email",
     newsletter: "Newsletter",
@@ -182,7 +183,7 @@ const fr = {
       address2: "Bruxelles, 1000",
       country: "Belgique",
       callTitle: "Appelez-nous",
-      phone: "+32 652 631 38",
+      phone: "+32 465 263 138",
       hours: "Du lundi au vendredi, 9h-18h",
       emailTitle: "Écrivez-nous",
       email1: "info@sognodoro.com",
@@ -245,6 +246,8 @@ const fr = {
     addToCart: "Ajouter au panier",
     buyNow: "Acheter maintenant",
     hideOptions: "Masquer les options",
+    description: "Description",
+    ingredients: "Ingrédients",
     categories: {
       oriental: "Oriental",
       floral: "Floral",
@@ -472,6 +475,10 @@ const fr = {
     quantity: "Quantité",
     total: "Total",
     actions: "Actions",
+  },
+  toast: {
+    paypalMaintenance: "Paypal est actuellement en maintenance.",
+    useWhatsapp: "Passez par",
   },
 };
 export default fr;
