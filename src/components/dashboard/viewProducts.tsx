@@ -14,6 +14,7 @@ const ViewProducts: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [featuredIds, setFeaturedIds] = useState<number[]>([]); 
+  const [heroIds, setHeroIds] = useState<number[]>([]); // New state for hero products
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,6 +34,10 @@ const ViewProducts: React.FC = () => {
         // Initialize featured products
         const featuredProducts = data.filter(p => p.is_flagship).map(p => p.id);
         setFeaturedIds(featuredProducts);
+
+        // Initialize hero products (assuming there's a is_hero field)
+        const heroProducts = data.filter(p => p.is_hero).map(p => p.id);
+        setHeroIds(heroProducts);
       } catch (err) {
         console.error("Failed to fetch products:", err);
         setError("Échec du chargement des produits. Veuillez réessayer.");
@@ -86,6 +91,26 @@ const ViewProducts: React.FC = () => {
     }
   };
 
+  // Fonction pour gérer les produits hero
+  const handleHeroToggle = async (id: number) => {
+    // Si le produit est déjà un hero, le retirer
+    if (heroIds.includes(id)) {
+      setHeroIds(heroIds.filter((productId) => productId !== id));
+    }
+    // Sinon, l'ajouter (si moins de 1 sont sélectionnés)
+    else if (heroIds.length < 1) {
+      setHeroIds([id]);
+    }
+    // Si 1 est déjà sélectionné, remplacer par le nouveau
+    else {
+      setHeroIds([id]);
+      setToastMessage(
+        "Un seul produit peut être sélectionné comme Hero. Le précédent a été remplacé."
+      );
+      setToastVisible(true);
+    }
+  };
+
   // Filtrer les produits en fonction de la recherche
   const filteredProducts = products.filter(
     (product) =>
@@ -101,20 +126,33 @@ const ViewProducts: React.FC = () => {
     }
   };
 
-  // Fonction pour sauvegarder les produits à la une
-  const saveFeaturedProducts = async () => {
+  // Fonction pour sauvegarder les produits spéciaux (à la une et hero)
+  const saveSpecialProducts = async () => {
     try {
-      setToastMessage("Mise à jour des produits à la une...");
+      setToastMessage("Mise à jour des produits spéciaux...");
       setToastVisible(true);
       
-      // TODO: Implement API call to update featured products
-      // This would need a new endpoint in the backend
+      await productService.updateSpecialProducts({
+        featured: featuredIds,
+        hero: heroIds
+      });
       
-      setToastMessage("Produits à la une mis à jour avec succès!");
+      // Refresh the products list to ensure we have the latest data
+      const data = await productService.getAllProducts();
+      setProducts(data);
+      
+      // Update local state with the latest backend data
+      const featuredProducts = data.filter(p => p.is_flagship).map(p => p.id);
+      setFeaturedIds(featuredProducts);
+      
+      const heroProducts = data.filter(p => p.is_hero).map(p => p.id);
+      setHeroIds(heroProducts);
+      
+      setToastMessage("Produits spéciaux mis à jour avec succès!");
       setToastVisible(true);
     } catch (err) {
-      console.error("Failed to update featured products:", err);
-      setToastMessage("Échec de la mise à jour des produits à la une.");
+      console.error("Failed to update special products:", err);
+      setToastMessage("Échec de la mise à jour des produits spéciaux.");
       setToastVisible(true);
     }
   };
@@ -267,12 +305,14 @@ const ViewProducts: React.FC = () => {
               <div className="text-sm text-gray-400">
                 {filteredProducts.length} produit(s) trouvé(s)
               </div>
-              {featuredIds.length > 0 && (
+              {(featuredIds.length > 0 || heroIds.length > 0) && (
                 <button
-                  onClick={saveFeaturedProducts}
+                  onClick={saveSpecialProducts}
                   className="ml-4 px-4 py-2 border border-[#d4af37]/50 text-sm font-medium rounded-md text-[#d4af37] bg-black hover:bg-gray-800"
                 >
-                  Sauvegarder les produits à la une ({featuredIds.length}/3)
+                  Sauvegarder les produits spéciaux
+                  {featuredIds.length > 0 && ` (${featuredIds.length}/3 à la une)`}
+                  {heroIds.length > 0 && ` (${heroIds.length}/1 hero)`}
                 </button>
               )}
             </div>
@@ -334,6 +374,12 @@ const ViewProducts: React.FC = () => {
                 className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
               >
                 À la une
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+              >
+                Hero
               </th>
               <th
                 scope="col"
@@ -426,6 +472,26 @@ const ViewProducts: React.FC = () => {
                     />
                   </div>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <div className="flex items-center justify-center">
+                    <input
+                      type="checkbox"
+                      className="rounded-full h-6 w-6 text-[#d4af37] border-gray-700 bg-gray-900 focus:ring-[#d4af37]/30"
+                      checked={heroIds.includes(product.id)}
+                      onChange={() => handleHeroToggle(product.id)}
+                      disabled={
+                        !heroIds.includes(product.id) &&
+                        heroIds.length >= 1
+                      }
+                      title={
+                        !heroIds.includes(product.id) &&
+                        heroIds.length >= 1
+                          ? "Maximum 1 produit hero"
+                          : ""
+                      }
+                    />
+                  </div>
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
                     <button
@@ -478,7 +544,7 @@ const ViewProducts: React.FC = () => {
             
             {filteredProducts.length === 0 && !loading && (
               <tr>
-                <td colSpan={7} className="px-6 py-12 text-center text-gray-400">
+                <td colSpan={8} className="px-6 py-12 text-center text-gray-400">
                   <div className="flex flex-col items-center justify-center">
                     <svg 
                       className="w-12 h-12 mb-4 text-gray-600" 
@@ -522,9 +588,7 @@ const ViewProducts: React.FC = () => {
           </tbody>
         </table>
       </div>
-
-
-
+      
       {/* Pagination - To be implemented with backend pagination support */}
       <div className="px-6 py-4 bg-black/40 border-t border-gray-800 flex items-center justify-between">
         <div className="flex-1 flex items-center justify-between">
@@ -578,6 +642,10 @@ const ViewProducts: React.FC = () => {
             // Update featured products
             const featuredProducts = data.filter(p => p.is_flagship).map(p => p.id);
             setFeaturedIds(featuredProducts);
+            
+            // Update hero products
+            const heroProducts = data.filter(p => p.is_hero).map(p => p.id);
+            setHeroIds(heroProducts);
             
           } catch (err) {
             console.error("Failed to delete product(s):", err);

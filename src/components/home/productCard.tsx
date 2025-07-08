@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Link to={`/product/${product.id}`} className="block">
         <div className="overflow-hidden">
           <img
-            src={product.images[0]}
+            src={productImage}
             alt={product.name}
             className="w-full h-72 object-cover rounded-t-lg" // h-72 = 18rem, adapte si besoin
           />

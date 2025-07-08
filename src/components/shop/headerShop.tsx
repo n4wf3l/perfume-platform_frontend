@@ -143,7 +143,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
             >
               {toUpper(
                 t(
-                  categories.find((c) => c.id === selectedCategory)?.nameKey ||
+                  categories.find((c) => c.id === selectedCategory)?.name ||
                     "shop.categories.category"
                 )
               )}
@@ -199,7 +199,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                           : "bg-black text-white hover:bg-white/10"
                       }`}
                     >
-                      {toUpper(t(category.nameKey))}
+                      {toUpper(t(category.name))}
                     </button>
                   </li>
                 ))}

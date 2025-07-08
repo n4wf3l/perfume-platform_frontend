@@ -55,7 +55,28 @@ class ProductService {
   }
   
   async getHeroProducts(): Promise<Product[]> {
-    return apiService.get<Product[]>('/products?is_hero=1');
+    console.log('Calling getHeroProducts API endpoint');
+    try {
+      // Try the original endpoint
+      const response = await apiService.get<Product[]>('/products?is_hero=1');
+      console.log('API response for hero products:', response);
+      
+      // If we get valid results, return them
+      if (response && Array.isArray(response) && response.length > 0) {
+        return response;
+      }
+      
+      // If no results, try getting all products and filtering manually
+      console.log('No hero products found, getting all products to filter');
+      const allProducts = await this.getAllProducts();
+      const heroProducts = allProducts.filter(product => Boolean(product.is_hero));
+      
+      console.log('Manually filtered hero products:', heroProducts);
+      return heroProducts;
+    } catch (error) {
+      console.error('Error in getHeroProducts:', error);
+      throw error;
+    }
   }
   
   async getFlagshipProducts(): Promise<Product[]> {
@@ -77,6 +98,14 @@ class ProductService {
     return apiService.post<any>(`/products/${productId}/images/${imageId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+
+  async updateSpecialProducts(data: { featured: number[], hero: number[] }): Promise<any> {
+    return apiService.post<any>('/products/update-special', data, {
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
   }

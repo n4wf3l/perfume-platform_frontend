@@ -20,12 +20,12 @@ const fadeIn = {
 const ITALIAN_QUOTE = "Il profumo dei tuoi sogni";
 
 const Home: React.FC = () => {
-  const [heroProduct, setHeroProduct] = useState<Product | null>(null);
+  // Note: The heroProduct state is handled directly in the Banner component now
   const [flagshipProducts, setFlagshipProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const productsRef = useRef(null);
   const collectionRef = useRef(null);
   const [typed, setTyped] = useState("");
@@ -45,12 +45,6 @@ const Home: React.FC = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        
-        // Get hero products (is_hero = true)
-        const heroes = await productService.getHeroProducts();
-        if (heroes.length > 0) {
-          setHeroProduct(heroes[0]); // Use the first hero product
-        }
         
         // Get flagship products (is_flagship = true)
         const flagships = await productService.getFlagshipProducts();
@@ -96,7 +90,7 @@ const Home: React.FC = () => {
         <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
           {/* Banner cover en fond */}
           <div className="absolute inset-0 z-0">
-            {heroProduct && <Banner product={heroProduct} title="" subtitle="" />}
+            <Banner />
           </div>
           {/* Overlay noir pour foncer la cover */}
           <div className="absolute inset-0 bg-black/60 z-10" />
@@ -193,32 +187,13 @@ const Home: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-        {loading ? (
-          <div className="flex justify-center items-center h-screen">
-            <div className="text-white text-2xl">Chargement...</div>
-          </div>
-        ) : heroProduct ? (
-            <Banner
-              product={heroProduct}
-              title={t("home.bannerTitle")}
-              subtitle={t("home.bannerSubtitle")}
-            />
-        ) : error ? (
-          <div className="flex flex-col justify-center items-center h-screen">
-            <div className="text-white text-2xl mb-4">Impossible de charger le produit vedette</div>
-            <button 
-              onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-white text-black rounded-md"
-            >
-              Réessayer
-            </button>
-          </div>
-        ) : (
-          <div className="flex justify-center items-center h-screen">
-            <div className="text-white text-2xl">Aucun produit vedette disponible</div>
-          </div>
-        )}
-
+          {loading ? (
+            <div className="flex justify-center items-center h-screen">
+              <div className="text-white text-2xl">Chargement...</div>
+            </div>
+          ) : (
+            <Banner />
+          )}
         </motion.section>
       )}
 
