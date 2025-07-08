@@ -20,27 +20,28 @@ const Details: React.FC<DetailsProps> = ({
   // Format gender for display
   const formatGender = (gender: string | undefined) => {
     if (!gender) return "Unisexe";
-    
+
     const genders: { [key: string]: string } = {
       male: "Homme",
       female: "Femme",
-      unisex: "Unisexe"
+      unisex: "Unisexe",
     };
-    
-    return genders[gender.toLowerCase()] || 
-      gender.charAt(0).toUpperCase() + gender.slice(1);
+
+    return (
+      genders[gender.toLowerCase()] ||
+      gender.charAt(0).toUpperCase() + gender.slice(1)
+    );
   };
 
   const getStockStatus = (stock: number | undefined) => {
-  if (!stock || stock === 0) {
-    return { text: "Rupture de stock", color: "text-red-400" };
-  } else if (stock <= 2) {
-    return { text: "Stock Limité", color: "text-yellow-400" };
-  } else {
-    return { text: "Disponible", color: "text-green-400" };
-  }
-};
-
+    if (!stock || stock === 0) {
+      return { text: "Rupture de stock", color: "text-red-400" };
+    } else if (stock <= 2) {
+      return { text: "Stock Limité", color: "text-yellow-400" };
+    } else {
+      return { text: "Disponible", color: "text-green-400" };
+    }
+  };
 
   return (
     <motion.div
@@ -59,7 +60,7 @@ const Details: React.FC<DetailsProps> = ({
           <div className="flex flex-col items-center">
             <span className="text-xs text-gray-400">{t("product.size")}</span>
             <span className="text-base text-white font-medium">
-              {product.size_ml+" ml" || 'N/A'}
+              {product.size_ml + " ml" || "N/A"}
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -67,7 +68,7 @@ const Details: React.FC<DetailsProps> = ({
               {t("product.category")}
             </span>
             <span className="text-base text-white font-medium">
-              {product.category?.name || 'N/A'}
+              {product.category?.name || "N/A"}
             </span>
           </div>
           <div className="flex flex-col items-center">
@@ -80,12 +81,15 @@ const Details: React.FC<DetailsProps> = ({
         <div className="flex items-center justify-between mb-4">
           <span className="text-gray-400 text-sm">{t("product.price")}</span>
           <span className="text-2xl text-white font-semibold">
-            {typeof product.price === "number" ? product.price.toFixed(2) : "0.00"} €
+            {typeof product.price === "number"
+              ? product.price.toFixed(2)
+              : "0.00"}{" "}
+            €
           </span>
         </div>
         <div className="flex items-center justify-between mb-6">
           <span className="text-gray-400 text-sm">Stock</span>
-         {(() => {
+          {(() => {
             const { text, color } = getStockStatus(product.stock);
             return (
               <span className={`px-2 py-1 ${color} rounded-md text-xs`}>
@@ -132,7 +136,7 @@ const Details: React.FC<DetailsProps> = ({
               <img src="/paypall.png" alt="PayPal" className="h-10" />
             </motion.a>
             <motion.a
-              href="https://wa.me/123456789"
+              href="https://wa.me/32465263138"
               target="_blank"
               rel="noreferrer"
               className="transition-transform duration-300"

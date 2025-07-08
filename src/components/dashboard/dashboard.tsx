@@ -95,7 +95,7 @@ const DashboardComponent: React.FC<DashboardProps> = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 01-2-2v2m0 0h14"
       ></path>
     </svg>
   );
@@ -339,7 +339,8 @@ const DashboardComponent: React.FC<DashboardProps> = ({
                           className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 shadow-lg shadow-[#d4af37]/5 cursor-pointer"
                           whileHover={{
                             y: -5,
-                            boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
+                            boxShadow:
+                              "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
                           }}
                           transition={{ duration: 0.2 }}
                         >
@@ -418,112 +419,117 @@ const DashboardComponent: React.FC<DashboardProps> = ({
 
                   {/* Action Buttons */}
                   <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Commandes Card */}
                     <motion.div
-                      onClick={() => navigate("/dashboard/products/add")}
-                      className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer"
+                      className="flex flex-col"
                       variants={cardVariants}
                       custom={7}
-                      whileHover={{
-                        y: -5,
-                        boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
-                      }}
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-gray-200 text-sm font-medium">
-                          Ajouter un produit
-                        </h3>
-                        <p className="text-gray-400 text-xs mt-1">
-                          Créer une nouvelle fiche produit
-                        </p>
-                      </div>
+                      {/* Stats Card */}
+                      <motion.div
+                        onClick={() => navigate("/dashboard/orders")}
+                        className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer mb-4"
+                        whileHover={{
+                          y: -5,
+                          boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
+                        }}
+                      >
+                        <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
+                          {orderIcon}
+                        </div>
+                        <div>
+                          <h3 className="text-gray-200 text-sm font-medium">
+                            Voir les commandes
+                          </h3>
+                          <p className="text-gray-400 text-xs mt-1">
+                            Gérer et suivre les commandes clients
+                          </p>
+                        </div>
+                      </motion.div>
                     </motion.div>
 
+                    {/* Produits Card */}
                     <motion.div
-                      onClick={() => navigate("/dashboard/categories/add")}
-                      className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer"
+                      className="flex flex-col"
                       variants={cardVariants}
                       custom={8}
-                      whileHover={{
-                        y: -5,
-                        boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
-                      }}
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-gray-200 text-sm font-medium">
-                          Ajouter une catégorie
-                        </h3>
-                        <p className="text-gray-400 text-xs mt-1">
-                          Créer une nouvelle catégorie de produit
-                        </p>
-                      </div>
+                      {/* Stats Card */}
+                      <motion.div
+                        onClick={() => navigate("/dashboard/products/add")}
+                        className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer mb-4"
+                        whileHover={{
+                          y: -5,
+                          boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
+                        }}
+                      >
+                        <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-gray-200 text-sm font-medium">
+                            Ajouter un produit
+                          </h3>
+                          <p className="text-gray-400 text-xs mt-1">
+                            Créer une nouvelle fiche produit
+                          </p>
+                        </div>
+                      </motion.div>
                     </motion.div>
 
+                    {/* Catégories Card */}
                     <motion.div
-                      onClick={() => navigate("/dashboard/orders")}
-                      className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer"
+                      className="flex flex-col"
                       variants={cardVariants}
                       custom={9}
-                      whileHover={{
-                        y: -5,
-                        boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
-                      }}
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                          ></path>
-                        </svg>
-                      </div>
-                      <div>
-                        <h3 className="text-gray-200 text-sm font-medium">
-                          Voir les commandes
-                        </h3>
-                        <p className="text-gray-400 text-xs mt-1">
-                          Gérer et suivre les commandes clients
-                        </p>
-                      </div>
+                      {/* Stats Card */}
+                      <motion.div
+                        onClick={() => navigate("/dashboard/categories/add")}
+                        className="bg-gray-900 border border-[#d4af37]/10 rounded-xl p-6 flex items-center cursor-pointer mb-4"
+                        whileHover={{
+                          y: -5,
+                          boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.1)",
+                        }}
+                      >
+                        <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] mr-4">
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-gray-200 text-sm font-medium">
+                            Ajouter une catégorie
+                          </h3>
+                          <p className="text-gray-400 text-xs mt-1">
+                            Créer une nouvelle catégorie de produit
+                          </p>
+                        </div>
+                      </motion.div>
                     </motion.div>
                   </div>
 

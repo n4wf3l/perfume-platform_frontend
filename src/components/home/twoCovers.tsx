@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getImageSource } from "../../utils/imageUtils";
 
 const TwoCovers: React.FC = () => {
   const { t } = useTranslation();
@@ -33,7 +34,10 @@ const TwoCovers: React.FC = () => {
         ref={firstCoverRef}
         className="w-full h-[500px] relative flex items-center justify-center mb-0"
         style={{
-          backgroundImage: "url('/sectioncover1.jpg')",
+          backgroundImage: `url('${getImageSource(
+            "sectioncover1.jpg",
+            false
+          )}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
@@ -87,7 +91,10 @@ const TwoCovers: React.FC = () => {
         ref={secondCoverRef}
         className="w-full h-[500px] relative flex items-center justify-center mb-16"
         style={{
-          backgroundImage: "url('/sectioncover2.jpg')",
+          backgroundImage: `url('${getImageSource(
+            "sectioncover2.jpg",
+            false
+          )}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",

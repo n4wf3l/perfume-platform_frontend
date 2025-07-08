@@ -7,14 +7,16 @@ import { useSearchParams } from "react-router-dom";
 import productService from "../services/productService";
 import categoryService from "../services/categoryService";
 import type { Product, Category } from "../types/api";
-  
+
 const Shop: React.FC = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const genderParam = searchParams.get("gender"); // "homme" ou "femme" ou null
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<number | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<number | "all">(
+    "all"
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -24,7 +26,6 @@ const Shop: React.FC = () => {
   const [error, setError] = useState("");
   const productsPerPage = 6;
 
- 
   // Fetch products and categories from API
   useEffect(() => {
     const fetchData = async () => {
@@ -32,13 +33,16 @@ const Shop: React.FC = () => {
         setLoading(true);
         const [productsData, categoriesData] = await Promise.all([
           productService.getAllProducts(),
-          categoryService.getAllCategories()
+          categoryService.getAllCategories(),
         ]);
         console.log("Fetched Products Data:", productsData);
 
-        const normalizedProductsData = productsData.map(product => ({
+        const normalizedProductsData = productsData.map((product) => ({
           ...product,
-          price: typeof product.price === 'string' ? parseFloat(product.price) : product.price
+          price:
+            typeof product.price === "string"
+              ? parseFloat(product.price)
+              : product.price,
         }));
 
         setProducts(normalizedProductsData);
@@ -68,7 +72,10 @@ const Shop: React.FC = () => {
       result = result.filter(
         (product) =>
           product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()))
+          (product.description &&
+            product.description
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()))
       );
     }
 
@@ -105,8 +112,8 @@ const Shop: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto">
         {loading ? (
-          <div className="text-center">
-            <p className="text-white">Chargement des produits...</p>
+          <div className="flex justify-center items-center h-screen">
+            <div className="w-12 h-12 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
           </div>
         ) : error ? (
           <div className="text-center">
@@ -125,10 +132,10 @@ const Shop: React.FC = () => {
               categories={categories}
             />
 
-        {/* Titre de la boutique */}
-        <h1 className="text-4xl font-serif text-white mb-8 text-center">
-          {t("shop.title")}
-        </h1>
+            {/* Titre de la boutique */}
+            <h1 className="text-4xl font-serif text-white mb-8 text-center">
+              {t("shop.title")}
+            </h1>
 
             {/* Section des produits et pagination */}
             <Products

@@ -7,34 +7,44 @@ const Footer: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-black border-t border-[#d4af37]/30 w-full">
+    <footer className="bg-black border-t border-white/30 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Info */}
-          <div className="space-y-4">
-            <Link to="/" className="inline-block">
-              <span className="text-white font-serif text-2xl">
-                Sogno D'Oro
-              </span>
-            </Link>
-            <p className="text-gray-400 text-sm">{t("footer.brandSlogan")}</p>
+        {/* Trois colonnes bien centrées */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          {/* Colonne 1: Brand Info */}
+          <div className="flex flex-col items-center">
+            <div className="mb-4">
+              <Link to="/" className="inline-block">
+                <span className="text-white font-serif text-2xl">
+                  Sogno D'Oro
+                </span>
+              </Link>
+            </div>
+            <p className="text-gray-400 text-sm mb-4">
+              {t("footer.brandSlogan")}
+            </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white">
-                <span className="sr-only">Facebook</span>
+              <a
+                href="https://snapchat.com/add/sogno-doro"
+                className="text-gray-400 hover:text-white"
+              >
+                <span className="sr-only">Snapchat</span>
                 <svg
                   className="h-6 w-6"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                    clipRule="evenodd"
-                  />
+                  {/* Logo officiel de Snapchat (ghost) */}
+                  <path d="M12.166 0c-1.112 0-2.174 0.205-3.012 0.558-0.828 0.354-1.536 0.829-2.103 1.394-0.596 0.596-1.042 1.281-1.335 2.025-0.293 0.707-0.441 1.45-0.441 2.161-0.01 0.24-0.01 0.488-0.01 0.718v0.073c0 0.407 0.01 0.814 0 1.221-0.032 0.488-0.104 0.602-0.581 0.803-0.144 0.063-0.3 0.114-0.456 0.166-0.766 0.261-1.718 0.587-1.873 1.479-0.094 0.543 0.051 1.022 0.436 1.427 0.29 0.303 0.696 0.531 1.107 0.684 0.117 0.043 0.236 0.082 0.355 0.12 0.488 0.157 0.884 0.303 1.024 0.625 0.094 0.218 0.043 0.531-0.15 0.931-0.042 0.083-0.093 0.165-0.144 0.248-0.085 0.154-0.173 0.307-0.243 0.456-0.152 0.332-0.294 0.671-0.411 1.021-0.165 0.479-0.083 0.879 0.242 1.178 0.194 0.183 0.456 0.309 0.717 0.38 0.41 0.111 0.83 0.153 1.246 0.183 0.072 0.006 0.144 0.011 0.213 0.017 0.019 0 0.042 0.006 0.068 0.011 0.179 0.036 0.311 0.197 0.393 0.483 0.043 0.152 0.075 0.318 0.108 0.483 0.066 0.332 0.133 0.671 0.274 0.982 0.426 0.95 1.251 1.642 2.407 2.004 0.569 0.178 1.173 0.267 1.795 0.267 0.143 0 0.287-0.006 0.433-0.017 0.081 0.006 0.168 0.011 0.253 0.011 0.623 0 1.225-0.089 1.794-0.266 1.156-0.362 1.98-1.055 2.408-2.004 0.14-0.311 0.208-0.651 0.274-0.982 0.033-0.166 0.066-0.331 0.107-0.483 0.083-0.286 0.214-0.447 0.399-0.483 0.02-0.005 0.043-0.011 0.063-0.011 0.069-0.006 0.14-0.011 0.213-0.017 0.416-0.03 0.835-0.072 1.245-0.183 0.262-0.071 0.524-0.197 0.718-0.38 0.324-0.299 0.407-0.699 0.242-1.178-0.117-0.35-0.26-0.689-0.411-1.021-0.07-0.149-0.158-0.302-0.243-0.456-0.051-0.083-0.103-0.165-0.145-0.248-0.194-0.4-0.243-0.713-0.15-0.931 0.139-0.322 0.536-0.468 1.025-0.625 0.119-0.038 0.237-0.077 0.354-0.12 0.411-0.153 0.818-0.381 1.107-0.684 0.386-0.405 0.531-0.884 0.436-1.427-0.156-0.892-1.107-1.218-1.874-1.479-0.155-0.052-0.312-0.103-0.456-0.166-0.475-0.201-0.549-0.315-0.581-0.803-0.01-0.407 0-0.814 0-1.221v-0.073c0-0.23 0-0.478-0.01-0.718 0-0.711-0.147-1.454-0.44-2.161-0.293-0.745-0.74-1.429-1.335-2.025-0.566-0.565-1.277-1.041-2.103-1.394-0.838-0.354-1.9-0.558-3.012-0.558z" />
                 </svg>
               </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a
+                href="https://www.instagram.com/sogno.doro_profumo?igsh=aTV4OWdkNnNueXYx"
+                className="text-gray-400 hover:text-white"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span className="sr-only">Instagram</span>
                 <svg
                   className="h-6 w-6"
@@ -52,8 +62,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Liens Rapides */}
-          <div>
+          {/* Colonne 2: Liens Rapides */}
+          <div className="flex flex-col items-center">
             <h3 className="text-white font-medium mb-4">
               {t("footer.quickLinks")}
             </h3>
@@ -85,27 +95,12 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
+          {/* Colonne 3: Contact Info */}
+          <div className="flex flex-col items-center">
             <h3 className="text-white font-medium mb-4">
               {t("footer.contactUs")}
             </h3>
             <ul className="space-y-2">
-              <li className="text-gray-400 text-sm flex items-start">
-                <svg
-                  className="h-5 w-5 text-white mr-2 mt-0.5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>{t("footer.address")}</span>
-              </li>
               <li className="text-gray-400 text-sm flex items-center">
                 <svg
                   className="h-5 w-5 text-white mr-2"
@@ -131,38 +126,14 @@ const Footer: React.FC = () => {
               </li>
             </ul>
           </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-white font-medium mb-4">
-              {t("footer.newsletter")}
-            </h3>
-            <p className="text-gray-400 text-sm mb-4">
-              {t("footer.newsletterDesc")}
-            </p>
-            <form className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder={t("footer.emailPlaceholder")}
-                className="bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-white hover:bg-white/90 text-black font-medium py-2 px-4 rounded-md transition-colors duration-300"
-              >
-                {t("footer.subscribe")}
-              </button>
-            </form>
-          </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-xs mb-4 md:mb-0">
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+          <p className="text-gray-500 text-xs mb-4">
             &copy; {currentYear} Sogno D'Oro. {t("footer.copyright")}
           </p>
-          <div className="flex space-x-6">
+          <div className="flex justify-center space-x-6">
             <Link
               to="/confidentiality"
               className="text-gray-500 hover:text-white text-xs"

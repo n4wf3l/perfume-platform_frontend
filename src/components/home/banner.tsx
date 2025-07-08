@@ -26,44 +26,62 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
       try {
         setLoading(true);
         console.log("Fetching hero products...");
-        
+
         // First attempt: use the getHeroProducts method
         const heroProducts = await productService.getHeroProducts();
         console.log("Hero products response:", heroProducts);
-        
-        if (heroProducts && Array.isArray(heroProducts) && heroProducts.length > 0) {
-          console.log("Setting hero product from hero products:", heroProducts[0]);
+
+        if (
+          heroProducts &&
+          Array.isArray(heroProducts) &&
+          heroProducts.length > 0
+        ) {
+          console.log(
+            "Setting hero product from hero products:",
+            heroProducts[0]
+          );
           setHeroProduct(heroProducts[0]);
         } else {
-          console.warn("No hero products found from API endpoint, trying alternative approach");
-          
+          console.warn(
+            "No hero products found from API endpoint, trying alternative approach"
+          );
+
           // Second attempt: get all products and filter manually
           const allProducts = await productService.getAllProducts();
           console.log("All products response:", allProducts);
-          
-          if (allProducts && Array.isArray(allProducts) && allProducts.length > 0) {
+
+          if (
+            allProducts &&
+            Array.isArray(allProducts) &&
+            allProducts.length > 0
+          ) {
             // Since we can see from the screenshot that product #4 is the hero product,
             // let's specifically look for it first
-            const productId4 = allProducts.find(product => product.id === 4);
+            const productId4 = allProducts.find((product) => product.id === 4);
             if (productId4) {
-              console.log("Found product ID 4 (known hero product):", productId4);
+              console.log(
+                "Found product ID 4 (known hero product):",
+                productId4
+              );
               setHeroProduct(productId4);
               return;
             }
-            
+
             // If product #4 isn't found, try to find any product with is_hero set to a truthy value
-            const heroProduct = allProducts.find(product => {
+            const heroProduct = allProducts.find((product) => {
               // Check for truthy values in different formats
               return Boolean(product.is_hero);
             });
-            
+
             if (heroProduct) {
               console.log("Found hero product by filtering:", heroProduct);
               setHeroProduct(heroProduct);
             } else {
               // Last resort: use the first product
               setHeroProduct(allProducts[0]);
-              console.warn("No hero product found, using first product as fallback");
+              console.warn(
+                "No hero product found, using first product as fallback"
+              );
             }
           } else {
             setError("No products found");
@@ -81,9 +99,10 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
   }, []);
 
   // Utiliser l'image importée comme fallback
-  const backgroundImage = heroProduct?.images && heroProduct.images.length > 0
-    ? `${IMAGE_URL}/${heroProduct.images[0].path}`
-    : defaultBgImage;
+  const backgroundImage =
+    heroProduct?.images && heroProduct.images.length > 0
+      ? `${IMAGE_URL}/${heroProduct.images[0].path}`
+      : defaultBgImage;
 
   // Détection mobile simple
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -94,8 +113,8 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return (
@@ -132,7 +151,6 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
             {loading ? (
               <div className="flex flex-col items-center mb-20">
                 <div className="w-10 h-10 border-t-2 border-b-2 border-white rounded-full animate-spin mb-4"></div>
-                <p className="text-white">{t("common.loading")}</p>
               </div>
             ) : error ? (
               <div className="bg-black/50 p-4 rounded-lg mb-20">
@@ -140,8 +158,12 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
               </div>
             ) : heroProduct ? (
               <div className="space-y-4 mb-20">
-                <h2 className="font-serif text-2xl text-white">{heroProduct.name}</h2>
-                <p className="text-lg text-white/80">{Number(heroProduct.price || 0).toFixed(2)} €</p>
+                <h2 className="font-serif text-2xl text-white">
+                  {heroProduct.name}
+                </h2>
+                <p className="text-lg text-white/80">
+                  {Number(heroProduct.price || 0).toFixed(2)} €
+                </p>
                 <Link
                   to={`/product/${heroProduct.id}`}
                   className="inline-block px-6 py-2 bg-white text-black font-medium rounded-lg"
@@ -151,8 +173,13 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
               </div>
             ) : (
               <div className="space-y-4 mb-20">
-                <h2 className="font-serif text-2xl text-white">{t("home.defaultProductTitle")}</h2>
-                <Link to="/shop" className="inline-block px-6 py-2 bg-white text-black font-medium rounded-lg">
+                <h2 className="font-serif text-2xl text-white">
+                  {t("home.defaultProductTitle")}
+                </h2>
+                <Link
+                  to="/shop"
+                  className="inline-block px-6 py-2 bg-white text-black font-medium rounded-lg"
+                >
                   {t("home.shopNow")}
                 </Link>
               </div>
@@ -165,14 +192,13 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-10">
           {loading ? (
             <div className="flex flex-col items-center">
-              <div className="w-12 h-12 border-t-2 border-b-2 border-white rounded-full animate-spin mb-4"></div>
-              <p className="text-white text-lg">{t("common.loading")}</p>
+              <div className="w-12 h-12 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
             </div>
           ) : error ? (
             <div className="bg-black/50 p-6 rounded-lg">
               <h2 className="text-red-400 text-xl mb-3">{t("common.error")}</h2>
               <p className="text-white">{error}</p>
-              <button 
+              <button
                 className="mt-4 px-6 py-2 bg-white text-black rounded hover:bg-white/80"
                 onClick={() => window.location.reload()}
               >
@@ -190,8 +216,12 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
               <div className="space-y-6">
                 {heroProduct ? (
                   <>
-                    <h2 className="font-serif text-3xl text-white">{heroProduct.name}</h2>
-                    <p className="text-lg max-w-lg">{heroProduct.description ?? ""}</p>
+                    <h2 className="font-serif text-3xl text-white">
+                      {heroProduct.name}
+                    </h2>
+                    <p className="text-lg max-w-lg">
+                      {heroProduct.description ?? ""}
+                    </p>
 
                     <p className="text-2xl text-white">
                       {Number(heroProduct.price || 0).toFixed(2)} €
@@ -206,8 +236,12 @@ const Banner: React.FC<BannerProps> = ({ title, subtitle }) => {
                   </>
                 ) : (
                   <>
-                    <h2 className="font-serif text-3xl text-white">{title || t("home.defaultProductTitle")}</h2>
-                    <p className="text-lg max-w-lg">{subtitle || t("home.defaultProductDescription")}</p>
+                    <h2 className="font-serif text-3xl text-white">
+                      {title || t("home.defaultProductTitle")}
+                    </h2>
+                    <p className="text-lg max-w-lg">
+                      {subtitle || t("home.defaultProductDescription")}
+                    </p>
                     <Link
                       to="/shop"
                       className="inline-block px-8 py-3 bg-white hover:bg-white/90 text-black font-medium rounded transition-colors duration-300"

@@ -109,7 +109,7 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                 />
               )}
             </button>
-            
+
             {categories?.map((category) => (
               <button
                 key={category.id}
@@ -141,12 +141,12 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
               onClick={() => setCatDropdownOpen((v) => !v)}
               className="w-full flex justify-between items-center px-4 py-3 bg-black border border-gray-700 rounded-lg text-white font-medium text-base focus:outline-none"
             >
-              {toUpper(
-                t(
-                  categories.find((c) => c.id === selectedCategory)?.name ||
-                    "shop.categories.category"
-                )
-              )}
+              {selectedCategory === "all"
+                ? toUpper(t("shop.categories.all"))
+                : toUpper(
+                    categories.find((c) => c.id === selectedCategory)?.name ||
+                      t("shop.categories.category")
+                  )}
               <svg
                 className={`w-5 h-5 ml-2 transition-transform ${
                   catDropdownOpen ? "rotate-180" : ""
@@ -186,6 +186,21 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                 ×
               </button>
               <ul className="w-full max-w-xs space-y-4 px-6">
+                <li>
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("all");
+                      setCatDropdownOpen(false);
+                    }}
+                    className={`w-full text-center py-4 text-lg rounded-lg transition ${
+                      selectedCategory === "all"
+                        ? "bg-white text-black"
+                        : "bg-black text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {toUpper(t("shop.categories.all"))}
+                  </button>
+                </li>
                 {categories.map((category) => (
                   <li key={category.id}>
                     <button
@@ -193,13 +208,13 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
                         setSelectedCategory(category.id);
                         setCatDropdownOpen(false);
                       }}
-                      className={`w-full text-center py-4 text-lg  rounded-lg transition ${
+                      className={`w-full text-center py-4 text-lg rounded-lg transition ${
                         selectedCategory === category.id
                           ? "bg-white text-black"
                           : "bg-black text-white hover:bg-white/10"
                       }`}
                     >
-                      {toUpper(t(category.name))}
+                      {toUpper(category.name)}
                     </button>
                   </li>
                 ))}
