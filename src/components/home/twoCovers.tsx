@@ -19,7 +19,7 @@ const TwoCovers: React.FC = () => {
     margin: "-100px",
   });
 
-  // Ajout des handlers pour filtrer par genre
+  // Ces fonctions sont déjà correctes
   const goToMen = () => {
     navigate("/shop?gender=homme");
   };

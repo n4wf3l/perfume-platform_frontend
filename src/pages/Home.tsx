@@ -185,14 +185,7 @@ const Home: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          {loading ? (
-            <div className="flex justify-center items-center h-screen">
-              {/* Remplacé le texte hardcodé par une icône de chargement */}
-              <div className="w-12 h-12 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
-            </div>
-          ) : (
-            <Banner />
-          )}
+          <Banner />
         </motion.section>
       )}
 

@@ -103,6 +103,22 @@ const Shop: React.FC = () => {
     indexOfLastProduct
   );
 
+  // Récupérer le paramètre gender de l'URL
+  useEffect(() => {
+    // Si un genre est spécifié dans l'URL, mettre à jour le filtre
+    if (genderParam && ["homme", "femme", "unisexe"].includes(genderParam)) {
+      setSelectedGender(genderParam);
+    }
+
+    // Récupérer d'autres paramètres si nécessaire (ex: category)
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      setSelectedCategory(
+        categoryParam === "all" ? "all" : Number(categoryParam)
+      );
+    }
+  }, [searchParams]); // Se déclenche quand les paramètres d'URL changent
+
   return (
     <motion.div
       className="min-h-screen bg-black text-gray-200 py-12 px-4 sm:px-6 lg:px-8"
