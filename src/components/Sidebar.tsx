@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -16,8 +16,34 @@ interface MenuItem {
   disabled?: boolean;
 }
 
+interface UserData {
+  name: string;
+  email: string;
+}
+
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
+
+  // State for user data
+  const [user, setUser] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    // Fetch user data from localStorage
+    const fetchedUser = localStorage.getItem("user");
+    if (fetchedUser) {
+      try {
+        const userData = JSON.parse(fetchedUser);
+        // Make sure we have the required fields
+        if (userData && userData.name && userData.email) {
+          setUser(userData);
+        } else {
+          console.warn("User data from localStorage is missing required fields");
+        }
+      } catch (error) {
+        console.error("Failed to parse user data from localStorage:", error);
+      }
+    }
+  }, []);
 
   // Animation variants
   const sidebarVariants: Variants = {
@@ -93,6 +119,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       path: "/dashboard/products",
     },
     {
+      title: "Catégories",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+          ></path>
+        </svg>
+      ),
+      path: "/dashboard/categories",
+    },
+    {
       title: "Commandes",
       icon: (
         <svg
@@ -163,7 +209,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   ];
 
   // Fonction pour rendre le bon élément (lien ou div désactivée)
-  const renderMenuItem = (item: MenuItem, index: number) => {
+  const renderMenuItem = (item: MenuItem) => {
     const isActive = location.pathname === item.path;
 
     // Classes communes pour tous les éléments de menu
@@ -265,8 +311,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             </svg>
           </div>
           <div className="flex-1">
-            <h2 className="text-sm text-gray-200 font-medium">Admin</h2>
-            <p className="text-xs text-gray-400">admin@sognodoro.com</p>
+            <h2 className="text-sm text-gray-200 font-medium">
+              {user ? user.name : 'Admin'}
+            </h2>
+            <p className="text-xs text-gray-400">
+              {user ? user.email : 'admin@sognodoro.com'}
+            </p>
           </div>
         </motion.div>
 
@@ -274,14 +324,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         <nav className="p-5 space-y-1">
           {menuItems.map((item, i) => (
             <motion.div key={i} variants={itemVariants}>
-              {renderMenuItem(item, i)}
+              {renderMenuItem(item)}
             </motion.div>
           ))}
         </nav>
 
         {/* Bottom links */}
         <div className="absolute bottom-0 left-0 right-0 p-5 border-t border-[#d4af37]/20">
-          <motion.div variants={itemVariants}>
+          <motion.div variants={itemVariants} className="space-y-2">
             <Link
               to="/"
               className="flex items-center p-2 text-gray-400 hover:text-gray-200 rounded-lg"
@@ -302,6 +352,36 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               </svg>
               Retour au site
             </Link>
+
+            {/* Déconnexion button */}
+            <button
+              onClick={() => {
+                // Here we would typically handle the logout action
+                // For example, clearing authentication tokens from localStorage
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                // Then redirect to login page or home page
+                window.location.href = "/admin";
+              }}
+              className="flex items-center w-full p-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-colors"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                ></path>
+              </svg>
+              Déconnexion
+            </button>
+
             <button
               onClick={toggleSidebar}
               className="mt-3 lg:hidden w-full flex items-center justify-center p-2 text-gray-400 hover:text-gray-200 rounded-lg border border-gray-700"

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, easeOut } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useTranslation } from "react-i18next"; // Ajout import
 
@@ -218,12 +218,20 @@ const ContactForm: React.FC<FormProps> = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/api/contact", {
+      // Use the configured API URL from environment variables
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+      
+      const response = await fetch(`${apiUrl}/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+      
       if (response.ok) {
         setFormStatus("success");
         setFormData({
@@ -233,10 +241,19 @@ const ContactForm: React.FC<FormProps> = () => {
           message: "",
         });
       } else {
+        // Handle Laravel validation errors which typically come in a specific format
+        if (data.errors) {
+          // Join all validation errors into a single message
+          const errorMessages = Object.values(data.errors).flat().join('. ');
+          setFormError(errorMessages);
+        } else {
+          setFormError(data.message || t("contact.form.error"));
+        }
         setFormStatus("error");
-        setFormError(t("contact.form.error"));
+        console.error("Contact form submission error:", data);
       }
     } catch (error) {
+      console.error("Contact form submission exception:", error);
       setFormStatus("error");
       setFormError(t("contact.form.error"));
     }
