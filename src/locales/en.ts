@@ -255,6 +255,7 @@ const en = {
       "This payment method is temporarily unavailable for maintenance.",
     cartUnavailable:
       "The payment system is currently unavailable. Please contact us via WhatsApp.",
+    freeDelivery: "Free delivery in Brussels region",
   },
   confidentiality: {
     title: "Privacy Policy",
@@ -387,6 +388,8 @@ const en = {
     address: "Address*",
     city: "City*",
     postalCode: "Postal Code*",
+    brusselsFreeShipping: "Brussels region - free shipping",
+    postalCodeHelper: "Brussels region (1000-1210): free shipping",
     country: "Country*",
     selectCountry: "Select a country",
     countries: {
@@ -458,6 +461,10 @@ const en = {
     quantity: "Quantity",
     total: "Total",
     actions: "Actions",
+    olfactiveExperience: "An Exceptional Olfactory Experience",
+    olfactiveDesc:
+      "Let yourself be seduced by our collection of refined perfumes, created with the noblest raw materials.",
+    discoverCollection: "Discover our collection",
   },
   thankYou: {
     title: "Thank you for your order",

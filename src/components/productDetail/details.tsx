@@ -119,6 +119,27 @@ const Details: React.FC<DetailsProps> = ({
           </motion.button>
         </div>
         {/* Options de paiement */}
+        {/* Information livraison gratuite Bruxelles */}
+        <div className="mt-4 px-3 py-2 bg-white/10 rounded-md">
+          <div className="flex items-center text-sm text-white">
+            <svg
+              className="w-5 h-5 mr-2 text-green-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            <span>{t("product.freeDelivery")}</span>
+          </div>
+        </div>
+
         {showPaymentOptions && (
           <motion.div
             className="flex flex-col sm:flex-row gap-6 justify-center items-center mt-6"

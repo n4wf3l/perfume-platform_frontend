@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const backgroundVariants: Variants = {
   hidden: { opacity: 0 },
@@ -52,6 +53,7 @@ const buttonVariants: Variants = {
 };
 
 const BottomCover: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <motion.section
       initial="hidden"
@@ -78,15 +80,20 @@ const BottomCover: React.FC = () => {
           variants={textVariants}
           className="text-3xl md:text-4xl font-serif text-white mb-6 text-center"
         >
-          Une expérience olfactive d'exception
+          {t(
+            "cart.olfactiveExperience",
+            "Une expérience olfactive d'exception"
+          )}
         </motion.h2>
         <motion.p
           variants={textVariants}
           custom={1}
           className="text-lg md:text-xl text-white text-center max-w-2xl mb-8"
         >
-          Laissez-vous séduire par notre collection de parfums raffinés, créés
-          avec les matières premières les plus nobles.
+          {t(
+            "cart.olfactiveDesc",
+            "Laissez-vous séduire par notre collection de parfums raffinés, créés avec les matières premières les plus nobles."
+          )}
         </motion.p>
         <motion.div
           variants={buttonVariants}
@@ -98,7 +105,7 @@ const BottomCover: React.FC = () => {
             to="/shop"
             className="px-8 py-4 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300 text-lg"
           >
-            Découvrir notre collection
+            {t("cart.discoverCollection", "Découvrir notre collection")}
           </Link>
         </motion.div>
       </div>

@@ -5,20 +5,7 @@ import type { Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import Summary from "../components/cart/summary";
 import BottomCover from "../components/cart/bottomCover";
-
-// Mock cart data
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  size: string;
-}
-
-const initialCartItems: CartItem[] = [
-
-];
+import { useCart } from "../context/CartContext";
 
 // Variants avec typage correct pour les animations
 const titleVariants: Variants = {
@@ -49,14 +36,19 @@ const cartItemVariants: Variants = {
 const Cart: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const {
+    items: cartItems,
+    updateQuantity: updateCartItemQuantity,
+    removeItem: removeCartItem,
+    clearCart,
+  } = useCart();
   const [promoCode, setPromoCode] = useState("");
   const [promoError, setPromoError] = useState("");
   const [promoSuccess, setPromoSuccess] = useState("");
 
   // Calculate totals
   const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.product.price * item.quantity,
     0
   );
   const shipping = subtotal > 0 ? 10 : 0;
@@ -65,15 +57,11 @@ const Cart: React.FC = () => {
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    updateCartItemQuantity(id, newQuantity);
   };
 
   const removeItem = (id: number) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+    removeCartItem(id);
   };
 
   const handlePromoCode = (e: React.FormEvent) => {
@@ -148,7 +136,7 @@ const Cart: React.FC = () => {
                     <tbody className="divide-y divide-white/10">
                       {cartItems.map((item, index) => (
                         <motion.tr
-                          key={item.id}
+                          key={item.product.id}
                           className="text-gray-300"
                           custom={index}
                           variants={cartItemVariants}
@@ -157,24 +145,20 @@ const Cart: React.FC = () => {
                         >
                           <td className="px-4 py-4">
                             <div className="flex items-center">
-                              <motion.img
-                                whileHover={{ scale: 1.05 }}
-                                src={item.image}
-                                alt={item.name}
-                                className="w-16 h-16 object-cover rounded-md mr-4"
-                              />
                               <div>
                                 <h3 className="font-medium text-white">
-                                  {item.name}
+                                  {item.product.name}
                                 </h3>
                                 <p className="text-sm text-gray-400">
-                                  {item.size}
+                                  {item.product.size_ml
+                                    ? `${item.product.size_ml}ml`
+                                    : ""}
                                 </p>
                               </div>
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            {item.price.toFixed(2)}€
+                            {item.product.price.toFixed(2)}€
                           </td>
                           <td className="px-4 py-4">
                             <div className="flex items-center border border-white/30 rounded-md max-w-[100px]">
@@ -184,7 +168,10 @@ const Cart: React.FC = () => {
                                 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
+                                  updateQuantity(
+                                    item.product.id,
+                                    item.quantity - 1
+                                  )
                                 }
                                 className="px-2 py-1 text-gray-400 hover:text-white focus:outline-none rounded-l-md"
                               >
@@ -197,7 +184,10 @@ const Cart: React.FC = () => {
                                 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
+                                  updateQuantity(
+                                    item.product.id,
+                                    item.quantity + 1
+                                  )
                                 }
                                 className="px-2 py-1 text-gray-400 hover:text-white focus:outline-none rounded-r-md"
                               >
@@ -206,13 +196,13 @@ const Cart: React.FC = () => {
                             </div>
                           </td>
                           <td className="px-4 py-4">
-                            {(item.price * item.quantity).toFixed(2)}€
+                            {(item.product.price * item.quantity).toFixed(2)}€
                           </td>
                           <td className="px-4 py-4">
                             <motion.button
                               whileHover={{ scale: 1.1, color: "#fff" }}
                               whileTap={{ scale: 0.9 }}
-                              onClick={() => removeItem(item.id)}
+                              onClick={() => removeItem(item.product.id)}
                               className="text-gray-400 hover:text-white focus:outline-none"
                             >
                               <svg
@@ -272,7 +262,7 @@ const Cart: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setCartItems([])}
+                    onClick={() => clearCart()}
                     className="inline-flex items-center px-4 py-2 border border-white/30 rounded-md text-gray-300 hover:bg-black/40 transition-colors duration-300"
                   >
                     <svg

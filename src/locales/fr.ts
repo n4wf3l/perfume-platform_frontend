@@ -268,6 +268,7 @@ const fr = {
       "Ce mode de paiement est temporairement indisponible pour maintenance.",
     cartUnavailable:
       "Le système de paiement n'est actuellement pas disponible. Veuillez nous contacter via WhatsApp.",
+    freeDelivery: "Livraison gratuite sur la région bruxelloise",
   },
   confidentiality: {
     title: "Politique de Confidentialité",
@@ -403,6 +404,8 @@ const fr = {
     address: "Adresse*",
     city: "Ville*",
     postalCode: "Code Postal*",
+    brusselsFreeShipping: "Région bruxelloise - livraison gratuite",
+    postalCodeHelper: "Région bruxelloise (1000-1210): livraison gratuite",
     country: "Pays*",
     selectCountry: "Sélectionnez un pays",
     countries: {
@@ -475,6 +478,10 @@ const fr = {
     quantity: "Quantité",
     total: "Total",
     actions: "Actions",
+    olfactiveExperience: "Une expérience olfactive d'exception",
+    olfactiveDesc:
+      "Laissez-vous séduire par notre collection de parfums raffinés, créés avec les matières premières les plus nobles.",
+    discoverCollection: "Découvrir notre collection",
   },
   toast: {
     paypalMaintenance: "Paypal est actuellement en maintenance.",

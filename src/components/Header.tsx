@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
+import { useCart } from "../context/CartContext";
 
 // Le composant WhatsAppButton a été déplacé vers src/components/common/WhatsAppButton.tsx
 
@@ -101,28 +102,58 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
     return (
       <header className="bg-black border-b border-white/40 fixed top-0 left-0 w-full z-40">
         <div className="flex justify-between items-center h-16 px-4">
-          {/* Espaceur pour aligner à droite */}
+          {/* Espaceur pour aligner à gauche */}
           <span className="w-6" />
-          <button
-            onClick={toggleMenu}
-            className="bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
-            aria-label="Ouvrir le menu"
-          >
-            <svg
-              className="h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+          {/* Éléments centrés */}
+          <div className="flex items-center space-x-4">
+            {/* Cart - Visible en mobile */}
+            <Link
+              to="/cart"
+              className="text-gray-300 hover:text-white"
+              aria-label="Voir le panier"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              <div className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <span className="absolute -top-2 -right-2 bg-white text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {useCart().itemCount}
+                </span>
+              </div>
+            </Link>
+            {/* Menu button */}
+            <button
+              onClick={toggleMenu}
+              className="bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
+              aria-label="Ouvrir le menu"
+            >
+              <svg
+                className="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
     );
@@ -252,11 +283,11 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
                 </AnimatePresence>
               </div>
 
-              {/* Cart - Masqué en mobile */}
-              <button
-                onClick={() => setShowToast(true)}
+              {/* Cart - Visible sur desktop */}
+              <Link
+                to="/cart"
                 className="text-gray-300 hover:text-white hidden md:block"
-                aria-label="Ouvrir le panier"
+                aria-label="Voir le panier"
               >
                 <div className="relative">
                   <svg
@@ -274,10 +305,10 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
                     />
                   </svg>
                   <span className="absolute -top-2 -right-2 bg-white text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                    0
+                    {useCart().itemCount}
                   </span>
                 </div>
-              </button>
+              </Link>
 
               {/* Mobile menu button - visible uniquement sur mobile */}
               <button

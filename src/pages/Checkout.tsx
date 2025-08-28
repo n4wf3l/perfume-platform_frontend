@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useCart } from "../context/CartContext";
 
 // Extend the Window interface to include paypal
 declare global {
@@ -11,26 +12,6 @@ declare global {
     paypal?: any;
   }
 }
-
-// Mock cart data for summary
-const cartItems = [
-  {
-    id: 1,
-    name: "Sogno Intenso",
-    price: 149.99,
-    image: "/perfum1.jpg",
-    quantity: 1,
-    size: "100ml",
-  },
-  {
-    id: 3,
-    name: "Notte Stellata",
-    price: 139.99,
-    image: "/perfum2.jpg",
-    quantity: 1,
-    size: "50ml",
-  },
-];
 
 // Animation variants
 const fadeIn: Variants = {
@@ -159,17 +140,17 @@ const summarySectionVariants: Variants = {
   },
 };
 
+// Brussels postal code ranges
+const isBrusselsPostalCode = (code: string): boolean => {
+  // Brussels postal codes are between 1000-1210
+  const postalCode = parseInt(code, 10);
+  return !isNaN(postalCode) && postalCode >= 1000 && postalCode <= 1210;
+};
+
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  // Calculate totals
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-  const shipping = 10;
-  const total = subtotal + shipping;
+  const { items: cartItems } = useCart();
 
   // Form state
   const [formData, setFormData] = useState({
@@ -181,8 +162,21 @@ const Checkout: React.FC = () => {
     city: "",
     postalCode: "",
     country: "",
-    paymentMethod: "credit-card",
+    paymentMethod: "paypal", // Default to PayPal now
   });
+
+  // Calculate totals
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+
+  // Check if shipping is free (Brussels region)
+  const shouldHaveFreeShipping = isBrusselsPostalCode(formData.postalCode);
+  const shipping = subtotal > 0 ? (shouldHaveFreeShipping ? 0 : 10) : 0;
+  const total = subtotal + shipping;
+
+  // État pour l'animation et la progression
 
   // État pour suivre l'animation de la barre de progression
   const [isAnimating, setIsAnimating] = useState(false);
@@ -199,6 +193,17 @@ const Checkout: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+
+    // Update shipping cost dynamically when postal code changes
+    if (name === "postalCode") {
+      // The shipping cost will be recalculated when formData updates
+      // due to the way React works with state updates
+      console.log(
+        `Postal code changed: ${value} - Brussels region: ${isBrusselsPostalCode(
+          value
+        )}`
+      );
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -220,7 +225,7 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    // Pour les autres méthodes de paiement, comportement inchangé
+    // Uniquement pour le paiement par virement bancaire
     setIsProcessing(true);
     setTimeout(() => {
       setIsProcessing(false);
@@ -432,7 +437,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="firstName"
                       name="firstName"
                       type="text"
@@ -454,7 +459,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="lastName"
                       name="lastName"
                       type="text"
@@ -481,7 +486,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="email"
                       name="email"
                       type="email"
@@ -503,7 +508,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="phone"
                       name="phone"
                       type="tel"
@@ -525,7 +530,7 @@ const Checkout: React.FC = () => {
                       borderColor: "#d4af37",
                       boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                     }}
-                    className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                    className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                     id="address"
                     name="address"
                     type="text"
@@ -551,7 +556,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="city"
                       name="city"
                       type="text"
@@ -562,18 +567,24 @@ const Checkout: React.FC = () => {
                   </motion.div>
 
                   <motion.div variants={itemVariants}>
-                    <label
-                      className="block text-gray-400 text-sm mb-2"
-                      htmlFor="postalCode"
-                    >
-                      {t("checkout.postalCode")}
-                    </label>
+                    <div className="flex justify-between">
+                      <label
+                        className="block text-gray-400 text-sm mb-2"
+                        htmlFor="postalCode"
+                      >
+                        {t("checkout.postalCode")}
+                      </label>
+                    </div>
                     <motion.input
                       whileFocus={{
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className={`w-full bg-black border ${
+                        isBrusselsPostalCode(formData.postalCode)
+                          ? "border-green-500"
+                          : "border-white/20"
+                      } rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30`}
                       id="postalCode"
                       name="postalCode"
                       type="text"
@@ -595,7 +606,7 @@ const Checkout: React.FC = () => {
                         borderColor: "#d4af37",
                         boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
                       }}
-                      className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+                      className="w-full bg-black border border-white/20 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30"
                       id="country"
                       name="country"
                       value={formData.country}
@@ -637,52 +648,7 @@ const Checkout: React.FC = () => {
 
                   <div className="flex flex-col space-y-3">
                     <motion.label
-                      className="flex items-center space-x-3 p-3 border border-[#d4af37]/30 rounded-md bg-black"
-                      variants={itemVariants}
-                      whileHover={{
-                        backgroundColor: "rgba(212, 175, 55, 0.05)",
-                        borderColor: "rgba(212, 175, 55, 0.5)",
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="credit-card"
-                        checked={formData.paymentMethod === "credit-card"}
-                        onChange={handleInputChange}
-                        className="h-5 w-5 text-[#d4af37]"
-                      />
-                      <div className="flex items-center">
-                        <span className="ml-2">{t("checkout.creditCard")}</span>
-                        <div className="flex space-x-2 ml-4">
-                          <motion.div
-                            className="w-8 h-5 bg-blue-700 rounded"
-                            whileHover={{
-                              scale: 1.05,
-                              transition: { duration: 0.2 },
-                            }}
-                          ></motion.div>
-                          <motion.div
-                            className="w-8 h-5 bg-red-600 rounded"
-                            whileHover={{
-                              scale: 1.05,
-                              transition: { duration: 0.2 },
-                            }}
-                          ></motion.div>
-                          <motion.div
-                            className="w-8 h-5 bg-green-600 rounded"
-                            whileHover={{
-                              scale: 1.05,
-                              transition: { duration: 0.2 },
-                            }}
-                          ></motion.div>
-                        </div>
-                      </div>
-                    </motion.label>
-
-                    <motion.label
-                      className="flex items-center space-x-3 p-3 border border-[#d4af37]/30 rounded-md bg-black"
+                      className="flex items-center space-x-3 p-3 border border-white/20 rounded-md bg-black"
                       variants={itemVariants}
                       whileHover={{
                         backgroundColor: "rgba(212, 175, 55, 0.05)",
@@ -702,7 +668,7 @@ const Checkout: React.FC = () => {
                     </motion.label>
 
                     <motion.label
-                      className="flex items-center space-x-3 p-3 border border-[#d4af37]/30 rounded-md bg-black"
+                      className="flex items-center space-x-3 p-3 border border-white/20 rounded-md bg-black"
                       variants={itemVariants}
                       whileHover={{
                         backgroundColor: "rgba(212, 175, 55, 0.05)",
@@ -723,68 +689,7 @@ const Checkout: React.FC = () => {
                   </div>
                 </motion.div>
 
-                {/* Credit card form conditionally rendered */}
-                {formData.paymentMethod === "credit-card" && (
-                  <motion.div
-                    className="grid grid-cols-1 gap-4 mb-6"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{
-                      opacity: 1,
-                      height: "auto",
-                      transition: {
-                        opacity: { duration: 0.3, delay: 0.2 },
-                        height: { duration: 0.3 },
-                      },
-                    }}
-                  >
-                    <motion.div variants={itemVariants}>
-                      <label className="block text-gray-400 text-sm mb-2">
-                        {t("checkout.cardNumber")}
-                      </label>
-                      <motion.input
-                        whileFocus={{
-                          borderColor: "#d4af37",
-                          boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
-                        }}
-                        className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
-                        type="text"
-                        placeholder="XXXX XXXX XXXX XXXX"
-                      />
-                    </motion.div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <motion.div variants={itemVariants}>
-                        <label className="block text-gray-400 text-sm mb-2">
-                          {t("checkout.cardExpiry")}
-                        </label>
-                        <motion.input
-                          whileFocus={{
-                            borderColor: "#d4af37",
-                            boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
-                          }}
-                          className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
-                          type="text"
-                          placeholder="MM/AA"
-                        />
-                      </motion.div>
-
-                      <motion.div variants={itemVariants}>
-                        <label className="block text-gray-400 text-sm mb-2">
-                          {t("checkout.cardCVV")}
-                        </label>
-                        <motion.input
-                          whileFocus={{
-                            borderColor: "#d4af37",
-                            boxShadow: "0 0 0 1px rgba(212,175,55,0.3)",
-                          }}
-                          className="w-full bg-black border border-[#d4af37]/30 rounded-md px-3 py-2 text-gray-300 focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
-                          type="text"
-                          placeholder="123"
-                        />
-                      </motion.div>
-                    </div>
-                  </motion.div>
-                )}
+                {/* Credit card form has been removed */}
 
                 {/* PayPal instructions */}
                 {formData.paymentMethod === "paypal" && (
@@ -994,7 +899,7 @@ const Checkout: React.FC = () => {
             className="bg-black p-6 rounded-lg border border-white/10 sticky top-8"
             whileHover={{
               boxShadow:
-                "0 10px 25px -5px rgba(212,175,55,0.1), 0 8px 10px -6px rgba(212,175,55,0.05)",
+                "0 10px 25px -5px rgba(255, 255, 255, 0.1), 0 8px 10px -6px rgba(255, 255, 255, 0.05)",
             }}
             transition={{ duration: 0.3 }}
           >
@@ -1008,30 +913,26 @@ const Checkout: React.FC = () => {
             <motion.div className="space-y-4 mb-6" variants={staggerContainer}>
               {cartItems.map((item, index) => (
                 <motion.div
-                  key={item.id}
+                  key={item.product.id}
                   className="flex items-center gap-3"
                   variants={itemVariants}
                   custom={index}
                   whileHover={{
-                    backgroundColor: "rgba(212, 175, 55, 0.05)",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
                     borderRadius: "0.375rem",
                   }}
                 >
-                  <motion.img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded-md"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  />
                   <div className="flex-1">
-                    <h3 className="text-gray-200 font-medium">{item.name}</h3>
+                    <h3 className="text-gray-200 font-medium">
+                      {item.product.name}
+                    </h3>
                     <p className="text-sm text-gray-400">
-                      {item.size} × {item.quantity}
+                      {item.product.size_ml ? `${item.product.size_ml}ml` : ""}{" "}
+                      × {item.quantity}
                     </p>
                   </div>
                   <div className="text-white">
-                    {(item.price * item.quantity).toFixed(2)}€
+                    {(item.product.price * item.quantity).toFixed(2)}€
                   </div>
                 </motion.div>
               ))}
@@ -1054,7 +955,14 @@ const Checkout: React.FC = () => {
                 className="flex justify-between text-gray-400"
                 variants={itemVariants}
               >
-                <span>{t("checkout.shipping")}</span>
+                <div>
+                  <span>{t("checkout.shipping")}</span>
+                  {shouldHaveFreeShipping && formData.postalCode && (
+                    <span className="ml-2 text-xs text-green-500">
+                      ({t("checkout.brusselsFreeShipping")})
+                    </span>
+                  )}
+                </div>
                 <span>{shipping.toFixed(2)}€</span>
               </motion.div>
               <motion.div

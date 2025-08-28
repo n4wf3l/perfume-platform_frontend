@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface SummaryProps {
   subtotal: number;
@@ -52,6 +53,7 @@ const Summary: React.FC<SummaryProps> = ({
   handlePromoCode,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -61,52 +63,9 @@ const Summary: React.FC<SummaryProps> = ({
       animate="visible"
     >
       <div className="border border-white/10 rounded-lg p-6">
-        <h2 className="text-xl font-serif text-white mb-4">Récapitulatif</h2>
-
-        <div className="mb-6">
-          <form onSubmit={handlePromoCode}>
-            <label className="block text-sm font-medium text-gray-400 mb-2">
-              Code promo
-            </label>
-            <div className="flex">
-              <input
-                type="text"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                className="bg-black border border-white/30 rounded-l-md px-4 py-2 flex-grow text-gray-300 focus:outline-none focus:ring-1 focus:ring-white focus:border-white"
-                placeholder="Entrez votre code promo"
-              />
-              <motion.button
-                type="submit"
-                className="px-4 py-2 bg-black border border-white/30 border-l-0 rounded-r-md text-white hover:bg-black/40"
-                whileHover={{ backgroundColor: "rgba(30, 30, 30, 0.5)" }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Appliquer
-              </motion.button>
-            </div>
-            {promoError && (
-              <motion.p
-                className="text-red-500 text-sm mt-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                {promoError}
-              </motion.p>
-            )}
-            {promoSuccess && (
-              <motion.p
-                className="text-green-500 text-sm mt-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                {promoSuccess}
-              </motion.p>
-            )}
-          </form>
-        </div>
+        <h2 className="text-xl font-serif text-white mb-4">
+          {t("checkout.summary")}
+        </h2>
 
         <div className="space-y-3 text-gray-300">
           <motion.div

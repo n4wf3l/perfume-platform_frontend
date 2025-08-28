@@ -265,6 +265,7 @@ const nl = {
       "Deze betaalmethode is tijdelijk niet beschikbaar wegens onderhoud.",
     cartUnavailable:
       "Het betalingssysteem is momenteel niet beschikbaar. Neem contact met ons op via WhatsApp.",
+    freeDelivery: "Gratis bezorging in de regio Brussel",
   },
   confidentiality: {
     title: "Privacybeleid",
@@ -397,6 +398,8 @@ const nl = {
     address: "Adres*",
     city: "Stad*",
     postalCode: "Postcode*",
+    brusselsFreeShipping: "Brussels gewest - gratis verzending",
+    postalCodeHelper: "Brussels gewest (1000-1210): gratis verzending",
     country: "Land*",
     selectCountry: "Selecteer een land",
     countries: {
@@ -468,6 +471,10 @@ const nl = {
     quantity: "Aantal",
     total: "Totaal",
     actions: "Acties",
+    olfactiveExperience: "Een uitzonderlijke olfactorische ervaring",
+    olfactiveDesc:
+      "Laat u verleiden door onze collectie verfijnde parfums, gemaakt met de edelste grondstoffen.",
+    discoverCollection: "Ontdek onze collectie",
   },
   toast: {
     paypalMaintenance: "Paypal is momenteel in onderhoud.",
