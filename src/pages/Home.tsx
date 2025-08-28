@@ -74,8 +74,8 @@ const Home: React.FC = () => {
 
   // Handlers boutons
   const navigate = useNavigate();
-  const goToWomen = () => navigate("/shop?gender=femme");
-  const goToMen = () => navigate("/shop?gender=homme");
+  const goToWomen = () => navigate("/shop?gender=female");
+  const goToMen = () => navigate("/shop?gender=male");
 
   return (
     <>

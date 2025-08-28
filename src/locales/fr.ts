@@ -480,5 +480,8 @@ const fr = {
     paypalMaintenance: "Paypal est actuellement en maintenance.",
     useWhatsapp: "Passez par",
   },
+  whatsapp: {
+    contactUs: "Contactez-nous via WhatsApp",
+  },
 };
 export default fr;

@@ -473,5 +473,8 @@ const nl = {
     paypalMaintenance: "Paypal is momenteel in onderhoud.",
     useWhatsapp: "Gebruik",
   },
+  whatsapp: {
+    contactUs: "Neem contact op via WhatsApp",
+  },
 };
 export default nl;

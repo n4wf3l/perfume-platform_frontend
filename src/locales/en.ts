@@ -484,5 +484,8 @@ const en = {
     paypalMaintenance: "Paypal is currently under maintenance.",
     useWhatsapp: "Please use",
   },
+  whatsapp: {
+    contactUs: "Contact us via WhatsApp",
+  },
 };
 export default en;

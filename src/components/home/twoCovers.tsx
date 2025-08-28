@@ -19,12 +19,11 @@ const TwoCovers: React.FC = () => {
     margin: "-100px",
   });
 
-  // Ces fonctions sont déjà correctes
   const goToMen = () => {
-    navigate("/shop?gender=homme");
+    navigate("/shop?gender=male");
   };
   const goToWomen = () => {
-    navigate("/shop?gender=femme");
+    navigate("/shop?gender=female");
   };
 
   return (

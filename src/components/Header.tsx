@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
-import { useTranslation } from "react-i18next"; // Ajout import
+import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
+
+// Le composant WhatsAppButton a été déplacé vers src/components/common/WhatsAppButton.tsx
 
 // Ajout du composant Toast simple
 const Toast: React.FC<{ message: React.ReactNode; onClose: () => void }> = ({
@@ -131,134 +133,161 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
   }
 
   return (
-    <header className="bg-black border-b border-white/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
-              {/* Affiche le logo sur desktop partout, et sur mobile sauf sur la Home */}
-              {(!isHome || !isMobile) && (
-                <span className="text-white font-serif text-2xl md:text-3xl">
-                  Sogno D'Oro
-                </span>
-              )}
-            </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            <Link
-              to="/"
-              className={`${
-                isActive("/")
-                  ? "text-white border-b-2 border-white"
-                  : "text-gray-300 hover:text-white"
-              } 
-                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
-            >
-              {t("nav.home")}
-            </Link>
-            <Link
-              to="/shop"
-              className={`${
-                isActive("/shop")
-                  ? "text-white border-b-2 border-white"
-                  : "text-gray-300 hover:text-white"
-              } 
-                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
-            >
-              {t("nav.shop")}
-            </Link>
-            <Link
-              to="/about"
-              className={`${
-                isActive("/about")
-                  ? "text-white border-b-2 border-white"
-                  : "text-gray-300 hover:text-white"
-              } 
-                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
-            >
-              {t("nav.about")}
-            </Link>
-            <Link
-              to="/contact"
-              className={`${
-                isActive("/contact")
-                  ? "text-white border-b-2 border-white"
-                  : "text-gray-300 hover:text-white"
-              } 
-                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
-            >
-              {t("nav.contact")}
-            </Link>
-          </nav>
-
-          {/* Right Side Elements */}
-          <div className="flex items-center space-x-4">
-            {/* Language Switcher Menu */}
-            <div className="hidden md:flex items-center space-x-6 relative">
-              <button
-                onClick={toggleLangMenu}
-                className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition relative"
-              >
-                {languageShort[currentLanguage]}
-                <svg
-                  className={`w-4 h-4 ml-1 transition-transform ${
-                    isLangMenuOpen ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-              <AnimatePresence>
-                {isLangMenuOpen && (
-                  <motion.div
-                    key="lang-dropdown"
-                    initial={{ opacity: 0, y: -10, x: 0 }}
-                    animate={{ opacity: 1, y: 0, x: 0 }}
-                    exit={{ opacity: 0, y: -10, x: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    className="absolute left-0 top-full mt-2 bg-black border border-white/20 rounded-lg shadow-lg z-50 min-w-[140px] flex flex-col"
-                    style={{ boxShadow: "0 8px 32px 0 rgba(0,0,0,0.25)" }}
-                    onMouseLeave={() => setIsLangMenuOpen(false)}
-                  >
-                    {(["fr", "en", "nl"] as const).map((lng) => (
-                      <button
-                        key={lng}
-                        onClick={() => changeLanguage(lng)}
-                        className={`px-4 py-2 text-left text-sm font-medium transition ${
-                          currentLanguage === lng
-                            ? "bg-white text-black"
-                            : "text-gray-300 hover:bg-white/10"
-                        }`}
-                      >
-                        {languageLabels[lng]}
-                      </button>
-                    ))}
-                  </motion.div>
+    <>
+      <header className="bg-black border-b border-white/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link to="/" className="flex items-center">
+                {/* Affiche le logo sur desktop partout, et sur mobile sauf sur la Home */}
+                {(!isHome || !isMobile) && (
+                  <span className="text-white font-serif text-2xl md:text-3xl">
+                    Sogno D'Oro
+                  </span>
                 )}
-              </AnimatePresence>
+              </Link>
             </div>
 
-            {/* Cart - Masqué en mobile */}
-            <button
-              onClick={() => setShowToast(true)}
-              className="text-gray-300 hover:text-white hidden md:block"
-              aria-label="Ouvrir le panier"
-            >
-              <div className="relative">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-8">
+              <Link
+                to="/"
+                className={`${
+                  isActive("/")
+                    ? "text-white border-b-2 border-white"
+                    : "text-gray-300 hover:text-white"
+                } 
+                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
+              >
+                {t("nav.home")}
+              </Link>
+              <Link
+                to="/shop"
+                className={`${
+                  isActive("/shop")
+                    ? "text-white border-b-2 border-white"
+                    : "text-gray-300 hover:text-white"
+                } 
+                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
+              >
+                {t("nav.shop")}
+              </Link>
+              <Link
+                to="/about"
+                className={`${
+                  isActive("/about")
+                    ? "text-white border-b-2 border-white"
+                    : "text-gray-300 hover:text-white"
+                } 
+                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
+              >
+                {t("nav.about")}
+              </Link>
+              <Link
+                to="/contact"
+                className={`${
+                  isActive("/contact")
+                    ? "text-white border-b-2 border-white"
+                    : "text-gray-300 hover:text-white"
+                } 
+                transition-colors duration-200 px-1 py-2 text-sm font-medium`}
+              >
+                {t("nav.contact")}
+              </Link>
+            </nav>
+
+            {/* Right Side Elements */}
+            <div className="flex items-center space-x-4">
+              {/* Language Switcher Menu */}
+              <div className="hidden md:flex items-center space-x-6 relative">
+                <button
+                  onClick={toggleLangMenu}
+                  className="flex items-center gap-1 text-sm font-bold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition relative"
+                >
+                  {languageShort[currentLanguage]}
+                  <svg
+                    className={`w-4 h-4 ml-1 transition-transform ${
+                      isLangMenuOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <AnimatePresence>
+                  {isLangMenuOpen && (
+                    <motion.div
+                      key="lang-dropdown"
+                      initial={{ opacity: 0, y: -10, x: 0 }}
+                      animate={{ opacity: 1, y: 0, x: 0 }}
+                      exit={{ opacity: 0, y: -10, x: 0 }}
+                      transition={{ duration: 0.25, ease: "easeInOut" }}
+                      className="absolute left-0 top-full mt-2 bg-black border border-white/20 rounded-lg shadow-lg z-50 min-w-[140px] flex flex-col"
+                      style={{ boxShadow: "0 8px 32px 0 rgba(0,0,0,0.25)" }}
+                      onMouseLeave={() => setIsLangMenuOpen(false)}
+                    >
+                      {(["fr", "en", "nl"] as const).map((lng) => (
+                        <button
+                          key={lng}
+                          onClick={() => changeLanguage(lng)}
+                          className={`px-4 py-2 text-left text-sm font-medium transition ${
+                            currentLanguage === lng
+                              ? "bg-white text-black"
+                              : "text-gray-300 hover:bg-white/10"
+                          }`}
+                        >
+                          {languageLabels[lng]}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Cart - Masqué en mobile */}
+              <button
+                onClick={() => setShowToast(true)}
+                className="text-gray-300 hover:text-white hidden md:block"
+                aria-label="Ouvrir le panier"
+              >
+                <div className="relative">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    />
+                  </svg>
+                  <span className="absolute -top-2 -right-2 bg-white text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    0
+                  </span>
+                </div>
+              </button>
+
+              {/* Mobile menu button - visible uniquement sur mobile */}
+              <button
+                onClick={toggleMenu}
+                className="md:hidden bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
+                aria-label="Ouvrir le menu"
+              >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -267,147 +296,126 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    d="M4 6h16M4 12h16M4 18h16"
                   />
                 </svg>
-                <span className="absolute -top-2 -right-2 bg-white text-xs text-black font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  0
-                </span>
-              </div>
-            </button>
-
-            {/* Mobile menu button - visible uniquement sur mobile */}
-            <button
-              onClick={toggleMenu}
-              className="md:hidden bg-black rounded-md p-2 inline-flex items-center justify-center text-white hover:text-white focus:outline-none"
-              aria-label="Ouvrir le menu"
-            >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.35, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-            style={{
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              background: "rgba(0,0,0,0.85)",
-            }}
-          >
-            {/* Close button */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.25 }}
-              onClick={toggleMenu}
-              className="absolute top-6 right-6 text-white hover:text-gray-300 transition"
-              aria-label="Fermer le menu"
-            >
-              <X size={32} />
-            </motion.button>
-
-            <motion.nav
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 40, opacity: 0 }}
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
               transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="flex flex-col items-center space-y-8 w-full px-8"
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+              style={{
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                background: "rgba(0,0,0,0.85)",
+              }}
             >
-              {[
-                { to: "/", label: t("nav.home"), path: "/" },
-                { to: "/shop", label: t("nav.shop"), path: "/shop" },
-                { to: "/about", label: t("nav.about"), path: "/about" },
-                { to: "/contact", label: t("nav.contact"), path: "/contact" },
-              ].map((item) => {
-                const active = isActive(item.path);
-                return (
-                  <motion.div
-                    key={item.to}
-                    className="w-full flex flex-col items-center"
-                    initial={false}
-                    animate={active ? "active" : "inactive"}
-                  >
-                    <Link
-                      to={item.to}
-                      onClick={toggleMenu}
-                      className={`w-full text-center py-3 transition font-sans font-semibold uppercase tracking-wide text-lg ${
-                        active ? "text-white" : "text-gray-300 hover:text-white"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                    {/* Ligne dynamique sous le lien actif */}
-                    <motion.div
-                      layoutId="mobile-menu-underline"
-                      className="h-0.5 bg-white rounded-full mt-1"
-                      initial={false}
-                      animate={{
-                        width: active ? "60%" : "0%",
-                        opacity: active ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.35 }}
-                      style={{ margin: "0 auto" }}
-                    />
-                  </motion.div>
-                );
-              })}
+              {/* Close button */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.25 }}
+                onClick={toggleMenu}
+                className="absolute top-6 right-6 text-white hover:text-gray-300 transition"
+                aria-label="Fermer le menu"
+              >
+                <X size={32} />
+              </motion.button>
 
-              {/* Langues */}
-              <div className="flex flex-row justify-center items-center gap-6 pt-6 w-full">
-                {(["fr", "en", "nl"] as const).map((lng) => (
-                  <button
-                    key={lng}
-                    onClick={() => {
-                      changeLanguage(lng);
-                      toggleMenu();
-                    }}
-                    className="relative text-lg font-extrabold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition"
-                    style={{
-                      fontFamily: "var(--font-serif, serif)",
-                      letterSpacing: "0.15em",
-                    }}
-                  >
-                    {lng.toUpperCase()}
-                    {currentLanguage === lng && (
-                      <motion.span
-                        layoutId="lang-underline"
-                        className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-white rounded-full"
+              <motion.nav
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 40, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="flex flex-col items-center space-y-8 w-full px-8"
+              >
+                {[
+                  { to: "/", label: t("nav.home"), path: "/" },
+                  { to: "/shop", label: t("nav.shop"), path: "/shop" },
+                  { to: "/about", label: t("nav.about"), path: "/about" },
+                  { to: "/contact", label: t("nav.contact"), path: "/contact" },
+                ].map((item) => {
+                  const active = isActive(item.path);
+                  return (
+                    <motion.div
+                      key={item.to}
+                      className="w-full flex flex-col items-center"
+                      initial={false}
+                      animate={active ? "active" : "inactive"}
+                    >
+                      <Link
+                        to={item.to}
+                        onClick={toggleMenu}
+                        className={`w-full text-center py-3 transition font-sans font-semibold uppercase tracking-wide text-lg ${
+                          active
+                            ? "text-white"
+                            : "text-gray-300 hover:text-white"
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                      {/* Ligne dynamique sous le lien actif */}
+                      <motion.div
+                        layoutId="mobile-menu-underline"
+                        className="h-0.5 bg-white rounded-full mt-1"
                         initial={false}
-                        animate={{ opacity: 1, width: "100%" }}
+                        animate={{
+                          width: active ? "60%" : "0%",
+                          opacity: active ? 1 : 0,
+                        }}
                         transition={{ duration: 0.35 }}
+                        style={{ margin: "0 auto" }}
                       />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </motion.nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+
+                {/* Langues */}
+                <div className="flex flex-row justify-center items-center gap-6 pt-6 w-full">
+                  {(["fr", "en", "nl"] as const).map((lng) => (
+                    <button
+                      key={lng}
+                      onClick={() => {
+                        changeLanguage(lng);
+                        toggleMenu();
+                      }}
+                      className="relative text-lg font-extrabold uppercase tracking-widest px-2 py-1 text-gray-300 hover:text-white transition"
+                      style={{
+                        fontFamily: "var(--font-serif, serif)",
+                        letterSpacing: "0.15em",
+                      }}
+                    >
+                      {lng.toUpperCase()}
+                      {currentLanguage === lng && (
+                        <motion.span
+                          layoutId="lang-underline"
+                          className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-white rounded-full"
+                          initial={false}
+                          animate={{ opacity: 1, width: "100%" }}
+                          transition={{ duration: 0.35 }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </motion.nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
+
+      {/* Le bouton WhatsApp a été déplacé vers App.tsx */}
 
       {/* Toast Paypal maintenance */}
       <AnimatePresence>
@@ -433,7 +441,7 @@ const Header: React.FC<{ showMobileHeader?: boolean }> = ({
           />
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };
 

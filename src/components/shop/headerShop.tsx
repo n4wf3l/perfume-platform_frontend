@@ -28,9 +28,9 @@ const HeaderShop: React.FC<HeaderShopProps> = ({
   // Genres dynamiques via i18n
   const genders = [
     { id: "all", label: t("shop.genders.all") },
-    { id: "homme", label: t("shop.genders.homme") },
-    { id: "femme", label: t("shop.genders.femme") },
-    { id: "unisexe", label: t("shop.genders.unisexe") },
+    { id: "male", label: t("shop.genders.homme") },
+    { id: "female", label: t("shop.genders.femme") },
+    { id: "unisex", label: t("shop.genders.unisexe") },
   ];
 
   // Fonction pour forcer la majuscule (compatible multilingue)

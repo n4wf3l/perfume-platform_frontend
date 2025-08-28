@@ -27,6 +27,13 @@ const Shop: React.FC = () => {
   const [error, setError] = useState("");
   const productsPerPage = 6;
 
+  const genders = [
+    { id: "all", label: t("shop.genders.all") },
+    { id: "male", label: t("shop.genders.homme") },
+    { id: "female", label: t("shop.genders.femme") },
+    { id: "unisex", label: t("shop.genders.unisexe") },
+  ];
+
   // Fetch products and categories from API
   useEffect(() => {
     const fetchData = async () => {
@@ -62,9 +69,7 @@ const Shop: React.FC = () => {
 
   // Filter products based on search, category and gender
   useEffect(() => {
-    if (products.length === 0) {
-      return; // Skip filtering if products are not yet fetched
-    }
+    if (products.length === 0) return;
 
     let result = products;
 
@@ -89,8 +94,17 @@ const Shop: React.FC = () => {
 
     // Filter by gender
     if (selectedGender !== "all") {
-      result = result.filter((product) => product.gender === selectedGender);
+      result = result.filter((product) => {
+        if (selectedGender === "male")
+          return product.gender === "male" || product.gender === "unisex";
+        if (selectedGender === "female")
+          return product.gender === "female" || product.gender === "unisex";
+        if (selectedGender === "unisex") return product.gender === "unisex";
+        return product.gender === selectedGender;
+      });
     }
+
+    console.log("selectedGender:", selectedGender, "filtered:", result.length);
 
     setFilteredProducts(result);
     setCurrentPage(1); // Return to first page when filters change
@@ -107,8 +121,10 @@ const Shop: React.FC = () => {
   // Récupérer le paramètre gender de l'URL
   useEffect(() => {
     // Si un genre est spécifié dans l'URL, mettre à jour le filtre
-    if (genderParam && ["homme", "femme", "unisexe"].includes(genderParam)) {
+    if (genderParam && ["male", "female", "unisex"].includes(genderParam)) {
       setSelectedGender(genderParam);
+    } else {
+      setSelectedGender("all");
     }
 
     // Récupérer d'autres paramètres si nécessaire (ex: category)

@@ -20,6 +20,7 @@ import ConfidentialityPage from "./pages/Confidentiality";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/common/ProtectedRoute";
+import WhatsAppButton from "./components/common/WhatsAppButton";
 
 // Context imports
 import { AuthProvider } from "./context/AuthContext";
@@ -49,38 +50,43 @@ function App() {
                 <Route path="/dashboard/*" element={null} />
                 <Route path="*" element={<Header />} />
               </Routes>
-          <main className="flex-grow w-full">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/product/:id" element={<ProductDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/thank-you" element={<ThankYou />} />
-              <Route path="/dashboard/*" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin" element={<Auth />} />{" "}
-              {/* Ajoutez cette ligne */}
-              <Route
-                path="/confidentiality"
-                element={<ConfidentialityPage />}
-              />{" "}
-              {/* Ajout de la route pour la page de confidentialité */}
-            </Routes>
-          </main>
-          {/* Le Footer n'apparaît pas sur les pages du dashboard */}
-          <Routes>
-            <Route path="/dashboard/*" element={null} />
-            <Route path="*" element={<Footer />} />
-          </Routes>
-        </div>
-        <ScrollToTop />
-      </Router>
+              <main className="flex-grow w-full">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/thank-you" element={<ThankYou />} />
+                  <Route
+                    path="/dashboard/*"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/admin" element={<Auth />} />{" "}
+                  {/* Ajoutez cette ligne */}
+                  <Route
+                    path="/confidentiality"
+                    element={<ConfidentialityPage />}
+                  />{" "}
+                  {/* Ajout de la route pour la page de confidentialité */}
+                </Routes>
+              </main>
+              {/* Le Footer n'apparaît pas sur les pages du dashboard */}
+              <Routes>
+                <Route path="/dashboard/*" element={null} />
+                <Route path="*" element={<Footer />} />
+              </Routes>
+            </div>
+            <ScrollToTop />
+            {/* Bouton WhatsApp global visible sur toutes les pages */}
+            <WhatsAppButton />
+          </Router>
         </CartProvider>
       </AuthProvider>
     </Suspense>
