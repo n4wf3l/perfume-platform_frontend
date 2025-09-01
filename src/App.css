@@ -44,3 +44,15 @@ html {
 .read-the-docs {
   color: #888;
 }
+
+/* Ajouter ce style pour l'animation du bouton PayPal */
+#paypal-button-container iframe {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.7s ease-out;
+}
+
+#paypal-button-container iframe.animated {
+  opacity: 1;
+  transform: scale(1);
+}

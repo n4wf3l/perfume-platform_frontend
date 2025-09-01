@@ -270,12 +270,58 @@ const Checkout: React.FC = () => {
   };
 
   useEffect(() => {
-    if (formData.paymentMethod === "paypal" && window.paypal) {
-      console.log("Mounting PayPal button...");
+    // Ne rien faire si nous ne sommes pas à l'étape de paiement
+    if (currentStep !== 2) return;
+    
+    // Petit délai pour s'assurer que le DOM est prêt
+    const timeoutId = setTimeout(() => {
+      // Vérifier si le script PayPal est déjà chargé
+      if (!window.paypal) {
+        // Créer et ajouter le script PayPal
+        const script = document.createElement("script");
+        // Remplacer par un vrai client ID (sandbox pour les tests)
+        script.src = "https://www.paypal.com/sdk/js?client-id=sb&currency=EUR";
+        script.async = true;
 
+        script.onload = () => {
+          // Le SDK est chargé, maintenant on peut rendre le bouton
+          if (window.paypal && formData.paymentMethod === "paypal") {
+            renderPayPalButton();
+          }
+        };
+
+        document.body.appendChild(script);
+      } else if (formData.paymentMethod === "paypal") {
+        // Le SDK est déjà chargé
+        renderPayPalButton();
+      }
+    }, 300); // Délai de 300ms
+
+    // Fonction pour rendre le bouton PayPal
+    function renderPayPalButton() {
       const container = document.getElementById("paypal-button-container");
       if (container) {
-        container.innerHTML = "";
+        container.innerHTML = ""; // Nettoyer le contenu existant
+        
+        // Petite astuce pour animer le bouton PayPal une fois qu'il sera rendu
+        const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            if (mutation.addedNodes.length > 0) {
+              // PayPal a ajouté des nœuds, on peut ajouter une classe pour l'animation
+              const paypalButton = container.querySelector('[data-funding-source="paypal"]');
+              if (paypalButton) {
+                // Ajouter un effet de transition
+                (paypalButton as HTMLElement).style.transition = "all 0.5s ease-out";
+                (paypalButton as HTMLElement).style.transform = "scale(1)";
+                (paypalButton as HTMLElement).style.opacity = "1";
+                observer.disconnect(); // Arrêter d'observer une fois animé
+              }
+            }
+          });
+        });
+        
+        // Observer les changements dans le conteneur
+        observer.observe(container, { childList: true, subtree: true });
 
         try {
           window.paypal
@@ -333,15 +379,18 @@ const Checkout: React.FC = () => {
             .then(() => {
               console.log("PayPal button rendered successfully!");
             })
-            .catch((err: any) => {
-              console.error("PayPal button error:", err);
+            .catch((err: unknown) => {
+              console.error("PayPal button render error:", err);
             });
         } catch (error) {
           console.error("Error creating PayPal button:", error);
         }
       }
     }
-  }, [formData.paymentMethod, total, navigate]);
+    
+    return () => clearTimeout(timeoutId);
+    
+  }, [currentStep, formData.paymentMethod, total, navigate]); // Ajouter currentStep comme dépendance
 
   return (
     <motion.div
@@ -695,7 +744,6 @@ const Checkout: React.FC = () => {
                 {formData.paymentMethod === "paypal" && (
                   <motion.div
                     className="mt-4 p-4 border-2 border-yellow-500 rounded-md bg-black"
-                    variants={itemVariants}
                     initial={{ opacity: 0, height: 0 }}
                     animate={{
                       opacity: 1,
@@ -706,41 +754,23 @@ const Checkout: React.FC = () => {
                       },
                     }}
                   >
-                    <p className="text-yellow-400 mb-4 font-bold">
+                    <motion.p
+                      className="text-yellow-400 mb-4 font-bold"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                    >
                       {t("checkout.paypalMessage")}
-                    </p>
+                    </motion.p>
 
-                    {/* Container pour le SDK PayPal */}
-                    <div
+                    {/* Container pour le SDK PayPal - avec animation */}
+                    <motion.div
                       id="paypal-button-container"
                       className="min-h-[60px]"
-                    ></div>
-
-                    {/* Bouton PayPal personnalisé de secours */}
-                    <button
-                      type="button"
-                      className="w-full bg-[#0070ba] hover:bg-[#003087] text-white font-bold py-3 px-4 rounded flex items-center justify-center transition-colors mt-4"
-                      onClick={() => initiatePayPalCheckout()}
-                      disabled={isProcessing}
-                    >
-                      <span className="mr-2">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M20.067 7.301C20.067 9.328 19.043 10.807 17.221 10.807H14.555C14.355 10.807 14.188 10.949 14.155 11.145L13.441 15.849C13.408 16.042 13.242 16.184 13.046 16.184H10.891C10.758 16.184 10.655 16.075 10.666 15.941L10.986 13.715C10.998 13.583 11.103 13.484 11.236 13.484H12.116C14.459 13.484 16.168 11.718 16.168 9.291C16.168 8.079 15.558 7.061 14.528 6.569C15.715 6.569 16.557 6.569 16.557 6.569C18.553 6.569 20.067 7.301 20.067 9.328V7.301ZM7.49 7.301C7.49 9.328 6.466 10.807 4.643 10.807H1.978C1.778 10.807 1.611 10.949 1.578 11.145L0.864 15.849C0.831 16.042 0.665 16.184 0.469 16.184H0.183C0.05 16.184 -0.053 16.075 -0.042 15.941L1.114 7.544C1.147 7.359 1.309 7.226 1.497 7.226H4.643C6.466 7.226 7.49 8.705 7.49 10.731V7.301ZM10.754 7.301C10.754 9.328 9.73 10.807 7.908 10.807H5.242C5.042 10.807 4.875 10.949 4.842 11.145L4.128 15.849C4.095 16.042 3.929 16.184 3.733 16.184H3.447C3.314 16.184 3.211 16.075 3.222 15.941L4.378 7.544C4.411 7.359 4.573 7.226 4.761 7.226H7.908C9.73 7.226 10.754 8.705 10.754 10.731V7.301Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </span>
-                      {isProcessing
-                        ? t("checkout.processing")
-                        : "PayPal Checkout"}
-                    </button>
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
+                    ></motion.div>
                   </motion.div>
                 )}
 
