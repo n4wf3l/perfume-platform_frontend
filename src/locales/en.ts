@@ -390,6 +390,7 @@ const en = {
     postalCode: "Postal Code*",
     brusselsFreeShipping: "Brussels region - free shipping",
     postalCodeHelper: "Brussels region (1000-1210): free shipping",
+    shippingOutsideBrussels: "Outside Brussels region: 10.00€",
     country: "Country*",
     selectCountry: "Select a country",
     countries: {

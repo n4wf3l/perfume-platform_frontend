@@ -295,6 +295,7 @@ const Cart: React.FC = () => {
                 promoError={promoError}
                 promoSuccess={promoSuccess}
                 handlePromoCode={handlePromoCode}
+                cartItems={cartItems}
               />
             </div>
           )}

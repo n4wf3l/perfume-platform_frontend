@@ -406,6 +406,7 @@ const fr = {
     postalCode: "Code Postal*",
     brusselsFreeShipping: "Région bruxelloise - livraison gratuite",
     postalCodeHelper: "Région bruxelloise (1000-1210): livraison gratuite",
+    shippingOutsideBrussels: "Hors région bruxelloise: 10.00€",
     country: "Pays*",
     selectCountry: "Sélectionnez un pays",
     countries: {

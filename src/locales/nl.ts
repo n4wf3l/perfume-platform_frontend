@@ -400,6 +400,7 @@ const nl = {
     postalCode: "Postcode*",
     brusselsFreeShipping: "Brussels gewest - gratis verzending",
     postalCodeHelper: "Brussels gewest (1000-1210): gratis verzending",
+    shippingOutsideBrussels: "Buiten Brussels gewest: 10.00€",
     country: "Land*",
     selectCountry: "Selecteer een land",
     countries: {

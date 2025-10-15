@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import type { Product } from "../../types/api";
+
+interface CartItem {
+  product: Product;
+  quantity: number;
+}
 
 interface SummaryProps {
   subtotal: number;
@@ -14,6 +20,7 @@ interface SummaryProps {
   promoError: string;
   promoSuccess: string;
   handlePromoCode: (e: React.FormEvent) => void;
+  cartItems: CartItem[]; // Ajouter les items du panier
 }
 
 const cardVariants: Variants = {
@@ -51,9 +58,40 @@ const Summary: React.FC<SummaryProps> = ({
   promoError,
   promoSuccess,
   handlePromoCode,
+  cartItems, // Ajouter cartItems
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const handleCheckout = () => {
+    // Numéro WhatsApp de Sogno Doro
+    const phoneNumber = "32465263138";
+    
+    // Construire la liste des produits
+    const productsList = cartItems.map(item => 
+      `- ${item.product.name} (${item.product.size_ml ? item.product.size_ml + 'ml' : ''}) x${item.quantity} - ${(item.product.price * item.quantity).toFixed(2)}€`
+    ).join('\n');
+    
+    // Message pré-rempli pour la commande
+    const message = encodeURIComponent(
+      `Bonjour Sogno Doro ! Je souhaite procéder au paiement de ma commande.\n\n` +
+      `Produits commandés:\n${productsList}\n\n` +
+      `Sous-total: ${subtotal.toFixed(2)}€\n` +
+      `Livraison: ${shipping.toFixed(2)}€\n` +
+      `Remise: ${discount.toFixed(2)}€\n` +
+      `Total: ${total.toFixed(2)}€\n\n` +
+      `Pouvez-vous m'aider avec le processus de paiement ?`
+    );
+    
+    // Ouvrir WhatsApp avec le message pré-rempli
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  // Ancienne fonction commentée pour référence
+  // const handleCheckout = () => {
+  //   navigate("/checkout");
+  // };
 
   return (
     <motion.div
@@ -81,8 +119,13 @@ const Summary: React.FC<SummaryProps> = ({
             custom={1}
             variants={itemVariants}
           >
-            <span>Livraison</span>
-            <span>{shipping.toFixed(2)}€</span>
+            <div className="flex flex-col">
+              <span>Livraison</span>
+              <span className="text-xs text-gray-400">
+                {shipping === 0 ? t("checkout.brusselsFreeShipping") : t("checkout.shippingOutsideBrussels")}
+              </span>
+            </div>
+            <span>{(0).toFixed(2)}€</span>
           </motion.div>
           {discount > 0 && (
             <motion.div
@@ -105,7 +148,7 @@ const Summary: React.FC<SummaryProps> = ({
         </div>
 
         <motion.button
-          onClick={() => navigate("/checkout")}
+          onClick={handleCheckout}
           className="mt-6 w-full px-6 py-3 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-colors duration-300"
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
